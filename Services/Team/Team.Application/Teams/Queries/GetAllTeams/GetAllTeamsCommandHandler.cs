@@ -9,7 +9,7 @@ using Teams.Domain.Aggregates;
 
 namespace Teams.Application.Teams.Queries.GetAllTeams
 {
-    public class GetAllTeamsCommandHandler : IRequestHandler<GetAllTeamsCommand, TeamsViewModel>
+    public class GetAllTeamsCommandHandler : IRequestHandler<GetAllTeamsCommand, List<Team>>
     {
         private readonly ITeamRepository _teamRepository;
 
@@ -18,11 +18,13 @@ namespace Teams.Application.Teams.Queries.GetAllTeams
             _teamRepository = teamRepository;
         }
 
-        public Task<TeamsViewModel> Handle(GetAllTeamsCommand request, CancellationToken cancellationToken)
+        public Task<List<Team>> Handle(GetAllTeamsCommand request, CancellationToken cancellationToken)
         {
-            var vm = new TeamsViewModel();
-            return null;
-            //_teamRepository.g
+
+            return _teamRepository.GetAll();
+
+
+
         }
     }
 }

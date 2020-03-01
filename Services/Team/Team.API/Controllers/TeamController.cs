@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Teams.Application.Teams.Commands.AddTeam;
+using Teams.Application.Teams.Queries.GetAllTeams;
+using Teams.Domain.Aggregates;
 
 namespace Teams.API.Controllers
 {
@@ -15,11 +18,11 @@ namespace Teams.API.Controllers
             _mediator = mediator;
         }
 
-        //[HttpGet]
-        //public async Task GetAll()
-        //{
-
-        //}
+        [HttpGet]
+        public async Task<List<Team>> GetAll()
+        {
+          return   await _mediator.Send(new GetAllTeamsCommand());
+        }
 
         [HttpPost]
         public async Task Post(string name)

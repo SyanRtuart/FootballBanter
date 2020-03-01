@@ -10,5 +10,7 @@ namespace Teams.Domain.Aggregates
     public interface ITeamRepository : IRepository<Team>
     {
         Team Add(Team team);
+
+        Task<List<Team>> GetAll();
     }
 }

@@ -1,5 +1,9 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Teams.Infrastructure.Persistence;
 
 namespace Teams.API
 {
@@ -7,7 +11,27 @@ namespace Teams.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+         
+            using (var scope = host.Services.CreateScope())
+            {
+                try
+                {
+                    var context = scope.ServiceProvider.GetService<TeamContext>();
+                    context.Database.Migrate();
+
+                    //ToDo bug fix
+                    //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                    TeamContextInitalizer.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                }
+
+
+                host.Run();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

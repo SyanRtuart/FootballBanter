@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Teams.Domain.Aggregates;
 using Teams.Domain.SeedWork;
 using Teams.Infrastructure.Persistence;
@@ -29,6 +30,11 @@ namespace Teams.Infrastructure.Repositories
         public Team Add(Team team)
         {
             return _context.Teams.Add(team).Entity;
+        }
+
+        public Task<List<Team>> GetAll()
+        {
+            return _context.Teams.ToListAsync();
         }
     }
 }

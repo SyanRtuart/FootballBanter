@@ -1,9 +1,13 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using MediatR;
+using Teams.Domain.Aggregates;
 
 namespace Teams.Application.Teams.Queries.GetAllTeams
 {
-    public class GetAllTeamsCommand : IRequest<TeamsViewModel>
+    //TODO: Fix so it returns view model
+    public class GetAllTeamsCommand : IRequest<List<Team>>
     {
-        
+
+
     }
 }
