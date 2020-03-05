@@ -1,7 +1,23 @@
+using System;
+using System.Reflection;
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using Matches.API.Behaviours;
 using Matches.Application.Teams.Commands.AddTeam;
 using Matches.Infrastructure.Persistence;
 using Matches.Infrastructure.Repositories;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Teams.Domain.Aggregates;
+using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.API
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using Teams.Domain.Aggregates;
+using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Infrastructure.Persistence
 {

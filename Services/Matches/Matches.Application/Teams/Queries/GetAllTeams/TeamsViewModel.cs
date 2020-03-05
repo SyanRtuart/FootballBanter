@@ -1,4 +1,6 @@
-﻿namespace Matches.Application.Teams.Queries.GetAllTeams
+﻿using System.Collections.Generic;
+
+namespace Matches.Application.Teams.Queries.GetAllTeams
 {
     public class TeamsViewModel
     {

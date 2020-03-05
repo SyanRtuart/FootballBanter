@@ -1,12 +1,13 @@
 ﻿using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Infrastructure.EntityConfigurations
 {
-    public class TeamEntityTypeConfiguration : IEntityTypeConfiguration<Teams.Domain.Aggregates.Team>
+    public class TeamEntityTypeConfiguration : IEntityTypeConfiguration<Team>
     {
-        public void Configure(EntityTypeBuilder<Teams.Domain.Aggregates.Team> builder)
+        public void Configure(EntityTypeBuilder<Team> builder)
         {
             builder.ToTable("teams", TeamContext.DEFAULT_SCHEMA);
 
@@ -18,7 +19,7 @@ namespace Matches.Infrastructure.EntityConfigurations
 
 
 
-            var navigation = builder.Metadata.FindNavigation(nameof(Teams.Domain.Aggregates.Team.Players));
+            var navigation = builder.Metadata.FindNavigation(nameof(Team.Players));
 
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 

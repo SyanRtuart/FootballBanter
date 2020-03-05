@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Teams.Domain.Aggregates;
+using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Infrastructure.EntityConfigurations
 {

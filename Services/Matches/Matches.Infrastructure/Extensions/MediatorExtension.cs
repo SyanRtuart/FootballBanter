@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Base.Domain.SeedWork;
+using Matches.Infrastructure.Persistence;
+using MediatR;
 
-namespace Base.Infrastructure.Extensions
+namespace Matches.Infrastructure.Extensions
 {
     static class MediatorExtension
     {

@@ -1,4 +1,10 @@
-﻿namespace Matches.API.Behaviours
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Base.Infrastructure.Extensions;
+using MediatR;
+using Microsoft.Extensions.Logging;
+
+namespace Matches.API.Behaviours
 {
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {

@@ -5,6 +5,7 @@ using Base.Domain.SeedWork;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Teams.Domain.Aggregates;
+using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Infrastructure.Repositories
 {

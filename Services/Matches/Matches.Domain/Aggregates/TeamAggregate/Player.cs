@@ -1,6 +1,6 @@
 ﻿using Base.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates
+namespace Teams.Domain.Aggregates.TeamAggregate
 {
     public class Player : Entity
     {

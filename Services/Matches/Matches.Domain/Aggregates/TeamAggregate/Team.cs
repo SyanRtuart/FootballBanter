@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Base.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates
+namespace Teams.Domain.Aggregates.TeamAggregate
 {
     public class Team : Entity, IAggregateRoot
     {

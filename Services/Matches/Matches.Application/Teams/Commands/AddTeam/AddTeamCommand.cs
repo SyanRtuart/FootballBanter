@@ -1,4 +1,6 @@
-﻿namespace Matches.Application.Teams.Commands.AddTeam
+﻿using MediatR;
+
+namespace Matches.Application.Teams.Commands.AddTeam
 {
     public class AddTeamCommand : IRequest<bool>
     {
