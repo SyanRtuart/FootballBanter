@@ -17,13 +17,13 @@ namespace Matches.API
             {
                 try
                 {
-                    var context = scope.ServiceProvider.GetService<TeamContext>();
+                    var context = scope.ServiceProvider.GetService<MatchContext>();
                     context.Database.Migrate();
 
                     //ToDo bug fix
                     //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-                    TeamContextInitalizer.Initialize(context);
+                    MatchContextInitalizer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

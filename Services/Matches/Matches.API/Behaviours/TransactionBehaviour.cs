@@ -13,14 +13,14 @@ namespace Matches.API.Behaviours
     public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
-        private readonly TeamContext _dbContext;
+        private readonly MatchContext _dbContext;
         //private readonly ITeamIntegrationEventService _teamIntegrationEventService;
 
-        public TransactionBehaviour(TeamContext dbContext,
+        public TransactionBehaviour(MatchContext dbContext,
             //ITeamIntegrationEventService teamIntegrationEventService,
             ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
         {
-            _dbContext = dbContext ?? throw new ArgumentException(nameof(TeamContext));
+            _dbContext = dbContext ?? throw new ArgumentException(nameof(MatchContext));
             //_teamIntegrationEventService = teamIntegrationEventService ?? throw new ArgumentException(nameof(teamIntegrationEventService));
             _logger = logger ?? throw new ArgumentException(nameof(ILogger));
         }

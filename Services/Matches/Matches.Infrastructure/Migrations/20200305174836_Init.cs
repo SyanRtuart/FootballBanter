@@ -2,26 +2,26 @@
 
 namespace Matches.Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "team");
+                name: "match");
 
             migrationBuilder.CreateSequence(
                 name: "playerseq",
-                schema: "team",
+                schema: "match",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
                 name: "teamseq",
-                schema: "team",
+                schema: "match",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
                 name: "teams",
-                schema: "team",
+                schema: "match",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -34,7 +34,7 @@ namespace Matches.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "players",
-                schema: "team",
+                schema: "match",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
@@ -48,7 +48,7 @@ namespace Matches.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_players_teams_TeamId",
                         column: x => x.TeamId,
-                        principalSchema: "team",
+                        principalSchema: "match",
                         principalTable: "teams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -56,7 +56,7 @@ namespace Matches.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_players_TeamId",
-                schema: "team",
+                schema: "match",
                 table: "players",
                 column: "TeamId");
         }
@@ -65,19 +65,19 @@ namespace Matches.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "players",
-                schema: "team");
+                schema: "match");
 
             migrationBuilder.DropTable(
                 name: "teams",
-                schema: "team");
+                schema: "match");
 
             migrationBuilder.DropSequence(
                 name: "playerseq",
-                schema: "team");
+                schema: "match");
 
             migrationBuilder.DropSequence(
                 name: "teamseq",
-                schema: "team");
+                schema: "match");
         }
     }
 }

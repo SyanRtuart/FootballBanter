@@ -11,7 +11,7 @@ namespace Matches.Infrastructure.Repositories
 {
     public class TeamRepository : ITeamRepository
     {
-        private readonly TeamContext _context;
+        private readonly MatchContext _context;
 
         public IUnitOfWork UnitOfWork
         {
@@ -21,7 +21,7 @@ namespace Matches.Infrastructure.Repositories
             }
         }
 
-        public TeamRepository(TeamContext context)
+        public TeamRepository(MatchContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -31,7 +31,7 @@ namespace Matches.Infrastructure.Repositories
             return _context.Teams.Add(team).Entity;
         }
 
-        public Task<List<Team>> GetAll()
+        public Task<List<Team>> GetAllAsync()
         {
             return _context.Teams.ToListAsync();
         }

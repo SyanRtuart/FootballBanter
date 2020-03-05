@@ -20,7 +20,7 @@ namespace Matches.API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Team>> GetAll()
+        public async Task<TeamsViewModel> GetAll()
         {
           return   await _mediator.Send(new GetAllTeamsCommand());
         }

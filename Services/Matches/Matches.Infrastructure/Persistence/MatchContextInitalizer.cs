@@ -5,18 +5,18 @@ using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Infrastructure.Persistence
 {
-    public class TeamContextInitalizer
+    public class MatchContextInitalizer
     {
-        private TeamContext _context;
+        private MatchContext _context;
 
-        public TeamContextInitalizer(TeamContext context)
+        public MatchContextInitalizer(MatchContext context)
         {
             _context = context;
         }
 
-        public static void Initialize(TeamContext context)
+        public static void Initialize(MatchContext context)
         {
-            var initilizer = new TeamContextInitalizer(context);
+            var initilizer = new MatchContextInitalizer(context);
             initilizer.SeedEverything();
         }
 

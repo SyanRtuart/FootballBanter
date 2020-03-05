@@ -10,13 +10,13 @@ namespace Matches.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Player> builder)
         {
-            builder.ToTable("players", TeamContext.DEFAULT_SCHEMA);
+            builder.ToTable("players", MatchContext.DEFAULT_SCHEMA);
 
             builder.HasKey(o => o.Id);
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("playerseq", TeamContext.DEFAULT_SCHEMA);
+            builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("playerseq", MatchContext.DEFAULT_SCHEMA);
 
 
 

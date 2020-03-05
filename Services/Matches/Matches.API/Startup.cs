@@ -1,8 +1,10 @@
 using System;
 using System.Reflection;
 using AutoMapper;
+using Base.Application.Common.Mappings;
 using FluentValidation.AspNetCore;
 using Matches.API.Behaviours;
+using Matches.Application;
 using Matches.Application.Teams.Commands.AddTeam;
 using Matches.Infrastructure.Persistence;
 using Matches.Infrastructure.Repositories;
@@ -80,7 +82,7 @@ namespace Matches.API
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddMediatR(typeof(AddTeamCommand).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
@@ -101,7 +103,7 @@ namespace Matches.API
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEntityFrameworkSqlServer()
-                .AddDbContext<TeamContext>(options =>
+                .AddDbContext<MatchContext>(options =>
                     {
                         options.UseSqlServer(configuration["ConnectionString"],
                             sqlServerOptionsAction: sqlOptions =>

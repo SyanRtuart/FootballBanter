@@ -14,9 +14,9 @@ using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Infrastructure.Persistence
 {
-    public class TeamContext : DbContext, IUnitOfWork
+    public class MatchContext : DbContext, IUnitOfWork
     {
-        public const string DEFAULT_SCHEMA = "team";
+        public const string DEFAULT_SCHEMA = "match";
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
@@ -24,13 +24,13 @@ namespace Matches.Infrastructure.Persistence
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
-        private TeamContext(DbContextOptions<TeamContext> options) : base(options) { }
+        private MatchContext(DbContextOptions<MatchContext> options) : base(options) { }
 
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
         public bool HasActiveTransaction => _currentTransaction != null;
 
-        public TeamContext(DbContextOptions<TeamContext> options, IMediator mediator) : base(options)
+        public MatchContext(DbContextOptions<MatchContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
@@ -40,7 +40,7 @@ namespace Matches.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TeamContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(MatchContext).Assembly);
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
@@ -104,14 +104,14 @@ namespace Matches.Infrastructure.Persistence
 
     }
 
-    public class TeamContextDesignFactory : IDesignTimeDbContextFactory<TeamContext>
+    public class MatchContextDesignFactory : IDesignTimeDbContextFactory<MatchContext>
     {
-        public TeamContext CreateDbContext(string[] args)
+        public MatchContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<TeamContext>()
+            var optionsBuilder = new DbContextOptionsBuilder<MatchContext>()
                 .UseSqlServer("server=(localdb)\\MSSQLLocalDB;database=myDb;trusted_connection=true;");
 
-            return new TeamContext(optionsBuilder.Options, new NoMediator());
+            return new MatchContext(optionsBuilder.Options, new NoMediator());
         }
 
         class NoMediator : IMediator

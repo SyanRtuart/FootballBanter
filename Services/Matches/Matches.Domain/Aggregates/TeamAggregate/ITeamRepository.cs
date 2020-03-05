@@ -8,6 +8,6 @@ namespace Teams.Domain.Aggregates.TeamAggregate
     {
         Team Add(Team team);
 
-        Task<List<Team>> GetAll();
+        Task<List<Team>> GetAllAsync();
     }
 }
