@@ -19,10 +19,7 @@ namespace Matches.API
                 {
                     var context = scope.ServiceProvider.GetService<MatchContext>();
                     context.Database.Migrate();
-
-                    //ToDo bug fix
-                    //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
+                    
                     MatchContextInitalizer.Initialize(context);
                 }
                 catch (Exception ex)
@@ -36,9 +33,6 @@ namespace Matches.API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

@@ -1,14 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
-using Matches.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-namespace Matches.Infrastructure.Extensions
+namespace Base.Infrastructure.Extensions
 {
-    static class MediatorExtension
+    public static class MediatorExtension 
     {
-        public static async Task DispatchDomainEventsAsync(this IMediator mediator, MatchContext ctx)
+        public static async Task DispatchDomainEventsAsync(this IMediator mediator, DbContext ctx)
         {
             var domainEntities = ctx.ChangeTracker
                 .Entries<Entity>()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using Microsoft.EntityFrameworkCore.Internal;
 using Teams.Domain.Aggregates;
 using Teams.Domain.Aggregates.TeamAggregate;
 
@@ -22,7 +23,11 @@ namespace Matches.Infrastructure.Persistence
 
         public void SeedEverything()
         {
-            SeedTeams();
+            if (!_context.Teams.Any())
+            {
+                SeedTeams();
+
+            }
         }
 
         private void SeedTeams()

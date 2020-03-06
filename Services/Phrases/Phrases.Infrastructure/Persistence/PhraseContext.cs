@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
@@ -8,28 +11,26 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
-using Teams.Domain.Aggregates;
-using Teams.Domain.Aggregates.TeamAggregate;
+using Phrases.Domain.Aggregates.PhraseAggregate;
 
-namespace Matches.Infrastructure.Persistence
+namespace Phrases.Infrastructure.Persistence
 {
-    public class MatchContext : DbContext, IUnitOfWork
+    public class PhraseContext : DbContext, IUnitOfWork
     {
-        public const string DEFAULT_SCHEMA = "match";
+        public const string DEFAULT_SCHEMA = "phrase";
 
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<Player> Players { get; set; }
+        public DbSet<Phrase> Phrases { get; set; }
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
-        private MatchContext(DbContextOptions<MatchContext> options) : base(options) { }
+        private PhraseContext(DbContextOptions<PhraseContext> options) : base(options) { }
 
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
         public bool HasActiveTransaction => _currentTransaction != null;
 
-        public MatchContext(DbContextOptions<MatchContext> options, IMediator mediator) : base(options)
+        public PhraseContext(DbContextOptions<PhraseContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
@@ -39,9 +40,8 @@ namespace Matches.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(MatchContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PhraseContext).Assembly);
         }
-
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             await _mediator.DispatchDomainEventsAsync(this);
@@ -100,16 +100,16 @@ namespace Matches.Infrastructure.Persistence
                 }
             }
         }
-
     }
 
-    public class MatchContextDesignFactory : IDesignTimeDbContextFactory<MatchContext>
+    public class PhraseContextDesignFactory : IDesignTimeDbContextFactory<PhraseContext>
     {
-        public MatchContext CreateDbContext(string[] args)
+        public PhraseContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<MatchContext>()
+            var optionsBuilder = new DbContextOptionsBuilder<PhraseContext>()
                 .UseSqlServer("server=(localdb)\\MSSQLLocalDB;database=FootballBanter;trusted_connection=true;");
-            return new MatchContext(optionsBuilder.Options, new NoMediator());
+
+            return new PhraseContext(optionsBuilder.Options, new NoMediator());
         }
 
         class NoMediator : IMediator

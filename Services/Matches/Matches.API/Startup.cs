@@ -45,7 +45,7 @@ namespace Matches.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Team API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Match API", Version = "v1" });
             });
 
         }
