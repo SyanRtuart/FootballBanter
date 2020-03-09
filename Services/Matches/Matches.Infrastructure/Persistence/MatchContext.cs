@@ -8,8 +8,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
-using Teams.Domain.Aggregates;
+using Teams.Domain.Aggregates.MatchAggregate;
 using Teams.Domain.Aggregates.TeamAggregate;
+using Team = Teams.Domain.Aggregates.TeamAggregate.Team;
 
 namespace Matches.Infrastructure.Persistence
 {
@@ -19,6 +20,8 @@ namespace Matches.Infrastructure.Persistence
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<MatchStatus> MatchStatus { get; set; }
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -34,7 +37,7 @@ namespace Matches.Infrastructure.Persistence
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
 
-            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + GetHashCode());
+            System.Diagnostics.Debug.WriteLine("MatchContext::ctor ->" + GetHashCode());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
