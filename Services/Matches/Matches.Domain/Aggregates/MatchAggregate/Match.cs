@@ -1,31 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates.MatchAggregate
+namespace Matches.Domain.Aggregates.MatchAggregate
 {
     public class Match : Entity, IAggregateRoot
     {
-        public Match(Team homeTeam, Team awayTeam, DateTime utcDate, MatchStatus status, Score score)
+        public Match(int homeTeamId, int awayTeamId, DateTime utcDate, MatchStatus status, Score score)
         {
-            HomeTeam = homeTeam;
-            AwayTeam = awayTeam;
-            UtcDate = utcDate;
-            Status = status;
-            Score = score;
+
         }
 
-        public Match()
+        private Match()
         {
-            
+            // Only for ORM.
         }
-        public Team HomeTeam { get; set; }
-        public Team AwayTeam { get; set; }
-        public DateTime UtcDate { get; set; }
-        public MatchStatus Status { get; set; }
-        public Score Score { get; set; }
+
+        public static Match CreateNew(int homeTeamId, int awayTeamId, DateTime utcDate, MatchStatus status, Score score)
+        {
+            return new Match(homeTeamId, awayTeamId, utcDate, status, score);
+        }
+
+        public MatchStatus Status { get; private set; }
+        private int _statusId;
+
+        private int _homeTeamId;
+        private int _awayTeamId;
+
+        private DateTime _utcDate;
+
+        private MatchStatus _status;
+
+        private Score _score;
     }
 }

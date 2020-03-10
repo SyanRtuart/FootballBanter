@@ -4,13 +4,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Base.Infrastructure.Extensions;
+using Matches.Domain.Aggregates.MatchAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
-using Teams.Domain.Aggregates.MatchAggregate;
-using Teams.Domain.Aggregates.TeamAggregate;
-using Team = Teams.Domain.Aggregates.TeamAggregate.Team;
 
 namespace Matches.Infrastructure.Persistence
 {
@@ -19,7 +17,6 @@ namespace Matches.Infrastructure.Persistence
         public const string DEFAULT_SCHEMA = "match";
 
         public DbSet<Team> Teams { get; set; }
-        public DbSet<Player> Players { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<MatchStatus> MatchStatus { get; set; }
 

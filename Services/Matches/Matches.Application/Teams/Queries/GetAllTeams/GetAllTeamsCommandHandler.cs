@@ -4,30 +4,32 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Teams.Domain.Aggregates;
-using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Application.Teams.Queries.GetAllTeams
 {
     public class GetAllTeamsCommandHandler : IRequestHandler<GetAllTeamsCommand, TeamsViewModel>
     {
-        private readonly ITeamRepository _teamRepository;
+        //private readonly ITeamRepository _teamRepository;
         private readonly IMapper _mapper;
 
-        public GetAllTeamsCommandHandler(ITeamRepository teamRepository, IMapper mapper)
+        public GetAllTeamsCommandHandler(
+            //ITeamRepository teamRepository,
+            IMapper mapper)
         {
-            _teamRepository = teamRepository;
+            //_teamRepository = teamRepository;
             _mapper = mapper;
         }
 
         public async Task<TeamsViewModel> Handle(GetAllTeamsCommand request, CancellationToken cancellationToken)
         {
-            var teams = await _teamRepository.GetAllAsync();
+            //var teams = await _teamRepository.GetAllAsync();
 
-            var rs = _mapper.Map<List<TeamDto>>(teams);
+            //var rs = _mapper.Map<List<TeamDto>>(teams);
 
-            var vm = new TeamsViewModel(rs);
+            //var vm = new TeamsViewModel(rs);
 
-            return vm;
+            //return vm;
+            return new TeamsViewModel(new List<TeamDto>());
         }
     }
 }

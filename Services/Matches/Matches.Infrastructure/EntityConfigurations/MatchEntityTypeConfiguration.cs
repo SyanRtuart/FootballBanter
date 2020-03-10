@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Matches.Domain.Aggregates.MatchAggregate;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Teams.Domain.Aggregates.MatchAggregate;
 
 namespace Matches.Infrastructure.EntityConfigurations
 {
@@ -22,39 +22,22 @@ namespace Matches.Infrastructure.EntityConfigurations
 
             builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("matchseq", MatchContext.DEFAULT_SCHEMA);
 
+            builder.Property<int>("_homeTeamId").HasColumnName("HomeTeamId");
+            builder.Property<int>("_awayTeamId").HasColumnName("AwayTeamId");
+            builder.Property<int>("_statusId").HasColumnName("StatusId");
+            builder.Property<DateTime>("_utcDate").HasColumnName("UtcDate");
 
-            builder.HasOne<Team>()
+            builder.HasOne(o => o.Status)
                 .WithMany()
-                .HasForeignKey("_homeTeamId")
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey("_statusId");
 
-            builder.HasOne<Team>()
-                .WithMany()
-                .HasForeignKey("_awayTeamId")
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.OwnsOne<Score>("_score", b =>
+            {
+                b.Property(p => p.Winner).HasColumnName("ScoreWinner");
+                b.Property(p => p.HomeTeam).HasColumnName("ScoreHomeTeam");
+                b.Property(p => p.AwayTeam).HasColumnName("ScoreAwayTeam");
+            });
 
-            builder
-                .Property<DateTime>("_utcDate")
-                .UsePropertyAccessMode(PropertyAccessMode.Field)
-                .HasColumnName("UtcDate")
-                .IsRequired();
-
-            builder
-                .Property<int>("_matchStatusId")
-                .UsePropertyAccessMode(PropertyAccessMode.Field)
-                .HasColumnName("MatchStatusId")
-                .IsRequired();
-
-
-            builder
-                .OwnsOne(o => o.Score, a =>
-                {
-                    a.WithOwner();
-                });
-
-            
         }
     }
 }

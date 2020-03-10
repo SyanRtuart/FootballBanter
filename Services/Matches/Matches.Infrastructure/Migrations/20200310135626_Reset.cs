@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Matches.Infrastructure.Migrations
 {
-    public partial class Init : Migration
+    public partial class Reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,7 +11,7 @@ namespace Matches.Infrastructure.Migrations
                 name: "match");
 
             migrationBuilder.CreateSequence(
-                name: "playerseq",
+                name: "matchseq",
                 schema: "match",
                 incrementBy: 10);
 
@@ -18,6 +19,19 @@ namespace Matches.Infrastructure.Migrations
                 name: "teamseq",
                 schema: "match",
                 incrementBy: 10);
+
+            migrationBuilder.CreateTable(
+                name: "matchstatus",
+                schema: "match",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false, defaultValue: 1),
+                    Name = table.Column<string>(maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_matchstatus", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "teams",
@@ -33,46 +47,54 @@ namespace Matches.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "players",
+                name: "matches",
                 schema: "match",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Number = table.Column<int>(nullable: false),
-                    TeamId = table.Column<int>(nullable: false)
+                    StatusId = table.Column<int>(nullable: false),
+                    AwayTeamId = table.Column<int>(nullable: false),
+                    HomeTeamId = table.Column<int>(nullable: false),
+                    UtcDate = table.Column<DateTime>(nullable: false),
+                    ScoreWinner = table.Column<string>(nullable: true),
+                    ScoreHomeTeam = table.Column<int>(nullable: true),
+                    ScoreAwayTeam = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_players", x => x.Id);
+                    table.PrimaryKey("PK_matches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_players_teams_TeamId",
-                        column: x => x.TeamId,
+                        name: "FK_matches_matchstatus_StatusId",
+                        column: x => x.StatusId,
                         principalSchema: "match",
-                        principalTable: "teams",
+                        principalTable: "matchstatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_players_TeamId",
+                name: "IX_matches_StatusId",
                 schema: "match",
-                table: "players",
-                column: "TeamId");
+                table: "matches",
+                column: "StatusId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "players",
+                name: "matches",
                 schema: "match");
 
             migrationBuilder.DropTable(
                 name: "teams",
                 schema: "match");
 
+            migrationBuilder.DropTable(
+                name: "matchstatus",
+                schema: "match");
+
             migrationBuilder.DropSequence(
-                name: "playerseq",
+                name: "matchseq",
                 schema: "match");
 
             migrationBuilder.DropSequence(

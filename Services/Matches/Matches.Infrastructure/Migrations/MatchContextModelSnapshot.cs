@@ -18,7 +18,6 @@ namespace Matches.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("Relational:Sequence:match.matchseq", "'matchseq', 'match', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("Relational:Sequence:match.playerseq", "'playerseq', 'match', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:match.teamseq", "'teamseq', 'match', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -31,29 +30,16 @@ namespace Matches.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "match")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
-                    b.Property<int?>("AwayTeamId")
+                    b.Property<int>("_awayTeamId")
+                        .HasColumnName("AwayTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("HomeTeamId")
+                    b.Property<int>("_homeTeamId")
+                        .HasColumnName("HomeTeamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UtcDate")
-                        .HasColumnName("UtcDate1")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("_awayTeamId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("_homeTeamId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int>("_matchStatusId")
-                        .HasColumnName("MatchStatusId")
+                    b.Property<int>("_statusId")
+                        .HasColumnName("StatusId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("_utcDate")
@@ -62,15 +48,7 @@ namespace Matches.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AwayTeamId");
-
-                    b.HasIndex("HomeTeamId");
-
-                    b.HasIndex("StatusId");
-
-                    b.HasIndex("_awayTeamId");
-
-                    b.HasIndex("_homeTeamId");
+                    b.HasIndex("_statusId");
 
                     b.ToTable("matches","match");
                 });
@@ -96,47 +74,6 @@ namespace Matches.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Team");
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.TeamAggregate.Player", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "playerseq")
-                        .HasAnnotation("SqlServer:HiLoSequenceSchema", "match")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("players","match");
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.TeamAggregate.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:HiLoSequenceName", "teamseq")
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "match")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
@@ -152,42 +89,27 @@ namespace Matches.Infrastructure.Migrations
 
             modelBuilder.Entity("Teams.Domain.Aggregates.MatchAggregate.Match", b =>
                 {
-                    b.HasOne("Teams.Domain.Aggregates.MatchAggregate.Team", "AwayTeam")
-                        .WithMany()
-                        .HasForeignKey("AwayTeamId");
-
-                    b.HasOne("Teams.Domain.Aggregates.MatchAggregate.Team", "HomeTeam")
-                        .WithMany()
-                        .HasForeignKey("HomeTeamId");
-
                     b.HasOne("Teams.Domain.Aggregates.MatchAggregate.MatchStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusId");
-
-                    b.HasOne("Teams.Domain.Aggregates.MatchAggregate.Team", null)
-                        .WithMany()
-                        .HasForeignKey("_awayTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("_statusId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Teams.Domain.Aggregates.MatchAggregate.Team", null)
-                        .WithMany()
-                        .HasForeignKey("_homeTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.OwnsOne("Teams.Domain.Aggregates.MatchAggregate.Score", "Score", b1 =>
+                    b.OwnsOne("Teams.Domain.Aggregates.MatchAggregate.Score", "_score", b1 =>
                         {
                             b1.Property<int>("MatchId")
                                 .HasColumnType("int");
 
                             b1.Property<int>("AwayTeam")
+                                .HasColumnName("ScoreAwayTeam")
                                 .HasColumnType("int");
 
                             b1.Property<int>("HomeTeam")
+                                .HasColumnName("ScoreHomeTeam")
                                 .HasColumnType("int");
 
                             b1.Property<string>("Winner")
+                                .HasColumnName("ScoreWinner")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("MatchId");
@@ -197,15 +119,6 @@ namespace Matches.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("MatchId");
                         });
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.TeamAggregate.Player", b =>
-                {
-                    b.HasOne("Teams.Domain.Aggregates.TeamAggregate.Team", null)
-                        .WithMany("Players")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

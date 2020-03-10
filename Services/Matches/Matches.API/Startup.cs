@@ -18,8 +18,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Teams.Domain.Aggregates;
-using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.API
 {
@@ -94,7 +92,7 @@ namespace Matches.API
 
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<ITeamRepository, TeamRepository>();
+            //services.AddTransient<ITeamRepository, TeamRepository>();
 
 
             return services;

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>Matches.Domain</AssemblyName>
-    <RootNamespace>Teams.Domain</RootNamespace>
+    <RootNamespace>Matches.Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
-﻿using Matches.Infrastructure.Persistence;
+﻿using Matches.Domain.Aggregates.MatchAggregate;
+using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Teams.Domain.Aggregates.TeamAggregate;
 
 namespace Matches.Infrastructure.EntityConfigurations
 {
@@ -17,11 +17,6 @@ namespace Matches.Infrastructure.EntityConfigurations
 
             builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("teamseq", MatchContext.DEFAULT_SCHEMA);
 
-
-
-            var navigation = builder.Metadata.FindNavigation(nameof(Team.Players));
-
-            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property<string>("Name").IsRequired();
         }

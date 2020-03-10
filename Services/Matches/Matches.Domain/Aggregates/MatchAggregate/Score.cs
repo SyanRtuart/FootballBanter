@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Base.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates.MatchAggregate
+namespace Matches.Domain.Aggregates.MatchAggregate
 {
     public class Score : ValueObject
     {
@@ -19,7 +15,6 @@ namespace Teams.Domain.Aggregates.MatchAggregate
         public Score() { }
 
         public string Winner { get; private set; }
-
         public int HomeTeam { get; private set; }
         public int AwayTeam { get; private set; }
         protected override IEnumerable<object> GetAtomicValues()

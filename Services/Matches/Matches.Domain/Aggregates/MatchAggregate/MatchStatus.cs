@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Base.Domain.SeedWork;
+﻿using Base.Domain.SeedWork;
 
-namespace Teams.Domain.Aggregates.MatchAggregate
+namespace Matches.Domain.Aggregates.MatchAggregate
 {
     public class MatchStatus : Enumeration
     {
@@ -17,5 +12,7 @@ namespace Teams.Domain.Aggregates.MatchAggregate
         public MatchStatus(int id, string name) : base(id, name)
         {
         }
+
+
     }
 }
