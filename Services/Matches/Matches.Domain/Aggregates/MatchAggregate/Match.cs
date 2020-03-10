@@ -15,7 +15,7 @@ namespace Matches.Domain.Aggregates.MatchAggregate
             // Only for ORM.
         }
 
-        public static Match CreateNew(int homeTeamId, int awayTeamId, DateTime utcDate, MatchStatus status, Score score)
+        public static Match Create(int homeTeamId, int awayTeamId, DateTime utcDate, MatchStatus status, Score score)
         {
             return new Match(homeTeamId, awayTeamId, utcDate, status, score);
         }

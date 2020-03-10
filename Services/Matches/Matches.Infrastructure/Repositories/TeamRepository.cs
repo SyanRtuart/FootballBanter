@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Teams.Domain.Aggregates;
 
 namespace Matches.Infrastructure.Repositories
 {
