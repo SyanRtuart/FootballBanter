@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Base.Infrastructure.Extensions;
 using Matches.Domain.Aggregates.Match;
+using Matches.Domain.Aggregates.Team;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;

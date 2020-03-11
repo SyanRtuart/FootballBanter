@@ -1,4 +1,5 @@
 ﻿using Matches.Domain.Aggregates.Match;
+using Matches.Domain.Aggregates.Team;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,7 +19,8 @@ namespace Matches.Infrastructure.EntityConfigurations
             builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("teamseq", MatchContext.DEFAULT_SCHEMA);
 
 
-            builder.Property<string>("Name").IsRequired();
+            builder.Property<string>("_name").HasColumnName("Name").IsRequired();
+
         }
     }
 }

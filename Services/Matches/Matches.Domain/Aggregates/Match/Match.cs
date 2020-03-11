@@ -5,7 +5,7 @@ namespace Matches.Domain.Aggregates.Match
 {
     public class Match : Entity, IAggregateRoot
     {
-        public Match(int homeTeamId, int awayTeamId, DateTime utcDate, Score score)
+        private Match(int homeTeamId, int awayTeamId, DateTime utcDate, Score score)
         {
 
         }
