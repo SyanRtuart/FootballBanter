@@ -1,6 +1,6 @@
 ﻿using Base.Domain.SeedWork;
 
-namespace Matches.Domain.Aggregates.MatchAggregate
+namespace Matches.Domain.Aggregates.Match
 {
     public class Team  : Entity, IAggregateRoot
     {

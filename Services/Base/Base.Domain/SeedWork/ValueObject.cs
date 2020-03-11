@@ -1,62 +1,120 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Base.Domain.SeedWork
 {
-    public abstract class ValueObject
+    public abstract class ValueObject : IEquatable<ValueObject>
     {
-        protected static bool EqualOperator(ValueObject left, ValueObject right)
+        private List<PropertyInfo> _properties;
+        private List<FieldInfo> _fields;
+
+        public static bool operator ==(ValueObject obj1, ValueObject obj2)
         {
-            if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+            if (object.Equals(obj1, null))
             {
+                if (object.Equals(obj2, null))
+                {
+                    return true;
+                }
                 return false;
             }
-            return ReferenceEquals(left, null) || left.Equals(right);
+            return obj1.Equals(obj2);
         }
 
-        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+        public static bool operator !=(ValueObject obj1, ValueObject obj2)
         {
-            return !(EqualOperator(left, right));
+            return !(obj1 == obj2);
         }
 
-        protected abstract IEnumerable<object> GetAtomicValues();
+        public bool Equals(ValueObject obj)
+        {
+            return Equals(obj as object);
+        }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != GetType())
+            if (obj == null || GetType() != obj.GetType()) return false;
+
+            return GetProperties().All(p => PropertiesAreEqual(obj, p))
+                && GetFields().All(f => FieldsAreEqual(obj, f));
+        }
+
+        private bool PropertiesAreEqual(object obj, PropertyInfo p)
+        {
+            return object.Equals(p.GetValue(this, null), p.GetValue(obj, null));
+        }
+
+        private bool FieldsAreEqual(object obj, FieldInfo f)
+        {
+            return object.Equals(f.GetValue(this), f.GetValue(obj));
+        }
+
+        private IEnumerable<PropertyInfo> GetProperties()
+        {
+            if (this._properties == null)
             {
-                return false;
+                this._properties = GetType()
+                    .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
+                    .ToList();
+
+                // Not available in Core
+                // !Attribute.IsDefined(p, typeof(IgnoreMemberAttribute))).ToList();
             }
-            ValueObject other = (ValueObject)obj;
-            IEnumerator<object> thisValues = GetAtomicValues().GetEnumerator();
-            IEnumerator<object> otherValues = other.GetAtomicValues().GetEnumerator();
-            while (thisValues.MoveNext() && otherValues.MoveNext())
+
+            return this._properties;
+        }
+
+        private IEnumerable<FieldInfo> GetFields()
+        {
+            if (this._fields == null)
             {
-                if (ReferenceEquals(thisValues.Current, null) ^ ReferenceEquals(otherValues.Current, null))
-                {
-                    return false;
-                }
-                if (thisValues.Current != null && !thisValues.Current.Equals(otherValues.Current))
-                {
-                    return false;
-                }
+                this._fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
+                    .ToList();
             }
-            return !thisValues.MoveNext() && !otherValues.MoveNext();
+
+            return this._fields;
         }
 
         public override int GetHashCode()
         {
-            return GetAtomicValues()
-                .Select(x => x != null ? x.GetHashCode() : 0)
-                .Aggregate((x, y) => x ^ y);
+            unchecked   //allow overflow
+            {
+                int hash = 17;
+                foreach (var prop in GetProperties())
+                {
+                    var value = prop.GetValue(this, null);
+                    hash = HashValue(hash, value);
+                }
+
+                foreach (var field in GetFields())
+                {
+                    var value = field.GetValue(this);
+                    hash = HashValue(hash, value);
+                }
+
+                return hash;
+            }
         }
 
-        public ValueObject GetCopy()
+        private int HashValue(int seed, object value)
         {
-            return this.MemberwiseClone() as ValueObject;
+            var currentHash = value?.GetHashCode() ?? 0;
+
+            return seed * 23 + currentHash;
+        }
+
+        protected static void CheckRule(IBusinessRule rule)
+        {
+            if (rule.IsBroken())
+            {
+                throw new BusinessRuleValidationException(rule);
+            }
         }
     }
 }

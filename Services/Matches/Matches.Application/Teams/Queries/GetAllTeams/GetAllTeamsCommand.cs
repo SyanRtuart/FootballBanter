@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using MediatR;
-using Teams.Domain.Aggregates;
+﻿using MediatR;
 
 namespace Matches.Application.Teams.Queries.GetAllTeams
 {

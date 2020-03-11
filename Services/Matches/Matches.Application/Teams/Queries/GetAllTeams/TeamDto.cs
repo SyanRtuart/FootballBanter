@@ -1,5 +1,5 @@
 ﻿using Base.Application.Common.Mappings;
-using Matches.Domain.Aggregates.MatchAggregate;
+using Matches.Domain.Aggregates.Match;
 
 namespace Matches.Application.Teams.Queries.GetAllTeams
 {

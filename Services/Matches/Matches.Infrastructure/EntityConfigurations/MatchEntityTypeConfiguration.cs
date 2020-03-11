@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Matches.Domain.Aggregates.MatchAggregate;
+using Matches.Domain.Aggregates.Match;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,11 +26,7 @@ namespace Matches.Infrastructure.EntityConfigurations
             builder.Property<int>("_awayTeamId").HasColumnName("AwayTeamId");
             builder.Property<int>("_statusId").HasColumnName("StatusId");
             builder.Property<DateTime>("_utcDate").HasColumnName("UtcDate");
-
-            builder.HasOne(o => o.Status)
-                .WithMany()
-                .HasForeignKey("_statusId");
-
+            
             builder.OwnsOne<Score>("_score", b =>
             {
                 b.Property(p => p.Winner).HasColumnName("ScoreWinner");

@@ -21,7 +21,7 @@ namespace Matches.Infrastructure.Migrations
                 .HasAnnotation("Relational:Sequence:match.teamseq", "'teamseq', 'match', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Teams.Domain.Aggregates.MatchAggregate.Match", b =>
+            modelBuilder.Entity("Matches.Domain.Aggregates.Match.Match", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,28 +48,10 @@ namespace Matches.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("_statusId");
-
                     b.ToTable("matches","match");
                 });
 
-            modelBuilder.Entity("Teams.Domain.Aggregates.MatchAggregate.MatchStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("matchstatus","match");
-                });
-
-            modelBuilder.Entity("Teams.Domain.Aggregates.MatchAggregate.Team", b =>
+            modelBuilder.Entity("Matches.Domain.Aggregates.Match.Team", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,15 +69,9 @@ namespace Matches.Infrastructure.Migrations
                     b.ToTable("teams","match");
                 });
 
-            modelBuilder.Entity("Teams.Domain.Aggregates.MatchAggregate.Match", b =>
+            modelBuilder.Entity("Matches.Domain.Aggregates.Match.Match", b =>
                 {
-                    b.HasOne("Teams.Domain.Aggregates.MatchAggregate.MatchStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("_statusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("Teams.Domain.Aggregates.MatchAggregate.Score", "_score", b1 =>
+                    b.OwnsOne("Matches.Domain.Aggregates.Match.Score", "_score", b1 =>
                         {
                             b1.Property<int>("MatchId")
                                 .HasColumnType("int");

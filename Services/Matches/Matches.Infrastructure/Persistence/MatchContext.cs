@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Base.Infrastructure.Extensions;
-using Matches.Domain.Aggregates.MatchAggregate;
+using Matches.Domain.Aggregates.Match;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -18,7 +18,6 @@ namespace Matches.Infrastructure.Persistence
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<Match> Matches { get; set; }
-        public DbSet<MatchStatus> MatchStatus { get; set; }
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;

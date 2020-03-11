@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using Matches.Domain.Aggregates.MatchAggregate;
+using Matches.Domain.Aggregates.Match;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Matches.Infrastructure.Persistence

@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using Matches.API.Behaviours;
 using Matches.Application;
 using Matches.Application.Teams.Commands.AddTeam;
+using Matches.Domain.Aggregates.Match;
 using Matches.Infrastructure.Persistence;
 using Matches.Infrastructure.Repositories;
 using MediatR;
@@ -93,7 +94,7 @@ namespace Matches.API
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
             //services.AddTransient<ITeamRepository, TeamRepository>();
-
+            services.AddTransient<IMatchRepository, MatchRepository>();
 
             return services;
         }

@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\Base\Base.Domain\Base.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Aggregates\Match\Rules\" />
+  </ItemGroup>
+
 </Project>

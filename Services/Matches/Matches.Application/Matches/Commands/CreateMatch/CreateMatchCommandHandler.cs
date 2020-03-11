@@ -4,27 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Matches.Domain.Aggregates.MatchAggregate.;
+using Matches.Domain.Aggregates.Match;
 using MediatR;
-using Matches.Domain.Aggregates.MatchAggregate;
 
 namespace Matches.Application.Matches.Commands.CreateMatch
 {
-    public class CreateMatchCommandHandler : IRequestHandler<CreateMatchCommand, Unit>
+    public class CreateMatchCommandHandler : IRequestHandler<CreateMatchCommand, bool>
     {
         private readonly IMatchRepository _matchRepository;
 
         public CreateMatchCommandHandler(IMatchRepository matchRepository)
         {
-            matchRepository = _matchRepository;
+            _matchRepository = matchRepository;
         }
 
-        public Task<Unit> Handle(CreateMatchCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(CreateMatchCommand request, CancellationToken cancellationToken)
         {
+            var match = Match.Create(request.HomeTeamId,
+                                     request.AwayTeamId,
+                                     request.UtcDate,
+                                     new Score(request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam));
 
-            //TODO
-            // var status = await _matchRepository;
-            //Match.Create();
+            await _matchRepository.AddAsync(match);
+
+            return await _matchRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         }
     }
 }

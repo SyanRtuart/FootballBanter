@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using Teams.Domain.Aggregates;
 
 namespace Matches.Application.Teams.Queries.GetAllTeams
 {
