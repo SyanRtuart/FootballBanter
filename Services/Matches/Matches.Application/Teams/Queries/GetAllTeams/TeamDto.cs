@@ -4,8 +4,9 @@ using Matches.Domain.Aggregates.Team;
 
 namespace Matches.Application.Teams.Queries.GetAllTeams
 {
-    public class TeamDto : IMapFrom<Team>
+    public class TeamDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

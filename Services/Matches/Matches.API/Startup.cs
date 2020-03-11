@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using AutoMapper;
 using Base.Application.Common.Mappings;
+using Base.Infrastructure;
 using FluentValidation.AspNetCore;
 using Matches.API.Behaviours;
 using Matches.Application;
@@ -40,6 +41,9 @@ namespace Matches.API
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration);
+
+            services.AddTransient<ISqlConnectionFactory>(s =>
+                new SqlConnectionFactory(Configuration["ConnectionString"]));
 
             services.AddControllers().AddFluentValidation();
 
