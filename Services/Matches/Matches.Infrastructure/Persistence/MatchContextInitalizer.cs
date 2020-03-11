@@ -34,18 +34,18 @@ namespace Matches.Infrastructure.Persistence
         {
             var teams = new List<Team>()
             {
-                new Team("Aberdeen"),
-                new Team("Celtic"),
-                new Team("Hamilton"),
-                new Team("Hearts"),
-                new Team("Hibernian"),
-                new Team("Kilmarnock"),
-                new Team("Livingston"),
-                new Team("Motherwell"),
-                new Team("Rangers"),
-                new Team("Ross County"),
-                new Team("St Johnstone"),
-                new Team("St Mirren"),
+                Team.Create("Aberdeen"),
+                Team.Create("Celtic"),
+                Team.Create("Hamilton"),
+                Team.Create("Hearts"),
+                Team.Create("Hibernian"),
+                Team.Create("Kilmarnock"),
+                Team.Create("Livingston"),
+                Team.Create("Motherwell"),
+                Team.Create("Rangers"),
+                Team.Create("Ross County"),
+                Team.Create("St Johnstone"),
+                Team.Create("St Mirren"),
             };
 
             _context.Teams.AddRange(teams);

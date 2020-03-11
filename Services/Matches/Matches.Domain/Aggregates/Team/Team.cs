@@ -4,7 +4,7 @@ namespace Matches.Domain.Aggregates.Team
 {
     public class Team  : Entity, IAggregateRoot
     {
-        public Team(string name)
+        private Team(string name)
         {
             _name = name;
         }

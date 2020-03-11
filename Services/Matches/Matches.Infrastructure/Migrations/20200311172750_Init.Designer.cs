@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Matches.Infrastructure.Migrations
 {
     [DbContext(typeof(MatchContext))]
-    [Migration("20200311150950_Init")]
+    [Migration("20200311172750_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,7 +53,7 @@ namespace Matches.Infrastructure.Migrations
                     b.ToTable("matches","match");
                 });
 
-            modelBuilder.Entity("Matches.Domain.Aggregates.Match.Team", b =>
+            modelBuilder.Entity("Matches.Domain.Aggregates.Team.Team", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,8 +62,9 @@ namespace Matches.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "match")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("_name")
                         .IsRequired()
+                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

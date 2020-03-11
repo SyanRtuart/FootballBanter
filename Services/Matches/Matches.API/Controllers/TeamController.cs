@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Matches.Application.Teams.Commands.AddTeam;
+using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Application.Teams.Queries.GetAllTeams;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +26,7 @@ namespace Matches.API.Controllers
         [HttpPost]
         public async Task Post(string name)
         {
-            await _mediator.Send(new AddTeamCommand(name));
+            await _mediator.Send(new CreateTeamCommand(name));
         }
     }
 }

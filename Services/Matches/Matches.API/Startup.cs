@@ -5,8 +5,9 @@ using Base.Application.Common.Mappings;
 using FluentValidation.AspNetCore;
 using Matches.API.Behaviours;
 using Matches.Application;
-using Matches.Application.Teams.Commands.AddTeam;
+using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Domain.Aggregates.Match;
+using Matches.Domain.Aggregates.Team;
 using Matches.Infrastructure.Persistence;
 using Matches.Infrastructure.Repositories;
 using MediatR;
@@ -82,7 +83,7 @@ namespace Matches.API
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-            services.AddMediatR(typeof(AddTeamCommand).Assembly);
+            services.AddMediatR(typeof(CreateTeamCommand).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
@@ -93,7 +94,7 @@ namespace Matches.API
 
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddTransient<ITeamRepository, TeamRepository>();
+            services.AddTransient<ITeamRepository, TeamRepository>();
             services.AddTransient<IMatchRepository, MatchRepository>();
 
             return services;

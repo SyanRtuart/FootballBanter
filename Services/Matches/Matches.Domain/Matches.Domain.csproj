@@ -7,15 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Aggregates\Match\Rules\**" />
+    <EmbeddedResource Remove="Aggregates\Match\Rules\**" />
+    <None Remove="Aggregates\Match\Rules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.Domain\Base.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Aggregates\Match\Rules\" />
   </ItemGroup>
 
 </Project>
