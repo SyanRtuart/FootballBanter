@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Matches.Domain.Aggregates.Team;
 using Matches.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace Matches.Infrastructure.Repositories
 {

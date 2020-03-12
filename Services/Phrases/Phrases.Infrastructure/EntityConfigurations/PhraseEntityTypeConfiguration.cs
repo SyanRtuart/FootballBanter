@@ -22,13 +22,16 @@ namespace Phrases.Infrastructure.EntityConfigurations
 
             builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("phraseseq", PhraseContext.DEFAULT_SCHEMA);
 
-            builder.Property<string>("Description").IsRequired();
 
-            builder.Property<int>("MatchId").IsRequired();
+            builder.Property<int>("_matchId").HasColumnName("MatchId").IsRequired();
             
-            builder.Property<int>("TeamId").IsRequired();
-            
-            builder.Property<bool>("Positive").IsRequired();
+            builder.Property<int>("_teamId").HasColumnName("TeamId").IsRequired();
+
+            builder.Property<string>("_description").HasColumnName("Description").IsRequired();
+
+            builder.Property<bool>("_positive").HasColumnName("Positive").IsRequired();
+
+            builder.Property<DateTime>("_dateCreated").HasColumnName("DateCreated").IsRequired();
         }
     }
 }

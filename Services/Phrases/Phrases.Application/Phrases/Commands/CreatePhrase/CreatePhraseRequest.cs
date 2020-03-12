@@ -3,20 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MediatR;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {
-    public class CreatePhraseCommand : IRequest
+    public class CreatePhraseRequest
     {
-        public CreatePhraseCommand(int matchId, int teamId, string description, bool positive)
-        {
-            TeamId = teamId;
-            MatchId = matchId;
-            Description = description;
-            Positive = positive;
-        }
-
         public int TeamId { get; set; }
 
         public int MatchId { get; set; }

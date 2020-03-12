@@ -1,11 +1,6 @@
-using System;
-using System.Reflection;
-using AutoMapper;
-using Base.Application.Common.Mappings;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
 using Matches.API.Behaviours;
-using Matches.Application;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Domain.Aggregates.Match;
 using Matches.Domain.Aggregates.Team;
@@ -21,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Reflection;
 
 namespace Matches.API
 {
@@ -45,7 +42,8 @@ namespace Matches.API
             services.AddTransient<ISqlConnectionFactory>(s =>
                 new SqlConnectionFactory(Configuration["ConnectionString"]));
 
-            services.AddControllers().AddFluentValidation();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTeamCommand>());
 
             services.AddSwaggerGen(c =>
             {
@@ -86,10 +84,9 @@ namespace Matches.API
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddMediatR(typeof(CreateTeamCommand).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 
 

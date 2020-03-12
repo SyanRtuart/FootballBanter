@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Phrases.API.Behaviours;
+using Phrases.API.Filters;
 using Phrases.Application;
 using Phrases.Application.Phrases.Commands.CreatePhrase;
 using Phrases.Domain.Aggregates.PhraseAggregate;
@@ -35,12 +36,14 @@ namespace Phrases.API
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddCustomMvc()
                 .AddApplication(Configuration)
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration);
 
-            services.AddControllers().AddFluentValidation();
+            services.AddControllers()
+                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreatePhraseCommand>());
 
             services.AddSwaggerGen(c =>
             {
@@ -78,12 +81,19 @@ namespace Phrases.API
     }
     static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+       
+            return services;
+        }
+
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddMediatR(typeof(CreatePhraseCommand).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 
 

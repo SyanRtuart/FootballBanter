@@ -9,20 +9,29 @@ namespace Phrases.Domain.Aggregates.PhraseAggregate
 {
     public class Phrase : Entity, IAggregateRoot
     {
-        public Phrase(string description, int matchId, int teamId, bool positive)
+        public Phrase(int matchId, int teamId, string description, bool positive)
         {
-            Description = description;
-            MatchId = matchId;
-            TeamId = teamId;
-            Positive = positive;
+            _matchId = matchId;
+            _teamId = teamId;
+            _description = description;
+            _positive = positive;
+            _dateCreated = DateTime.UtcNow;
         }
 
-        public string Description { get; private set; }
+        public static Phrase Create(int matchId, int teamId, string description, bool positive)
+        {
+            return new Phrase(matchId, teamId, description, positive);
+        }
 
-        public int MatchId { get; private set; }
+        private int _matchId;
 
-        public int TeamId { get; private set; }
+        private int _teamId;
 
-        public bool Positive { get; private set; }
+        private string _description;
+
+        private bool _positive;
+
+        private DateTime _dateCreated;
+
     }
 }

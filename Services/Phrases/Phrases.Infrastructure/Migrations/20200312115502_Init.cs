@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Phrases.Infrastructure.Migrations
 {
@@ -20,10 +21,11 @@ namespace Phrases.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     MatchId = table.Column<int>(nullable: false),
-                    TeamId = table.Column<int>(nullable: false),
-                    Positive = table.Column<bool>(nullable: false)
+                    Positive = table.Column<bool>(nullable: false),
+                    TeamId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
