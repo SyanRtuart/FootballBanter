@@ -10,10 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using Phrases.Domain.Exceptions;
-using Phrases.Infrastructure.Persistence;
 
-namespace Phrases.API.Filters
+namespace Matches.API.Filters
 {
     public class ExceptionFilter : IExceptionFilter
     {

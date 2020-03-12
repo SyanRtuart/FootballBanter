@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Reflection;
+using Matches.API.Filters;
 
 namespace Matches.API
 {
@@ -37,17 +38,14 @@ namespace Matches.API
                 .AddApplication(Configuration)
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
-                .AddCustomConfiguration(Configuration);
+                .AddCustomConfiguration(Configuration)
+                .AddFluentValidation(Configuration)
+                .AddDapper(Configuration);
 
-            services.AddTransient<ISqlConnectionFactory>(s =>
-                new SqlConnectionFactory(Configuration["ConnectionString"]));
-
-            services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTeamCommand>());
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Match API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Matches API", Version = "v1" });
             });
 
         }
@@ -82,6 +80,13 @@ namespace Matches.API
 
     static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            return services;
+        }
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(typeof(CreateTeamCommand).Assembly);
@@ -139,6 +144,22 @@ namespace Matches.API
                     };
                 };
             });
+
+            return services;
+        }
+        public static IServiceCollection AddFluentValidation(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTeamCommand>());
+
+            return services;
+        }
+
+        public static IServiceCollection AddDapper(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<ISqlConnectionFactory>(s =>
+                new SqlConnectionFactory(configuration["ConnectionString"]));
 
             return services;
         }

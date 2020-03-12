@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure.Extensions;
 using FluentValidation;
+using Matches.Domain.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -35,9 +36,9 @@ namespace Matches.API.Behaviours
             if (failures.Any())
             {
                 _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
-                throw new Exception("Command Validation Errors for type {typeof(TRequest).Name}");
-                //throw new TeamDomainException(
-                //    $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
+
+                throw new MatchesDomainException(
+                    $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
             }
 
             return await next();

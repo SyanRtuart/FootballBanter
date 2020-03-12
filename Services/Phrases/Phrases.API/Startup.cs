@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using AutoMapper;
+using Base.Infrastructure;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -40,10 +41,9 @@ namespace Phrases.API
                 .AddApplication(Configuration)
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
-                .AddCustomConfiguration(Configuration);
-
-            services.AddControllers()
-                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreatePhraseCommand>());
+                .AddCustomConfiguration(Configuration)
+                .AddFluentValidation(Configuration)
+                .AddDapper(Configuration);
 
             services.AddSwaggerGen(c =>
             {
@@ -146,6 +146,23 @@ namespace Phrases.API
                     };
                 };
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddFluentValidation(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreatePhraseCommand>());
+
+            return services;
+        }
+
+        public static IServiceCollection AddDapper(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<ISqlConnectionFactory>(s =>
+                new SqlConnectionFactory(configuration["ConnectionString"]));
 
             return services;
         }

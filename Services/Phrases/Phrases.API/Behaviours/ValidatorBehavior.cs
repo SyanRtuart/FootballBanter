@@ -41,7 +41,7 @@ namespace Phrases.API.Behaviours
             {
                 _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
 
-                throw new PhraseDomainException(
+                throw new PhrasesDomainException(
                     $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
             }
 
