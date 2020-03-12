@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
+namespace Web.HttpAggregator.Models.Match
 {
-    public class MatchDto
+    public class MatchData
     {
         public int Id { get; set; }
         public int HomeTeamId { get; set; }
