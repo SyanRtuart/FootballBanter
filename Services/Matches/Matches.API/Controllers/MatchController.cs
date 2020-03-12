@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Matches.Application.Matches.Commands.CreateMatch;
+using Matches.Application.Matches.Queries.GetRecentMatchesByTeam;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +25,12 @@ namespace Matches.API.Controllers
                 request.Status, request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam));
 
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<List<MatchDto>> GetRecentMatchesByTeam(int teamId)
+        {
+            return await _mediator.Send(new GetRecentMatchesByTeamQuery(teamId));
         }
     }
 }

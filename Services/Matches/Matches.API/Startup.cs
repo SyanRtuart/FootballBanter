@@ -35,6 +35,7 @@ namespace Matches.API
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddCustomMvc()
                 .AddApplication(Configuration)
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)

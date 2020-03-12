@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
+using Matches.Domain.Aggregates.Match;
 using Matches.Domain.Aggregates.Team;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -22,10 +24,14 @@ namespace Matches.Infrastructure.Persistence
 
         public void SeedEverything()
         {
-            if (!_context.Teams.Any()) SeedTeams();
+            if (!_context.Teams.Any())
+            {
+                SeedTeams();
+                SeedMatches();
+            }
         }
 
-        private void SeedTeams()
+        private async void SeedTeams()
         {
             var teams = new List<Team>
             {
@@ -44,7 +50,23 @@ namespace Matches.Infrastructure.Persistence
             };
 
             _context.Teams.AddRange(teams);
-            _context.SaveEntitiesAsync(CancellationToken.None);
+            await _context.SaveEntitiesAsync(CancellationToken.None);
+        }
+        private async void SeedMatches()
+        {
+            var matches = new List<Match>
+            {
+                Match.Create(2, 1, DateTime.Today.Subtract(TimeSpan.FromDays(2)), new Score("Celtic", 2, 1)),
+                Match.Create(2, 3, DateTime.Today.Subtract(TimeSpan.FromDays(3)), new Score("Celtic", 2, 0)),
+                Match.Create(2, 4, DateTime.Today.Subtract(TimeSpan.FromDays(4)), new Score("Celtic", 3, 2)),
+                Match.Create(2, 5, DateTime.Today.Subtract(TimeSpan.FromDays(5)), new Score("Celtic", 1, 0)),
+                Match.Create(2, 6, DateTime.Today.Subtract(TimeSpan.FromDays(6)), new Score("Celtic", 1, 0)),
+                Match.Create(2, 7, DateTime.Today.Subtract(TimeSpan.FromDays(7)), new Score("Celtic", 1, 0)),
+                Match.Create(2, 8, DateTime.Today.Subtract(TimeSpan.FromDays(8)), new Score("Celtic", 2, 0)),
+            };
+
+            _context.Matches.AddRange(matches);
+            await _context.SaveEntitiesAsync(CancellationToken.None);
         }
     }
 }
