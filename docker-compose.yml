@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  matches.api:
+    image: ${DOCKER_REGISTRY-}matchesapi
+    build:
+      context: .
+      dockerfile: Services/Matches/Matches.API/Dockerfile
+
+  phrases.api:
+    image: ${DOCKER_REGISTRY-}phrasesapi
+    build:
+      context: .
+      dockerfile: Services/Phrases/Phrases.API/Dockerfile
+
+
+  web.httpaggregator:
+    image: ${DOCKER_REGISTRY-}webhttpaggregator
+    build:
+      context: .
+      dockerfile: ApiGateways/Web.Bff/Web.HttpAggregator/Dockerfile
+

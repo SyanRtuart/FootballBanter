@@ -14,9 +14,9 @@ namespace Web.HttpAggregator.Config
 
         public class MatchOperations
         {
-            public static string GetTeams() => "/api/team";
+            public static string GetTeams() => "team";
 
-            public static string GetRecentMatches(int teamId) => QueryHelpers.AddQueryString("/api/match", nameof(teamId), teamId.ToString());
+            public static string GetRecentMatches(int teamId) => QueryHelpers.AddQueryString("match", nameof(teamId), teamId.ToString());
 
         }
 

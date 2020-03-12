@@ -17,6 +17,8 @@ namespace Web.HttpAggregator.Controllers
             _matchApiClient = matchApiClient;
         }
 
+        [HttpGet]
+        [Route("getTeams")]
         public async Task<List<Team>> GetTeamsAsync()
         {
             var response = await _matchApiClient.GetTeamsAsync();
@@ -28,7 +30,9 @@ namespace Web.HttpAggregator.Controllers
             return teams;
         }
 
-        public async Task<List<Match>> GetRecentMatches(int teamId)
+        [HttpGet]
+        [Route("getRecentMatches")]
+        public async Task<List<Match>> GetRecentMatchesAsync(int teamId)
         {
             var response = await _matchApiClient.GetRecentMatchesAsync(teamId);
 
