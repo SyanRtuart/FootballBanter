@@ -19,12 +19,6 @@ namespace Phrases.Infrastructure.Repositories
             return _context.Phrases.Add(phrase).Entity;
         }
 
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _context;
-            }
-        }
+        public IUnitOfWork UnitOfWork => _context;
     }
 }

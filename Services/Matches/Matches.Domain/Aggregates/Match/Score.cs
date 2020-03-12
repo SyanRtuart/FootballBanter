@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Base.Domain.SeedWork;
+﻿using Base.Domain.SeedWork;
 
 namespace Matches.Domain.Aggregates.Match
 {
@@ -12,10 +11,12 @@ namespace Matches.Domain.Aggregates.Match
             AwayTeam = awayTeam;
         }
 
-        public Score() { }
+        public Score()
+        {
+        }
 
-        public string Winner { get; private set; }
-        public int HomeTeam { get; private set; }
-        public int AwayTeam { get; private set; }
+        public string Winner { get; }
+        public int HomeTeam { get; }
+        public int AwayTeam { get; }
     }
 }

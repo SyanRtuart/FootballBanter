@@ -12,14 +12,14 @@ namespace Matches.API
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-         
+
             using (var scope = host.Services.CreateScope())
             {
                 try
                 {
                     var context = scope.ServiceProvider.GetService<MatchContext>();
                     context.Database.Migrate();
-                    
+
                     MatchContextInitalizer.Initialize(context);
                 }
                 catch (Exception ex)
@@ -31,8 +31,10 @@ namespace Matches.API
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
     }
 }

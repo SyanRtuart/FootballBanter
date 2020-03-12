@@ -1,13 +1,11 @@
 using System;
 using System.Reflection;
-using AutoMapper;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +14,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Phrases.API.Behaviours;
 using Phrases.API.Filters;
-using Phrases.Application;
 using Phrases.Application.Phrases.Commands.CreatePhrase;
 using Phrases.Domain.Aggregates.PhraseAggregate;
 using Phrases.Infrastructure.Persistence;
@@ -47,18 +44,14 @@ namespace Phrases.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Phrases API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Phrases API", Version = "v1"});
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
@@ -66,26 +59,21 @@ namespace Phrases.API
 
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
-    static class ServiceCollectionExtensions
+
+    internal static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
             services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-       
+
             return services;
         }
 
@@ -108,25 +96,26 @@ namespace Phrases.API
             return services;
         }
 
-        public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomDbContext(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<PhraseContext>(options =>
-                {
-                    options.UseSqlServer(configuration["ConnectionString"],
-                        sqlServerOptionsAction: sqlOptions =>
-                        {
-                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                        });
-                },
-                    ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                    {
+                        options.UseSqlServer(configuration["ConnectionString"],
+                            sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                                sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                            });
+                    } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                 );
             return services;
         }
 
 
-        public static IServiceCollection AddCustomConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomConfiguration(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddOptions();
             services.Configure<ApiBehaviorOptions>(options =>
@@ -142,7 +131,7 @@ namespace Phrases.API
 
                     return new BadRequestObjectResult(problemDetails)
                     {
-                        ContentTypes = { "application/problem+json", "application/problem+xml" }
+                        ContentTypes = {"application/problem+json", "application/problem+xml"}
                     };
                 };
             });
@@ -150,9 +139,9 @@ namespace Phrases.API
             return services;
         }
 
-        public static IServiceCollection AddFluentValidation(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddFluentValidation(this IServiceCollection services,
+            IConfiguration configuration)
         {
-
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreatePhraseCommand>());
 

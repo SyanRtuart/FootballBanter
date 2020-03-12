@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Phrases.Domain.Aggregates.PhraseAggregate;
@@ -24,7 +20,7 @@ namespace Phrases.Infrastructure.EntityConfigurations
 
 
             builder.Property<int>("_matchId").HasColumnName("MatchId").IsRequired();
-            
+
             builder.Property<int>("_teamId").HasColumnName("TeamId").IsRequired();
 
             builder.Property<string>("_description").HasColumnName("Description").IsRequired();

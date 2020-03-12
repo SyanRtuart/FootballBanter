@@ -10,6 +10,7 @@ namespace Matches.API.Controllers
     public class MatchController : ControllerBase
     {
         private readonly IMediator _mediator;
+
         public MatchController(IMediator mediator)
         {
             _mediator = mediator;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,15 +16,16 @@ namespace Phrases.API.Behaviours
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
         public ValidatorBehavior(
-            IEnumerable<IValidator<TRequest>> validators, 
+            IEnumerable<IValidator<TRequest>> validators,
             ILogger<ValidatorBehavior<TRequest, TResponse>> logger
-            )
+        )
         {
             _validators = validators;
             _logger = logger;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
+            RequestHandlerDelegate<TResponse> next)
         {
             var typeName = request.GetGenericTypeName();
 
@@ -39,10 +39,13 @@ namespace Phrases.API.Behaviours
 
             if (failures.Any())
             {
-                _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
+                _logger.LogWarning(
+                    "Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName,
+                    request, failures);
 
                 throw new PhrasesDomainException(
-                    $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
+                    $"Command Validation Errors for type {typeof(TRequest).Name}",
+                    new ValidationException("Validation exception", failures));
             }
 
             return await next();

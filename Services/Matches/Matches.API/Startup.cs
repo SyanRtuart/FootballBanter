@@ -1,6 +1,9 @@
+using System;
+using System.Reflection;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
 using Matches.API.Behaviours;
+using Matches.API.Filters;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Domain.Aggregates.Match;
 using Matches.Domain.Aggregates.Team;
@@ -16,9 +19,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Reflection;
-using Matches.API.Filters;
 
 namespace Matches.API
 {
@@ -45,18 +45,14 @@ namespace Matches.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Matches API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Matches API", Version = "v1"});
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
@@ -64,21 +60,15 @@ namespace Matches.API
 
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 
-    static class ServiceCollectionExtensions
+    internal static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
@@ -87,6 +77,7 @@ namespace Matches.API
 
             return services;
         }
+
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(typeof(CreateTeamCommand).Assembly);
@@ -106,25 +97,26 @@ namespace Matches.API
             return services;
         }
 
-        public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomDbContext(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<MatchContext>(options =>
                     {
                         options.UseSqlServer(configuration["ConnectionString"],
-                            sqlServerOptionsAction: sqlOptions =>
+                            sqlOptions =>
                             {
                                 sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                                sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                             });
-                    },
-                    ServiceLifetime.Scoped  //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                    } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                 );
             return services;
         }
 
 
-        public static IServiceCollection AddCustomConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomConfiguration(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddOptions();
             services.Configure<ApiBehaviorOptions>(options =>
@@ -140,16 +132,17 @@ namespace Matches.API
 
                     return new BadRequestObjectResult(problemDetails)
                     {
-                        ContentTypes = { "application/problem+json", "application/problem+xml" }
+                        ContentTypes = {"application/problem+json", "application/problem+xml"}
                     };
                 };
             });
 
             return services;
         }
-        public static IServiceCollection AddFluentValidation(this IServiceCollection services, IConfiguration configuration)
-        {
 
+        public static IServiceCollection AddFluentValidation(this IServiceCollection services,
+            IConfiguration configuration)
+        {
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateTeamCommand>());
 
@@ -165,4 +158,3 @@ namespace Matches.API
         }
     }
 }
-

@@ -5,7 +5,8 @@ namespace Matches.Application.Matches.Commands.CreateMatch
 {
     public class CreateMatchCommand : IRequest<bool>
     {
-        public CreateMatchCommand(int homeTeamId, int awayTeamId, DateTime utcDate, string status, string scoreWinner, int scoreHomeTeam, int scoreAwayTeam)
+        public CreateMatchCommand(int homeTeamId, int awayTeamId, DateTime utcDate, string status, string scoreWinner,
+            int scoreHomeTeam, int scoreAwayTeam)
         {
             HomeTeamId = homeTeamId;
             AwayTeamId = awayTeamId;
@@ -23,6 +24,5 @@ namespace Matches.Application.Matches.Commands.CreateMatch
         public string ScoreWinner { get; set; }
         public int ScoreHomeTeam { get; set; }
         public int ScoreAwayTeam { get; set; }
-        
     }
 }

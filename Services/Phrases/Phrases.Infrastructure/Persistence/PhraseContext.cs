@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
@@ -19,29 +17,25 @@ namespace Phrases.Infrastructure.Persistence
     {
         public const string DEFAULT_SCHEMA = "phrase";
 
-        public DbSet<Phrase> Phrases { get; set; }
-
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
-        private PhraseContext(DbContextOptions<PhraseContext> options) : base(options) { }
-
-        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
-
-        public bool HasActiveTransaction => _currentTransaction != null;
+        private PhraseContext(DbContextOptions<PhraseContext> options) : base(options)
+        {
+        }
 
         public PhraseContext(DbContextOptions<PhraseContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
 
-            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + GetHashCode());
+            Debug.WriteLine("OrderingContext::ctor ->" + GetHashCode());
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PhraseContext).Assembly);
-        }
+        public DbSet<Phrase> Phrases { get; set; }
+
+        public bool HasActiveTransaction => _currentTransaction != null;
+
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             await _mediator.DispatchDomainEventsAsync(this);
@@ -49,6 +43,16 @@ namespace Phrases.Infrastructure.Persistence
             var result = await base.SaveChangesAsync(cancellationToken);
 
             return true;
+        }
+
+        public IDbContextTransaction GetCurrentTransaction()
+        {
+            return _currentTransaction;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PhraseContext).Assembly);
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
@@ -63,7 +67,8 @@ namespace Phrases.Infrastructure.Persistence
         public async Task CommitTransactionAsync(IDbContextTransaction transaction)
         {
             if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-            if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
+            if (transaction != _currentTransaction)
+                throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
 
             try
             {
@@ -112,9 +117,10 @@ namespace Phrases.Infrastructure.Persistence
             return new PhraseContext(optionsBuilder.Options, new NoMediator());
         }
 
-        class NoMediator : IMediator
+        private class NoMediator : IMediator
         {
-            public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification
+            public Task Publish<TNotification>(TNotification notification,
+                CancellationToken cancellationToken = default) where TNotification : INotification
             {
                 return Task.CompletedTask;
             }
@@ -124,19 +130,20 @@ namespace Phrases.Infrastructure.Persistence
                 return Task.CompletedTask;
             }
 
-            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
+            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
+                CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(default(TResponse));
-            }
-
-            public Task Send(IRequest request, CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
             }
 
             public Task<object> Send(object request, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
+            }
+
+            public Task Send(IRequest request, CancellationToken cancellationToken = default)
+            {
+                return Task.CompletedTask;
             }
         }
     }

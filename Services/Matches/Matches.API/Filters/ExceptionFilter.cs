@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +28,7 @@ namespace Matches.API.Filters
 
             if (context.Exception.InnerException is ValidationException validationException)
             {
-                var problemDetails = new ValidationProblemDetails()
+                var problemDetails = new ValidationProblemDetails
                 {
                     Instance = context.HttpContext.Request.Path,
                     Status = StatusCodes.Status400BadRequest,
@@ -43,30 +39,25 @@ namespace Matches.API.Filters
 
                 errorBuilder.AppendLine("Invalid command, reason: ");
 
-                foreach (var error in validationException.Errors)
-                {
-                    errorBuilder.AppendLine(error.ErrorMessage);
-                }
+                foreach (var error in validationException.Errors) errorBuilder.AppendLine(error.ErrorMessage);
 
-                problemDetails.Errors.Add("DomainValidations", new[] { errorBuilder.ToString() });
+                problemDetails.Errors.Add("DomainValidations", new[] {errorBuilder.ToString()});
 
                 context.Result = new BadRequestObjectResult(problemDetails);
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
             }
             else
             {
                 var json = new JsonErrorResponse
                 {
-                    Messages = new[] { "An error occur.Try it again." }
+                    Messages = new[] {"An error occur.Try it again."}
                 };
 
-                if (env.IsDevelopment())
-                {
-                    json.DeveloperMessage = context.Exception;
-                }
+                if (env.IsDevelopment()) json.DeveloperMessage = context.Exception;
 
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.HttpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
             }
+
             context.ExceptionHandled = true;
         }
 

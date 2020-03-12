@@ -2,8 +2,10 @@
 
 namespace Matches.Domain.Aggregates.Team
 {
-    public class Team  : Entity, IAggregateRoot
+    public class Team : Entity, IAggregateRoot
     {
+        private string _name;
+
         private Team(string name)
         {
             _name = name;
@@ -18,7 +20,5 @@ namespace Matches.Domain.Aggregates.Team
         {
             return new Team(name);
         }
-
-        private string _name;
     }
 }

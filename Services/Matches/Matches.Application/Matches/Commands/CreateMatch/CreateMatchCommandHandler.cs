@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Matches.Domain.Aggregates.Match;
 using MediatR;
@@ -21,9 +17,9 @@ namespace Matches.Application.Matches.Commands.CreateMatch
         public async Task<bool> Handle(CreateMatchCommand request, CancellationToken cancellationToken)
         {
             var match = Match.Create(request.HomeTeamId,
-                                     request.AwayTeamId,
-                                     request.UtcDate,
-                                     new Score(request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam));
+                request.AwayTeamId,
+                request.UtcDate,
+                new Score(request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam));
 
             await _matchRepository.AddAsync(match);
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using Matches.Domain.Aggregates.Match;
 using Matches.Domain.Aggregates.Team;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -8,7 +7,7 @@ namespace Matches.Infrastructure.Persistence
 {
     public class MatchContextInitalizer
     {
-        private MatchContext _context;
+        private readonly MatchContext _context;
 
         public MatchContextInitalizer(MatchContext context)
         {
@@ -23,16 +22,12 @@ namespace Matches.Infrastructure.Persistence
 
         public void SeedEverything()
         {
-            if (!_context.Teams.Any())
-            {
-                SeedTeams();
-
-            }
+            if (!_context.Teams.Any()) SeedTeams();
         }
 
         private void SeedTeams()
         {
-            var teams = new List<Team>()
+            var teams = new List<Team>
             {
                 Team.Create("Aberdeen"),
                 Team.Create("Celtic"),
@@ -45,7 +40,7 @@ namespace Matches.Infrastructure.Persistence
                 Team.Create("Rangers"),
                 Team.Create("Ross County"),
                 Team.Create("St Johnstone"),
-                Team.Create("St Mirren"),
+                Team.Create("St Mirren")
             };
 
             _context.Teams.AddRange(teams);

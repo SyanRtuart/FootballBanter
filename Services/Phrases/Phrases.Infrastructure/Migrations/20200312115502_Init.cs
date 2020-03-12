@@ -8,40 +8,37 @@ namespace Phrases.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "phrase");
+                "phrase");
 
             migrationBuilder.CreateSequence(
-                name: "phraseseq",
-                schema: "phrase",
+                "phraseseq",
+                "phrase",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
-                name: "phrases",
+                "phrases",
                 schema: "phrase",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    MatchId = table.Column<int>(nullable: false),
-                    Positive = table.Column<bool>(nullable: false),
-                    TeamId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(),
+                    DateCreated = table.Column<DateTime>(),
+                    Description = table.Column<string>(),
+                    MatchId = table.Column<int>(),
+                    Positive = table.Column<bool>(),
+                    TeamId = table.Column<int>()
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_phrases", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_phrases", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "phrases",
-                schema: "phrase");
+                "phrases",
+                "phrase");
 
             migrationBuilder.DropSequence(
-                name: "phraseseq",
-                schema: "phrase");
+                "phraseseq",
+                "phrase");
         }
     }
 }

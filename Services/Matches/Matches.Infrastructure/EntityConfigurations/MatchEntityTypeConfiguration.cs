@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Matches.Domain.Aggregates.Match;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -26,14 +22,13 @@ namespace Matches.Infrastructure.EntityConfigurations
             builder.Property<int>("_awayTeamId").HasColumnName("AwayTeamId");
             builder.Property<int>("_statusId").HasColumnName("StatusId");
             builder.Property<DateTime>("_utcDate").HasColumnName("UtcDate");
-            
+
             builder.OwnsOne<Score>("_score", b =>
             {
                 b.Property(p => p.Winner).HasColumnName("ScoreWinner");
                 b.Property(p => p.HomeTeam).HasColumnName("ScoreHomeTeam");
                 b.Property(p => p.AwayTeam).HasColumnName("ScoreAwayTeam");
             });
-
         }
     }
 }

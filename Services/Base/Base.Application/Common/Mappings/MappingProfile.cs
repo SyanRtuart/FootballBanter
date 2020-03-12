@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
-
 
 namespace Base.Application.Common.Mappings
 {
@@ -55,7 +52,7 @@ namespace Base.Application.Common.Mappings
                         typeof(IHaveCustomMapping).IsAssignableFrom(type) &&
                         !type.IsAbstract &&
                         !type.IsInterface
-                    select (IHaveCustomMapping)Activator.CreateInstance(type)).ToList();
+                    select (IHaveCustomMapping) Activator.CreateInstance(type)).ToList();
 
                 return mapsFrom;
             }

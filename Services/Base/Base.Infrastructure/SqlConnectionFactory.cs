@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 
 namespace Base.Infrastructure
@@ -15,26 +11,23 @@ namespace Base.Infrastructure
 
         public SqlConnectionFactory(string connectionString)
         {
-            this._connectionString = connectionString;
-        }
-
-        public IDbConnection GetOpenConnection()
-        {
-            if (this._connection == null || this._connection.State != ConnectionState.Open)
-            {
-                this._connection = new SqlConnection(_connectionString);
-                this._connection.Open();
-            }
-
-            return this._connection;
+            _connectionString = connectionString;
         }
 
         public void Dispose()
         {
-            if (this._connection != null && this._connection.State == ConnectionState.Open)
+            if (_connection != null && _connection.State == ConnectionState.Open) _connection.Dispose();
+        }
+
+        public IDbConnection GetOpenConnection()
+        {
+            if (_connection == null || _connection.State != ConnectionState.Open)
             {
-                this._connection.Dispose();
+                _connection = new SqlConnection(_connectionString);
+                _connection.Open();
             }
+
+            return _connection;
         }
     }
 }

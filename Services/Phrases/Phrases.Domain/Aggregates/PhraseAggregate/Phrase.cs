@@ -1,14 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 
 namespace Phrases.Domain.Aggregates.PhraseAggregate
 {
     public class Phrase : Entity, IAggregateRoot
     {
+        private DateTime _dateCreated;
+
+        private string _description;
+
+        private int _matchId;
+
+        private bool _positive;
+
+        private int _teamId;
+
         public Phrase(int matchId, int teamId, string description, bool positive)
         {
             _matchId = matchId;
@@ -22,16 +28,5 @@ namespace Phrases.Domain.Aggregates.PhraseAggregate
         {
             return new Phrase(matchId, teamId, description, positive);
         }
-
-        private int _matchId;
-
-        private int _teamId;
-
-        private string _description;
-
-        private bool _positive;
-
-        private DateTime _dateCreated;
-
     }
 }

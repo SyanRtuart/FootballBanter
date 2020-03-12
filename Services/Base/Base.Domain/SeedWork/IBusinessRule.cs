@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Base.Domain.SeedWork
+﻿namespace Base.Domain.SeedWork
 {
     public interface IBusinessRule
     {
-        bool IsBroken();
-
         string Message { get; }
+        bool IsBroken();
     }
 }

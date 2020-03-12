@@ -9,18 +9,17 @@ namespace Matches.Infrastructure.Repositories
     public class TeamRepository : ITeamRepository
     {
         private readonly MatchContext _context;
-        
-        public IUnitOfWork UnitOfWork => _context;
-        
+
         public TeamRepository(MatchContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public IUnitOfWork UnitOfWork => _context;
+
         public async Task AddAsync(Team team)
         {
             await _context.Teams.AddAsync(team);
         }
-
     }
 }
