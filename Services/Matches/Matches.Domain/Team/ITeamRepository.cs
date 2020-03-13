@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 
-namespace Matches.Domain.Aggregates.Team
+namespace Matches.Domain.Team
 {
     public interface ITeamRepository : IRepository<Team>
     {

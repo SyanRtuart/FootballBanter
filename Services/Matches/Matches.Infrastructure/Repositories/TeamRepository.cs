@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
-using Matches.Domain.Aggregates.Team;
+using Matches.Domain.Team;
 using Matches.Infrastructure.Persistence;
 
 namespace Matches.Infrastructure.Repositories

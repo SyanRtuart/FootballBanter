@@ -15,7 +15,7 @@ using Microsoft.OpenApi.Models;
 using Phrases.API.Behaviours;
 using Phrases.API.Filters;
 using Phrases.Application.Phrases.Commands.CreatePhrase;
-using Phrases.Domain.Aggregates.PhraseAggregate;
+using Phrases.Domain.Phrase;
 using Phrases.Infrastructure.Persistence;
 using Phrases.Infrastructure.Repositories;
 

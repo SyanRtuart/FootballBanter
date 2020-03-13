@@ -1,6 +1,6 @@
 ﻿using System;
 using Base.Domain.SeedWork;
-using Phrases.Domain.Aggregates.PhraseAggregate;
+using Phrases.Domain.Phrase;
 using Phrases.Infrastructure.Persistence;
 
 namespace Phrases.Infrastructure.Repositories

@@ -1,7 +1,7 @@
 ﻿using System;
 using Base.Domain.SeedWork;
 
-namespace Matches.Domain.Aggregates.Match
+namespace Matches.Domain.Match
 {
     public class Match : Entity, IAggregateRoot
     {

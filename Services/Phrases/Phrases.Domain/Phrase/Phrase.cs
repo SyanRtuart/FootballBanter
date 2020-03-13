@@ -1,7 +1,7 @@
 ﻿using System;
 using Base.Domain.SeedWork;
 
-namespace Phrases.Domain.Aggregates.PhraseAggregate
+namespace Phrases.Domain.Phrase
 {
     public class Phrase : Entity, IAggregateRoot
     {

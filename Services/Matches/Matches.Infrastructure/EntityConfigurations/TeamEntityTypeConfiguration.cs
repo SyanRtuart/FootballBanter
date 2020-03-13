@@ -1,4 +1,4 @@
-﻿using Matches.Domain.Aggregates.Team;
+﻿using Matches.Domain.Team;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

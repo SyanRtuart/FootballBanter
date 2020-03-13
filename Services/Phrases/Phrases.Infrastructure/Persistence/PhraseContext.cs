@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
-using Phrases.Domain.Aggregates.PhraseAggregate;
+using Phrases.Domain.Phrase;
 
 namespace Phrases.Infrastructure.Persistence
 {

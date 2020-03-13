@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Matches.Domain.Aggregates.Match;
+using Matches.Domain.Match;
 using MediatR;
 
 namespace Matches.Application.Matches.Commands.CreateMatch

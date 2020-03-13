@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Matches.Domain.Aggregates.Match;
-using Matches.Domain.Aggregates.Team;
+using Matches.Domain.Match;
+using Matches.Domain.Team;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Matches.Infrastructure.Persistence

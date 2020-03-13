@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Phrases.Domain.Aggregates.PhraseAggregate;
+using Phrases.Domain.Phrase;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {

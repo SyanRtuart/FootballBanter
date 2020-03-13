@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Phrases.Domain.Aggregates.PhraseAggregate;
+using Phrases.Domain.Phrase;
 using Phrases.Infrastructure.Persistence;
 
 namespace Phrases.Infrastructure.EntityConfigurations

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Matches.Domain.Aggregates.Team;
+using Matches.Domain.Team;
 using MediatR;
 
 namespace Matches.Application.Teams.Commands.CreateTeam

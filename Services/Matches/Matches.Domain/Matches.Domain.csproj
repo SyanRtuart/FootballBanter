@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Aggregates\Match\Rules\**" />
-    <EmbeddedResource Remove="Aggregates\Match\Rules\**" />
-    <None Remove="Aggregates\Match\Rules\**" />
+    <Compile Remove="Match\Rules\**" />
+    <EmbeddedResource Remove="Match\Rules\**" />
+    <None Remove="Match\Rules\**" />
   </ItemGroup>
 
   <ItemGroup>

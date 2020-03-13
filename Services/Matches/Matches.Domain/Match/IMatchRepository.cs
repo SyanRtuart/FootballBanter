@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 
-namespace Matches.Domain.Aggregates.Match
+namespace Matches.Domain.Match
 {
     public interface IMatchRepository : IRepository<Match>
     {
