@@ -9,14 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Phrase\**" />
+    <Content Remove="Models\Phrase\**" />
+    <EmbeddedResource Remove="Models\Phrase\**" />
+    <None Remove="Models\Phrase\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Models\Phrase\Phrase.cs" />
+    <Compile Include="Models\Phrase\PhraseData.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Phrase\" />
   </ItemGroup>
 
 

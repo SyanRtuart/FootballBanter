@@ -22,7 +22,16 @@ namespace Web.HttpAggregator.Config
 
         public class PhraseOperations
         {
+            public static string GetPhrases(int teamId, int matchId)
+            {
+                var queryArguments = new Dictionary<string, string>
+                {
+                    {nameof(teamId), teamId.ToString()},
+                    {nameof(matchId), matchId.ToString()},
+                };
 
+                return QueryHelpers.AddQueryString("phrase", queryArguments);
+            }
         }
     }
 }

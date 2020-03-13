@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Web.HttpAggregator.Config;
 using Web.HttpAggregator.Services.Match;
+using Web.HttpAggregator.Services.Phrase;
 
 namespace Web.HttpAggregator
 {
@@ -73,6 +74,8 @@ namespace Web.HttpAggregator
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddHttpClient<IMatchApiClient, MatchApiClient>();
+            services.AddHttpClient<IPhraseApiClient, PhraseApiClient>();
+
 
             return services;
         }

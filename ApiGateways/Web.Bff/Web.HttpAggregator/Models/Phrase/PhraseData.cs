@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
+namespace Web.HttpAggregator.Models.Phrase
 {
-    public class PhraseDto
+    public class PhraseData
     {
         public int Id { get; set; }
 

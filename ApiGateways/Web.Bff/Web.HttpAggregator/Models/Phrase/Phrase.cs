@@ -4,10 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
+namespace Web.HttpAggregator.Models.Phrase
 {
-    public class PhraseDto
+    public class Phrase
     {
+        public Phrase(int id, string description, bool positive)
+        {
+            Id = id;
+            Description = description;
+            Positive = positive;
+        }
+
         public int Id { get; set; }
 
         public string Description { get; set; }
