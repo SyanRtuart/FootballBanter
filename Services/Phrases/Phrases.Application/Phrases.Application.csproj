@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="dapper" Version="2.0.30" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
@@ -14,6 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.Application\Base.Application.csproj" />
+    <ProjectReference Include="..\..\Base\Base.Domain\Base.Domain.csproj" />
+    <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
     <ProjectReference Include="..\Phrases.Domain\Phrases.Domain.csproj" />
   </ItemGroup>
 

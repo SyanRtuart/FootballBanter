@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Phrases.Application.Phrases.Commands.CreatePhrase;
+using Phrases.Application.Phrases.Queries.GetPhrasesForMatch;
 
 namespace Phrases.API.Controllers
 {
@@ -21,6 +23,12 @@ namespace Phrases.API.Controllers
         {
             return Ok(await _mediator.Send(new CreatePhraseCommand(request.MatchId, request.TeamId, request.Description,
                 request.Positive)));
+        }
+
+        [HttpGet]
+        public async Task<List<PhraseDto>> GetPhrasesForMatch(int matchId)
+        {
+            return await _mediator.Send(new GetPhrasesForMatchQuery(matchId));
         }
     }
 }

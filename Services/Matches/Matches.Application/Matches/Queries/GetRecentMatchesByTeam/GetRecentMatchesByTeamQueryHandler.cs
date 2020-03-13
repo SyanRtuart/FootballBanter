@@ -24,7 +24,7 @@ namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            const string sql = "SELECT *" +
+            const string sql = "SELECT * " +
                                "FROM match.matches AS m " +
                                "WHERE m.HomeTeamId = @TeamId";
 

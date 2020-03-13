@@ -20,10 +20,9 @@ namespace Matches.Application.Teams.Queries.GetAllTeams
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            const string sql = "SELECT " +
-                               "* " +
-                               "FROM Match.Teams";
-
+            const string sql = "SELECT * " +
+                               "FROM Match.Teams ";
+            
             var teams = await connection.QueryAsync<TeamDto>(sql);
 
             return teams.AsList();
