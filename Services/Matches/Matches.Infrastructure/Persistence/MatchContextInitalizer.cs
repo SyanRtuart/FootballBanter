@@ -22,12 +22,14 @@ namespace Matches.Infrastructure.Persistence
             initilizer.SeedEverything();
         }
 
-        public void SeedEverything()
+        public async void SeedEverything()
         {
             if (!_context.Teams.Any())
             {
                 SeedTeams();
                 SeedMatches();
+
+                await _context.SaveEntitiesAsync(CancellationToken.None);
             }
         }
 
@@ -50,7 +52,7 @@ namespace Matches.Infrastructure.Persistence
             };
 
             _context.Teams.AddRange(teams);
-            await _context.SaveEntitiesAsync(CancellationToken.None);
+      
         }
         private async void SeedMatches()
         {
@@ -66,7 +68,6 @@ namespace Matches.Infrastructure.Persistence
             };
 
             _context.Matches.AddRange(matches);
-            await _context.SaveEntitiesAsync(CancellationToken.None);
         }
     }
 }

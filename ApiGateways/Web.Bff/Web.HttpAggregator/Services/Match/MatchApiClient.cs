@@ -8,7 +8,7 @@ using Web.HttpAggregator.Models.Match;
 
 namespace Web.HttpAggregator.Services.Match
 {
-    public class MatchApiClient : IMatchApiClient
+    public class MatchApiClient : IMatchApiClient 
     {
         private readonly HttpClient _httpClient;
         private readonly UrlsConfig _urls;

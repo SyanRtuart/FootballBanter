@@ -39,7 +39,7 @@ namespace Web.HttpAggregator.Controllers
         [Route("createPhrase")]
         public async Task<IActionResult> CreatePhrase(int matchId, string description, bool positive)
         {
-
+            return null;
         }
 
     }

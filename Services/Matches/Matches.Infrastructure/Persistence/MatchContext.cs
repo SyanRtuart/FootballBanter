@@ -114,7 +114,7 @@ namespace Matches.Infrastructure.Persistence
         public MatchContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<MatchContext>()
-                .UseSqlServer("server=(localdb)\\MSSQLLocalDB;database=FootballBanter;trusted_connection=true;");
+                .UseSqlServer("Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             return new MatchContext(optionsBuilder.Options, new NoMediator());
         }
 
