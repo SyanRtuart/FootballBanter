@@ -25,7 +25,10 @@ namespace Web.HttpAggregator.Controllers
 
             var teams = new List<Team>();
 
-            foreach (var teamData in response) teams.Add(new Team(teamData.Id, teamData.Name));
+            foreach (var teamData in response)
+            {
+                teams.Add(new Team(teamData.Id, teamData.Name));
+            }
 
             return teams;
         }

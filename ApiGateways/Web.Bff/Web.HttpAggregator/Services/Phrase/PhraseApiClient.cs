@@ -27,9 +27,9 @@ namespace Web.HttpAggregator.Services.Phrase
             throw new NotImplementedException();
         }
 
-        public async Task<List<PhraseData>> GetPhrasesAsync(int teamId, int matchId)
+        public async Task<List<PhraseData>> GetPhrasesAsync(int matchId)
         {
-            var url = _urls.Phrase + UrlsConfig.PhraseOperations.GetPhrases(teamId, matchId);
+            var url = _urls.Phrase + UrlsConfig.PhraseOperations.GetPhrases(matchId);
 
             var response = await _httpClient.GetAsync(url);
 

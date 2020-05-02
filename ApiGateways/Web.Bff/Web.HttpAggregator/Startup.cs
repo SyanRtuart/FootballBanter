@@ -40,6 +40,11 @@ namespace Web.HttpAggregator
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Web Http Aggregator API", Version = "v1" });
             });
 
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+
             services.AddControllers();
         }
 
@@ -54,11 +59,12 @@ namespace Web.HttpAggregator
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseAuthorization();
+
+            app.UseCors(options => options.AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {

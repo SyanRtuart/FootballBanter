@@ -21,9 +21,9 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpGet]
         [Route("getPhrases")]
-        public async Task<List<Phrase>> GetPhrases(int teamId, int matchId)
+        public async Task<List<Phrase>> GetPhrases(int matchId)
         {
-            var response = await _phraseApiClient.GetPhrasesAsync(teamId, matchId);
+            var response = await _phraseApiClient.GetPhrasesAsync(matchId);
 
             var phrases = new List<Phrase>();
 
