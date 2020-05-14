@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Web.HttpAggregator.Models.Match;
 using Web.HttpAggregator.Services.Match;
@@ -8,7 +9,7 @@ namespace Web.HttpAggregator.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MatchController
+    public class MatchController : ControllerBase
     {
         private readonly IMatchApiClient _matchApiClient;
 
@@ -40,10 +41,10 @@ namespace Web.HttpAggregator.Controllers
             var response = await _matchApiClient.GetRecentMatchesAsync(teamId);
 
             var matches = new List<Match>();
-
+            
             foreach (var matchData in response)
                 matches.Add(new Match(matchData.Id, matchData.HomeTeamId, matchData.AwayTeamId, matchData.HomeTeam,
-                    matchData.AwayTeam, matchData.Winner, matchData.HomeTeamScore, matchData.AwayTeamScore));
+                    matchData.AwayTeam, matchData.ScoreWinner, matchData.ScoreHomeTeam, matchData.ScoreAwayTeam));
 
             return matches;
         }

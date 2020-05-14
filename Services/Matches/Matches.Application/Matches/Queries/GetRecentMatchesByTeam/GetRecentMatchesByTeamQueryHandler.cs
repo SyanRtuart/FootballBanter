@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure;
@@ -20,12 +17,26 @@ namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public async Task<List<MatchDto>> Handle(GetRecentMatchesByTeamQuery request, CancellationToken cancellationToken)
+        public async Task<List<MatchDto>> Handle(GetRecentMatchesByTeamQuery request,
+            CancellationToken cancellationToken)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            const string sql = "SELECT * " +
-                               "FROM match.matches AS m " +
+            const string sql = @"SELECT m.id, 
+                               team1.NAME AS HomeTeam, 
+                               team.NAME  AS AwayTeam, 
+                                m.statusid, 
+                                m.utcdate, 
+                                m.scorewinner, 
+                                m.scorehometeam, 
+                                m.scoreawayteam,
+                                m.AwayTeamId,
+                                m.HomeTeamId
+                        FROM   match.matches AS m 
+                               INNER JOIN match.teams AS team 
+                                       ON m.awayteamid = team.id 
+                               INNER JOIN match.teams AS team1 
+                                       ON m.hometeamid = team1.id " +
                                "WHERE m.HomeTeamId = @TeamId";
 
             var response = await connection.QueryAsync<MatchDto>(sql, new

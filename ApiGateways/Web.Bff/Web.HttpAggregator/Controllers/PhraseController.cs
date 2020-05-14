@@ -11,7 +11,7 @@ namespace Web.HttpAggregator.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PhraseController
+    public class PhraseController : ControllerBase
     {
         private readonly IPhraseApiClient _phraseApiClient;
         public PhraseController(IPhraseApiClient phraseApiClient)
