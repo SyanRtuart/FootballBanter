@@ -1,5 +1,9 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Phrases.Infrastructure.Persistence;
 
 namespace Phrases.API
 {
@@ -7,7 +11,25 @@ namespace Phrases.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                try
+                {
+                    var context = scope.ServiceProvider.GetService<PhraseContext>();
+                    context.Database.Migrate();
+
+                    PhraseContextInitalizer.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+
+
+                host.Run();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)

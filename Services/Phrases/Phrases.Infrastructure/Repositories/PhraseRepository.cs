@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Base.Domain.SeedWork;
+using Microsoft.EntityFrameworkCore;
 using Phrases.Domain.Phrase;
 using Phrases.Infrastructure.Persistence;
 
@@ -18,6 +20,12 @@ namespace Phrases.Infrastructure.Repositories
         {
             return _context.Phrases.Add(phrase).Entity;
         }
+
+        public async Task<Phrase> GetAsync(int phraseId)
+        {
+            return await _context.Phrases.FirstOrDefaultAsync(o => o.Id == phraseId);
+        }
+
 
         public IUnitOfWork UnitOfWork => _context;
     }

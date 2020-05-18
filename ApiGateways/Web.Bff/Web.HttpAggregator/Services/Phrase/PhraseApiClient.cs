@@ -22,9 +22,15 @@ namespace Web.HttpAggregator.Services.Phrase
             _urls = config.Value;
         }
 
-        public Task CreatePhrase(int matchId, string description, bool positive)
+        public async Task CreatePhrase(CreatePhraseRequest request)
         {
-            throw new NotImplementedException();
+            var url = _urls.Phrase + UrlsConfig.PhraseOperations.CreatePhrase;
+
+            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
         }
 
         public async Task<List<PhraseData>> GetPhrasesAsync(int matchId)

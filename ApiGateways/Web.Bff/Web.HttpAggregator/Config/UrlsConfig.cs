@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
@@ -31,6 +32,8 @@ namespace Web.HttpAggregator.Config
 
                 return QueryHelpers.AddQueryString("phrase", queryArguments);
             }
+
+            public static string CreatePhrase => "phrase";
         }
     }
 }

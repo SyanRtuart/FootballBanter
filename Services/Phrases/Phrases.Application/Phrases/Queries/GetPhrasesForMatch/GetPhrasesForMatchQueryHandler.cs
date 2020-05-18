@@ -23,7 +23,8 @@ namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
 
             const string sql = "SELECT * " +
                                "FROM Phrase.Phrases AS p " +
-                               "WHERE p.MatchId = @MatchId";
+                               "WHERE (IsDeleted = 0) AND " +
+                               "p.MatchId = @MatchId";
             
             var phrases = await connection.QueryAsync<PhraseDto>(sql, new
             {

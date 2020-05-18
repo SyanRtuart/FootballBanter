@@ -11,6 +11,6 @@ namespace Web.HttpAggregator.Services.Phrase
     {
         Task<List<PhraseData>> GetPhrasesAsync(int matchId);
 
-        Task CreatePhrase(int matchId, string description, bool positive);
+        Task CreatePhrase(CreatePhraseRequest request);
     }
 }

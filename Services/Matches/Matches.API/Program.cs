@@ -24,6 +24,7 @@ namespace Matches.API
                 }
                 catch (Exception ex)
                 {
+                    throw;
                 }
 
 

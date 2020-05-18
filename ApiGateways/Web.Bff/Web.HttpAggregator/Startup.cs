@@ -33,7 +33,7 @@ namespace Web.HttpAggregator
         {
             services.AddApplicationServices();
 
-            services.Configure<UrlsConfig>(Configuration.GetSection("Urls"));
+            services.Configure<UrlsConfig>(Configuration.GetSection("urls"));
 
             services.AddSwaggerGen(c =>
             {
@@ -42,7 +42,7 @@ namespace Web.HttpAggregator
 
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
             services.AddControllers();
@@ -64,7 +64,7 @@ namespace Web.HttpAggregator
 
             app.UseAuthorization();
 
-            app.UseCors(options => options.AllowAnyOrigin());
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {

@@ -39,9 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web.Bff", "Web.Bff", "{E42E57F7-E370-40E2-BEA7-17894A5358F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.HttpAggregator", "ApiGateways\Web.Bff\Web.HttpAggregator\Web.HttpAggregator.csproj", "{5C08D5A4-323C-488A-8126-0858BA76F73D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.HttpAggregator", "ApiGateways\Web.Bff\Web.HttpAggregator\Web.HttpAggregator.csproj", "{5C08D5A4-323C-488A-8126-0858BA76F73D}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81A8DE7D-6F72-4630-B8CF-E8349CDC7ECA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F7071291-C0B7-481F-98F4-39B47914FADD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phrases.UnitTests", "Services\Phrases\Phrases.UnitTests\Phrases.UnitTests.csproj", "{7079203F-396D-4516-BA80-A20EB244A753}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +105,10 @@ Global
 		{81A8DE7D-6F72-4630-B8CF-E8349CDC7ECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81A8DE7D-6F72-4630-B8CF-E8349CDC7ECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81A8DE7D-6F72-4630-B8CF-E8349CDC7ECA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7079203F-396D-4516-BA80-A20EB244A753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7079203F-396D-4516-BA80-A20EB244A753}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7079203F-396D-4516-BA80-A20EB244A753}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7079203F-396D-4516-BA80-A20EB244A753}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +132,8 @@ Global
 		{66C8206D-48CF-4F3A-846B-5CA1C61296DB} = {61FB2D02-6241-4B16-A948-41B31B36C9F7}
 		{E42E57F7-E370-40E2-BEA7-17894A5358F2} = {66C8206D-48CF-4F3A-846B-5CA1C61296DB}
 		{5C08D5A4-323C-488A-8126-0858BA76F73D} = {E42E57F7-E370-40E2-BEA7-17894A5358F2}
+		{F7071291-C0B7-481F-98F4-39B47914FADD} = {DBD78CF7-40D0-4782-8988-831473E8C662}
+		{7079203F-396D-4516-BA80-A20EB244A753} = {F7071291-C0B7-481F-98F4-39B47914FADD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AC029FF3-7352-42D2-9867-5662078FCEC2}

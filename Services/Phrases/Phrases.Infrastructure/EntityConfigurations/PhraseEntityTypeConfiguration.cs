@@ -28,6 +28,10 @@ namespace Phrases.Infrastructure.EntityConfigurations
             builder.Property<bool>("_positive").HasColumnName("Positive").IsRequired();
 
             builder.Property<DateTime>("_dateCreated").HasColumnName("DateCreated").IsRequired();
+
+            builder.Property<bool>("_isDeleted").HasColumnName("IsDeleted");
+
+            builder.Property<DateTime>("_dateDeleted").HasColumnName("DateDeleted");
         }
     }
 }

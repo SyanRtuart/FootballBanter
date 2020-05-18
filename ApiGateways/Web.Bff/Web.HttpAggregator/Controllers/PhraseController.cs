@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Web.HttpAggregator.Models.Phrase;
 using Web.HttpAggregator.Services.Phrase;
@@ -11,6 +12,7 @@ namespace Web.HttpAggregator.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [EnableCors("AllowOrigin")]
     public class PhraseController : ControllerBase
     {
         private readonly IPhraseApiClient _phraseApiClient;
@@ -37,9 +39,11 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpPost]
         [Route("createPhrase")]
-        public async Task<IActionResult> CreatePhrase(int matchId, string description, bool positive)
+        public async Task<IActionResult> CreatePhrase(CreatePhraseRequest request)
         {
-            return null;
+            await _phraseApiClient.CreatePhrase(request);
+
+            return Ok();
         }
 
     }
