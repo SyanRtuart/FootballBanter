@@ -36,6 +36,10 @@ namespace Web.HttpAggregator.Config
             }
 
             public static string CreatePhrase => "phrase";
+            public static string UpvotePhrase(int phraseId) => $"phrase/{phraseId}/upvote";
+            public static string DownvotePhrase(int phraseId) => $"phrase/{phraseId}/downvote";
+
+
         }
     }
 }

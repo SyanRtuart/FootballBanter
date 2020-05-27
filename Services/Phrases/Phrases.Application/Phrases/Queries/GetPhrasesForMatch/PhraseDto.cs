@@ -13,5 +13,7 @@ namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
         public string Description { get; set; }
 
         public bool Positive { get; set; }
+
+        public int Score { get; set; }
     }
 }

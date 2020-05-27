@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,5 +14,7 @@ namespace Web.HttpAggregator.Models.Phrase
         public string Description { get; set; }
 
         public bool Positive { get; set; }
+
+        public int Score { get; set; }
     }
 }

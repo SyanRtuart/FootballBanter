@@ -31,7 +31,7 @@ namespace Web.HttpAggregator.Controllers
 
             foreach (var phraseData in response)
             {
-                phrases.Add(new Phrase(phraseData.Id, phraseData.Description, phraseData.Positive));
+                phrases.Add(new Phrase(phraseData.Id, phraseData.Description, phraseData.Positive, phraseData.Score));
             }
 
             return phrases;
@@ -46,5 +46,26 @@ namespace Web.HttpAggregator.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("upvotePhrase")]
+        public async Task<IActionResult> UpvotePhrase(int phraseId)
+        {
+            var request = new UpvotePhraseRequest(phraseId);
+
+            await _phraseApiClient.UpvotePhrase(request);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("downvotePhrase")]
+        public async Task<IActionResult> DownvotePhrase(int phraseId)
+        {
+            var request = new DownvotePhraseRequest(phraseId);
+
+            await _phraseApiClient.DownvotePhrase(request);
+            
+            return Ok();
+        }
     }
 }

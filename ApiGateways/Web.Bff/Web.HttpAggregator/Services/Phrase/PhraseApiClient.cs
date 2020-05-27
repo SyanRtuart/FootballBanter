@@ -32,7 +32,7 @@ namespace Web.HttpAggregator.Services.Phrase
 
             response.EnsureSuccessStatusCode();
         }
-
+        
         public async Task<List<PhraseData>> GetPhrasesAsync(int matchId)
         {
             var url = _urls.Phrase + UrlsConfig.PhraseOperations.GetPhrases(matchId);
@@ -43,5 +43,27 @@ namespace Web.HttpAggregator.Services.Phrase
 
             return JsonConvert.DeserializeObject<List<PhraseData>>(content);
         }
+        public async Task UpvotePhrase(UpvotePhraseRequest request)
+        {
+            var url = _urls.Phrase + UrlsConfig.PhraseOperations.UpvotePhrase(request.PhraseId);
+
+            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task DownvotePhrase(DownvotePhraseRequest request)
+        {
+            var url = _urls.Phrase + UrlsConfig.PhraseOperations.DownvotePhrase(request.PhraseId);
+
+            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+        }
+
     }
 }
