@@ -41,12 +41,24 @@ namespace Web.HttpAggregator.Controllers
             var response = await _matchApiClient.GetRecentMatchesAsync(teamId);
 
             var matches = new List<Match>();
-            
+
             foreach (var matchData in response)
                 matches.Add(new Match(matchData.Id, matchData.HomeTeamId, matchData.AwayTeamId, matchData.HomeTeam,
                     matchData.AwayTeam, matchData.ScoreWinner, matchData.ScoreHomeTeam, matchData.ScoreAwayTeam));
 
             return matches;
+        }
+
+        [HttpGet]
+        [Route("getMatch")]
+        public async Task<Match> GetMatchById(int id)
+        {
+            var response = await _matchApiClient.GetMatch(id);
+
+            var match = new Match(response.Id, response.HomeTeamId, response.AwayTeamId, response.HomeTeam,
+                response.AwayTeam, response.ScoreWinner, response.ScoreHomeTeam, response.ScoreAwayTeam);
+
+            return match;
         }
     }
 }

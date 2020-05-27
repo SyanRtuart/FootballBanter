@@ -10,5 +10,7 @@ namespace Web.HttpAggregator.Services.Match
 
         Task<List<MatchData>> GetRecentMatchesAsync(int teamId);
 
+        Task<MatchData> GetMatch(int id);
+
     }
 }

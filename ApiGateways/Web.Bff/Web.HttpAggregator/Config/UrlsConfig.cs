@@ -19,6 +19,8 @@ namespace Web.HttpAggregator.Config
 
             public static string GetRecentMatches(int teamId) => QueryHelpers.AddQueryString("match", nameof(teamId), teamId.ToString());
 
+            public static string GetMatch(int id) => $"match/{id}";
+
         }
 
         public class PhraseOperations

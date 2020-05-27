@@ -19,6 +19,8 @@ namespace Phrases.Domain.Phrase
 
         private DateTime _dateDeleted;
 
+        private int _score;
+
         public Phrase(int matchId, int teamId, string description, bool positive)
         {
             _matchId = matchId;
@@ -26,6 +28,7 @@ namespace Phrases.Domain.Phrase
             _description = description;
             _positive = positive;
             _dateCreated = DateTime.UtcNow;
+            _score = 0;
         }
 
         public static Phrase Create(int matchId, int teamId, string description, bool positive)
@@ -44,6 +47,16 @@ namespace Phrases.Domain.Phrase
             }
 
             //TODO EVENT: Phrase Deleted Event
+        }
+
+        public void Upvote()
+        {
+            _score += 1;
+        }
+
+        public void Downvote()
+        {
+            _score += -1;
         }
     }
 }

@@ -1,25 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
+using Matches.Application.Matches.Queries.GetRecentMatchesByTeam;
 using Matches.Application.Matches.SharedModels;
 using MediatR;
 
-namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
+namespace Matches.Application.Matches.Queries.GetMatchById
 {
-    public class GetRecentMatchesByTeamQueryHandler : IRequestHandler<GetRecentMatchesByTeamQuery, List<MatchDto>>
+    public class GetMatchByIdQueryHandler : IRequestHandler<GetMatchByIdQuery, MatchDto>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-        public GetRecentMatchesByTeamQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+        public GetMatchByIdQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public async Task<List<MatchDto>> Handle(GetRecentMatchesByTeamQuery request,
-            CancellationToken cancellationToken)
+
+        public async Task<MatchDto> Handle(GetMatchByIdQuery request, CancellationToken cancellationToken)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
@@ -38,14 +41,14 @@ namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
                                        ON m.awayteamid = team.id 
                                INNER JOIN match.teams AS team1 
                                        ON m.hometeamid = team1.id " +
-                               "WHERE m.HomeTeamId = @TeamId";
+                               "WHERE m.id = @id";
 
             var response = await connection.QueryAsync<MatchDto>(sql, new
             {
-                request.TeamId
+                request.Id
             });
 
-            return response.ToList();
+            return response.SingleOrDefault();
         }
     }
 }

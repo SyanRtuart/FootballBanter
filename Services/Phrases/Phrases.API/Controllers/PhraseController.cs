@@ -4,6 +4,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Phrases.Application.Phrases.Commands.CreatePhrase;
 using Phrases.Application.Phrases.Commands.DeletePhrase;
+using Phrases.Application.Phrases.Commands.DownvotePhrase;
+using Phrases.Application.Phrases.Commands.UpvotePhrase;
 using Phrases.Application.Phrases.Queries.GetPhrasesForMatch;
 
 namespace Phrases.API.Controllers
@@ -29,7 +31,7 @@ namespace Phrases.API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<PhraseDto>> GetPhrasesForMatch(int matchId)
+        public async Task<List<PhraseDto>> GetPhrasesForMatchAsync(int matchId)
         {
             return await _mediator.Send(new GetPhrasesForMatchQuery(matchId));
         }
@@ -42,5 +44,22 @@ namespace Phrases.API.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("{phraseId:int}/upvote")]
+        public async Task<IActionResult> UpvotePhraseAsync(int phraseId)
+        {
+            await _mediator.Send(new UpvotePhraseCommand(phraseId));
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{phraseId:int}/downvote")]
+        public async Task<IActionResult> DownvotePhraseAsync(int phraseId)
+        {
+            await _mediator.Send(new DownvotePhraseCommand(phraseId));
+
+            return Ok();
+        }
     }
 }

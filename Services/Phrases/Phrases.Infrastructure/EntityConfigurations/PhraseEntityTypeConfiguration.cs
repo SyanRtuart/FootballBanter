@@ -32,6 +32,8 @@ namespace Phrases.Infrastructure.EntityConfigurations
             builder.Property<bool>("_isDeleted").HasColumnName("IsDeleted");
 
             builder.Property<DateTime>("_dateDeleted").HasColumnName("DateDeleted");
+
+            builder.Property<int>("_score").HasColumnName("Score").IsRequired();
         }
     }
 }

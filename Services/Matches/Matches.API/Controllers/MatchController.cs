@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Matches.Application.Matches.Commands.CreateMatch;
+using Matches.Application.Matches.Queries.GetMatchById;
 using Matches.Application.Matches.Queries.GetRecentMatchesByTeam;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MatchDto = Matches.Application.Matches.SharedModels.MatchDto;
 
 namespace Matches.API.Controllers
 {
@@ -18,6 +20,19 @@ namespace Matches.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<MatchDto> GetMatchById(int id)
+        {
+            return await _mediator.Send(new GetMatchByIdQuery(id));
+        }
+        
+        [HttpGet]
+        public async Task<List<MatchDto>> GetRecentMatchesByTeam([FromQuery] int teamId)
+        {
+            return await _mediator.Send(new GetRecentMatchesByTeamQuery(teamId));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateMatch([FromBody] CreateMatchRequest request)
         {
@@ -27,10 +42,5 @@ namespace Matches.API.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<List<MatchDto>> GetRecentMatchesByTeam(int teamId)
-        {
-            return await _mediator.Send(new GetRecentMatchesByTeamQuery(teamId));
-        }
     }
 }

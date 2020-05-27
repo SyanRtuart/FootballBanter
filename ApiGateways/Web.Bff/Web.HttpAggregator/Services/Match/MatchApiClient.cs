@@ -8,7 +8,7 @@ using Web.HttpAggregator.Models.Match;
 
 namespace Web.HttpAggregator.Services.Match
 {
-    public class MatchApiClient : IMatchApiClient 
+    public class MatchApiClient : IMatchApiClient
     {
         private readonly HttpClient _httpClient;
         private readonly UrlsConfig _urls;
@@ -39,6 +39,17 @@ namespace Web.HttpAggregator.Services.Match
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<MatchData>>(content);
+        }
+
+        public async Task<MatchData> GetMatch(int id)
+        {
+            var url = _urls.Match + UrlsConfig.MatchOperations.GetMatch(id);
+
+            var response = await _httpClient.GetAsync(url);
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MatchData>(content);
         }
     }
 }
