@@ -16,7 +16,7 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
 
         public async Task<Unit> Handle(CreatePhraseCommand request, CancellationToken cancellationToken)
         {
-            var phrase = new Phrase(request.TeamId, request.MatchId, request.Description, request.Positive);
+            var phrase = new Phrase(request.MatchId, request.TeamId, request.Description, request.Positive);
 
             _phraseRepository.Add(phrase);
 
