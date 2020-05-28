@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace Phrases.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeletePhraseAsync(int phraseId)
+        public async Task<IActionResult> DeletePhraseAsync(Guid phraseId)
         {
             await _mediator.Send(new DeletePhraseCommand(phraseId));
 
@@ -46,7 +47,7 @@ namespace Phrases.API.Controllers
 
         [HttpPut]
         [Route("{phraseId:int}/upvote")]
-        public async Task<IActionResult> UpvotePhraseAsync(int phraseId)
+        public async Task<IActionResult> UpvotePhraseAsync(Guid phraseId)
         {
             await _mediator.Send(new UpvotePhraseCommand(phraseId));
 
@@ -55,7 +56,7 @@ namespace Phrases.API.Controllers
 
         [HttpPut]
         [Route("{phraseId:int}/downvote")]
-        public async Task<IActionResult> DownvotePhraseAsync(int phraseId)
+        public async Task<IActionResult> DownvotePhraseAsync(Guid phraseId)
         {
             await _mediator.Send(new DownvotePhraseCommand(phraseId));
 

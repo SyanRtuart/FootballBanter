@@ -1,4 +1,5 @@
-﻿using Base.Domain.SeedWork;
+﻿using System;
+using Base.Domain.SeedWork;
 
 namespace Matches.Domain.Team
 {
@@ -8,6 +9,7 @@ namespace Matches.Domain.Team
 
         private Team(string name)
         {
+            Id = Guid.NewGuid();
             _name = name;
         }
 

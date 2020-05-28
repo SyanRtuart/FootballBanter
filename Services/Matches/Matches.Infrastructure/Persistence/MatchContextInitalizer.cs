@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Matches.Domain.Match;
 using Matches.Domain.Team;
@@ -56,16 +57,25 @@ namespace Matches.Infrastructure.Persistence
         }
         private async void SeedMatches()
         {
-            var matches = new List<Match>
+            var homeTeamId = Guid.NewGuid();
+            var matches = new List<Match>();
+
+            foreach (var team in _context.Teams.ToList())
             {
-                Match.Create(2, 1, DateTime.Today.Subtract(TimeSpan.FromDays(2)), new Score("Celtic", 2, 1)),
-                Match.Create(2, 3, DateTime.Today.Subtract(TimeSpan.FromDays(3)), new Score("Celtic", 2, 0)),
-                Match.Create(2, 4, DateTime.Today.Subtract(TimeSpan.FromDays(4)), new Score("Celtic", 3, 2)),
-                Match.Create(2, 5, DateTime.Today.Subtract(TimeSpan.FromDays(5)), new Score("Celtic", 1, 0)),
-                Match.Create(2, 6, DateTime.Today.Subtract(TimeSpan.FromDays(6)), new Score("Celtic", 1, 0)),
-                Match.Create(2, 7, DateTime.Today.Subtract(TimeSpan.FromDays(7)), new Score("Celtic", 1, 0)),
-                Match.Create(2, 8, DateTime.Today.Subtract(TimeSpan.FromDays(8)), new Score("Celtic", 2, 0)),
-            };
+                matches.Add(Match.Create(homeTeamId, team.Id, DateTime.Today.Subtract(TimeSpan.FromDays(2)),
+                    new Score("Celtic", 2, 1)));
+            }
+
+            //var matches = new List<Match>
+            //{
+            //    Match.Create(homeTeamId, Guid.NewGuid(), DateTime.Today.Subtract(TimeSpan.FromDays(2)), new Score("Celtic", 2, 1)),
+            //    Match.Create(homeTeamId, 3, DateTime.Today.Subtract(TimeSpan.FromDays(3)), new Score("Celtic", 2, 0)),
+            //    Match.Create(homeTeamId, 4, DateTime.Today.Subtract(TimeSpan.FromDays(4)), new Score("Celtic", 3, 2)),
+            //    Match.Create(homeTeamId, 5, DateTime.Today.Subtract(TimeSpan.FromDays(5)), new Score("Celtic", 1, 0)),
+            //    Match.Create(homeTeamId, 6, DateTime.Today.Subtract(TimeSpan.FromDays(6)), new Score("Celtic", 1, 0)),
+            //    Match.Create(homeTeamId, 7, DateTime.Today.Subtract(TimeSpan.FromDays(7)), new Score("Celtic", 1, 0)),
+            //    Match.Create(homeTeamId, 8, DateTime.Today.Subtract(TimeSpan.FromDays(8)), new Score("Celtic", 2, 0)),
+            //};
 
             _context.Matches.AddRange(matches);
         }

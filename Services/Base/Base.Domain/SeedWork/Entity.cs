@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediatR;
 
 namespace Base.Domain.SeedWork
@@ -8,7 +9,7 @@ namespace Base.Domain.SeedWork
         private List<INotification> _domainEvents;
         private int? _requestedHashCode;
 
-        public virtual int Id { get; protected set; }
+        public Guid Id { get; protected set; }
 
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 

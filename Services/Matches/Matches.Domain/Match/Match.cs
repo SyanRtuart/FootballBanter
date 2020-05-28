@@ -5,7 +5,7 @@ namespace Matches.Domain.Match
 {
     public class Match : Entity, IAggregateRoot
     {
-        private Match(int homeTeamId, int awayTeamId, DateTime utcDate, Score score)
+        private Match(Guid homeTeamId, Guid awayTeamId, DateTime utcDate, Score score)
         {
             _homeTeamId = homeTeamId;
             _awayTeamId = awayTeamId;
@@ -13,9 +13,9 @@ namespace Matches.Domain.Match
             _score = score;
         }
 
-        private int _homeTeamId;
+        private Guid _homeTeamId;
 
-        private int _awayTeamId;
+        private Guid _awayTeamId;
 
         private DateTime _utcDate;
 
@@ -27,7 +27,7 @@ namespace Matches.Domain.Match
             // Only for ORM.
         }
 
-        public static Match Create(int homeTeamId, int awayTeamId, DateTime utcDate, Score score)
+        public static Match Create(Guid homeTeamId, Guid awayTeamId, DateTime utcDate, Score score)
         {
             return new Match(homeTeamId, awayTeamId, utcDate, score);
         }

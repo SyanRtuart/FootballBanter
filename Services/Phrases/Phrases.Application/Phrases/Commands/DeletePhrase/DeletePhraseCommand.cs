@@ -9,11 +9,11 @@ namespace Phrases.Application.Phrases.Commands.DeletePhrase
 {
     public class DeletePhraseCommand : IRequest
     {
-        public DeletePhraseCommand(int phraseId)
+        public DeletePhraseCommand(Guid phraseId)
         {
             PhraseId = phraseId;
         }
 
-        public int PhraseId { get; set; }
+        public Guid PhraseId { get; set; }
     }
 }

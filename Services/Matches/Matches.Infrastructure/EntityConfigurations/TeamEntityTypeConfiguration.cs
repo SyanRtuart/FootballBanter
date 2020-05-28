@@ -15,8 +15,6 @@ namespace Matches.Infrastructure.EntityConfigurations
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("teamseq", MatchContext.DEFAULT_SCHEMA);
-
 
             builder.Property<string>("_name").HasColumnName("Name").IsRequired();
         }

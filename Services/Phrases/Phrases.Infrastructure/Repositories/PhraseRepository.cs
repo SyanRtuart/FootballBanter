@@ -21,7 +21,7 @@ namespace Phrases.Infrastructure.Repositories
             return _context.Phrases.Add(phrase).Entity;
         }
 
-        public async Task<Phrase> GetAsync(int phraseId)
+        public async Task<Phrase> GetAsync(Guid phraseId)
         {
             return await _context.Phrases.FirstOrDefaultAsync(o => o.Id == phraseId);
         }

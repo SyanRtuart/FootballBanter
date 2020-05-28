@@ -20,7 +20,7 @@ namespace Phrases.API
                     var context = scope.ServiceProvider.GetService<PhraseContext>();
                     context.Database.Migrate();
 
-                    PhraseContextInitalizer.Initialize(context);
+                    //PhraseContextInitalizer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

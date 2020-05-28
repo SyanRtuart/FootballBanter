@@ -9,11 +9,11 @@ namespace Phrases.Domain.Phrase
 
         private string _description;
 
-        private int _matchId;
+        private Guid _matchId;
 
         private bool _positive;
 
-        private int _teamId;
+        private Guid _teamId;
 
         private bool _isDeleted;
 
@@ -21,7 +21,7 @@ namespace Phrases.Domain.Phrase
 
         private int _score;
 
-        public Phrase(int matchId, int teamId, string description, bool positive)
+        public Phrase(Guid matchId, Guid teamId, string description, bool positive)
         {
             _matchId = matchId;
             _teamId = teamId;
@@ -31,7 +31,7 @@ namespace Phrases.Domain.Phrase
             _score = 0;
         }
 
-        public static Phrase Create(int matchId, int teamId, string description, bool positive)
+        public static Phrase Create(Guid matchId, Guid teamId, string description, bool positive)
         {
             return new Phrase(matchId, teamId, description, positive);
 

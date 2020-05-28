@@ -16,11 +16,9 @@ namespace Matches.Infrastructure.EntityConfigurations
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("matchseq", MatchContext.DEFAULT_SCHEMA);
-
-            builder.Property<int>("_homeTeamId").HasColumnName("HomeTeamId");
-            builder.Property<int>("_awayTeamId").HasColumnName("AwayTeamId");
-            builder.Property<int>("_statusId").HasColumnName("StatusId");
+            builder.Property<Guid>("_homeTeamId").HasColumnName("HomeTeamId");
+            builder.Property<Guid>("_awayTeamId").HasColumnName("AwayTeamId");
+            builder.Property<Guid>("_statusId").HasColumnName("StatusId");
             builder.Property<DateTime>("_utcDate").HasColumnName("UtcDate");
 
             builder.OwnsOne<Score>("_score", b =>

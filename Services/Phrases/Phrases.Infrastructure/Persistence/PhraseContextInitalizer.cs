@@ -37,25 +37,26 @@ namespace Phrases.Infrastructure.Persistence
 
         private void SeedPhrases()
         {
-            var phrases = new List<Phrase>();
+
+            //var phrases = new List<Phrase>();
             
-            for (int i = 0; i < 10; i++)
-            {
-                var newPhrases = new List<Phrase>
-                {
-                    Phrase.Create(i,i, "Good Banter 1", true),
-                    Phrase.Create(i,i, "Good Banter 2", true),
-                    Phrase.Create(i,i, "Bad Banter 1", false),
-                    Phrase.Create(i,i, "Bad Banter 1", false),
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var newPhrases = new List<Phrase>
+            //    {
+            //        Phrase.Create(i,i, "Good Banter 1", true),
+            //        Phrase.Create(i,i, "Good Banter 2", true),
+            //        Phrase.Create(i,i, "Bad Banter 1", false),
+            //        Phrase.Create(i,i, "Bad Banter 1", false),
 
 
 
-                };
+            //    };
 
-                phrases.AddRange(newPhrases);
-            }
+            //    phrases.AddRange(newPhrases);
+            //}
 
-            _context.Phrases.AddRange(phrases);
+            //_context.Phrases.AddRange(phrases);
         }
     }
 }

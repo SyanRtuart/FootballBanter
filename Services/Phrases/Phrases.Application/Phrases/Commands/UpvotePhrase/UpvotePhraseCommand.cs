@@ -9,11 +9,11 @@ namespace Phrases.Application.Phrases.Commands.UpvotePhrase
 {
     public class UpvotePhraseCommand : IRequest
     {
-        public UpvotePhraseCommand(int phraseId)
+        public UpvotePhraseCommand(Guid phraseId)
         {
             PhraseId = phraseId;
         }
 
-        public int PhraseId { get; set; }
+        public Guid PhraseId { get; set; }
     }
 }

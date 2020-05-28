@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 
 namespace Phrases.Domain.Phrase
@@ -7,6 +8,6 @@ namespace Phrases.Domain.Phrase
     {
         Phrase Add(Phrase phrase);
 
-        Task<Phrase> GetAsync(int phraseId);
+        Task<Phrase> GetAsync(Guid phraseId);
     }
 }

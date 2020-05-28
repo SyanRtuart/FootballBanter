@@ -1,11 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Matches.Domain.Match;
 using MediatR;
 
 namespace Matches.Application.Matches.Commands.CreateMatch
 {
-    public class CreateMatchCommandHandler : IRequestHandler<CreateMatchCommand, bool>
+    public class CreateMatchCommandHandler : IRequestHandler<CreateMatchCommand, Guid>
     {
         private readonly IMatchRepository _matchRepository;
 
@@ -14,7 +15,7 @@ namespace Matches.Application.Matches.Commands.CreateMatch
             _matchRepository = matchRepository;
         }
 
-        public async Task<bool> Handle(CreateMatchCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateMatchCommand request, CancellationToken cancellationToken)
         {
             var match = Match.Create(request.HomeTeamId,
                 request.AwayTeamId,
@@ -23,7 +24,9 @@ namespace Matches.Application.Matches.Commands.CreateMatch
 
             await _matchRepository.AddAsync(match);
 
-            return await _matchRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await _matchRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
+            return match.Id;
         }
     }
 }

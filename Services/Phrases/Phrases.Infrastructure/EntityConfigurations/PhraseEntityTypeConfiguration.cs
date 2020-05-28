@@ -16,12 +16,10 @@ namespace Phrases.Infrastructure.EntityConfigurations
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder.Property(o => o.Id).ForSqlServerUseSequenceHiLo("phraseseq", PhraseContext.DEFAULT_SCHEMA);
 
+            builder.Property<Guid>("_matchId").HasColumnName("MatchId").IsRequired();
 
-            builder.Property<int>("_matchId").HasColumnName("MatchId").IsRequired();
-
-            builder.Property<int>("_teamId").HasColumnName("TeamId").IsRequired();
+            builder.Property<Guid>("_teamId").HasColumnName("TeamId").IsRequired();
 
             builder.Property<string>("_description").HasColumnName("Description").IsRequired();
 
