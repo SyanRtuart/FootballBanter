@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Matches.Application.Matches.Commands.CreateMatch;
 using Matches.Application.Matches.Queries.GetMatchById;
@@ -22,13 +23,13 @@ namespace Matches.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<MatchDto> GetMatchById(int id)
+        public async Task<MatchDto> GetMatchById(Guid id)
         {
             return await _mediator.Send(new GetMatchByIdQuery(id));
         }
         
         [HttpGet]
-        public async Task<List<MatchDto>> GetRecentMatchesByTeam([FromQuery] int teamId)
+        public async Task<List<MatchDto>> GetRecentMatchesByTeam([FromQuery] Guid teamId)
         {
             return await _mediator.Send(new GetRecentMatchesByTeamQuery(teamId));
         }

@@ -11,11 +11,11 @@ namespace Matches.Application.Matches.Queries.GetMatchById
 {
     public class GetMatchByIdQuery : IRequest<MatchDto>
     {
-        public GetMatchByIdQuery(int id)
+        public GetMatchByIdQuery(Guid id)
         {
             Id = id;
         }
 
-        public int Id { get;}
+        public Guid Id { get;}
     }
 }

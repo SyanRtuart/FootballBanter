@@ -23,7 +23,7 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpGet]
         [Route("getPhrases")]
-        public async Task<List<Phrase>> GetPhrases(int matchId)
+        public async Task<List<Phrase>> GetPhrases(Guid matchId)
         {
             var response = await _phraseApiClient.GetPhrasesAsync(matchId);
 
@@ -48,7 +48,7 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpPut]
         [Route("upvotePhrase")]
-        public async Task<IActionResult> UpvotePhrase(int phraseId)
+        public async Task<IActionResult> UpvotePhrase(Guid phraseId)
         {
             var request = new UpvotePhraseRequest(phraseId);
 
@@ -59,7 +59,7 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpPut]
         [Route("downvotePhrase")]
-        public async Task<IActionResult> DownvotePhrase(int phraseId)
+        public async Task<IActionResult> DownvotePhrase(Guid phraseId)
         {
             var request = new DownvotePhraseRequest(phraseId);
 

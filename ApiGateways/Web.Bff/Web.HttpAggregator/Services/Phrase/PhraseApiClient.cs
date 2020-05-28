@@ -33,7 +33,7 @@ namespace Web.HttpAggregator.Services.Phrase
             response.EnsureSuccessStatusCode();
         }
         
-        public async Task<List<PhraseData>> GetPhrasesAsync(int matchId)
+        public async Task<List<PhraseData>> GetPhrasesAsync(Guid matchId)
         {
             var url = _urls.Phrase + UrlsConfig.PhraseOperations.GetPhrases(matchId);
 

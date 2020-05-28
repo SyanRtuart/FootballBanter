@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Matches.Infrastructure.Migrations
 {
     [DbContext(typeof(MatchContext))]
-    [Migration("20200311172750_Init")]
+    [Migration("20200528133344_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,30 +19,25 @@ namespace Matches.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("Relational:Sequence:match.matchseq", "'matchseq', 'match', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("Relational:Sequence:match.teamseq", "'teamseq', 'match', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Matches.Domain.Aggregates.Match.Match", b =>
+            modelBuilder.Entity("Matches.Domain.Match.Match", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "matchseq")
-                        .HasAnnotation("SqlServer:HiLoSequenceSchema", "match")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("_awayTeamId")
+                    b.Property<Guid>("_awayTeamId")
                         .HasColumnName("AwayTeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("_homeTeamId")
+                    b.Property<Guid>("_homeTeamId")
                         .HasColumnName("HomeTeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("_statusId")
+                    b.Property<Guid>("_statusId")
                         .HasColumnName("StatusId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("_utcDate")
                         .HasColumnName("UtcDate")
@@ -53,14 +48,11 @@ namespace Matches.Infrastructure.Migrations
                     b.ToTable("matches","match");
                 });
 
-            modelBuilder.Entity("Matches.Domain.Aggregates.Team.Team", b =>
+            modelBuilder.Entity("Matches.Domain.Team.Team", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "teamseq")
-                        .HasAnnotation("SqlServer:HiLoSequenceSchema", "match")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("_name")
                         .IsRequired()
@@ -72,12 +64,12 @@ namespace Matches.Infrastructure.Migrations
                     b.ToTable("teams","match");
                 });
 
-            modelBuilder.Entity("Matches.Domain.Aggregates.Match.Match", b =>
+            modelBuilder.Entity("Matches.Domain.Match.Match", b =>
                 {
-                    b.OwnsOne("Matches.Domain.Aggregates.Match.Score", "_score", b1 =>
+                    b.OwnsOne("Matches.Domain.Match.Score", "_score", b1 =>
                         {
-                            b1.Property<int>("MatchId")
-                                .HasColumnType("int");
+                            b1.Property<Guid>("MatchId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("AwayTeam")
                                 .HasColumnName("ScoreAwayTeam")

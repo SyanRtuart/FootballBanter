@@ -8,7 +8,7 @@ namespace Web.HttpAggregator.Models.Match
 {
     public class Match
     {
-        public Match(int id, int homeTeamId, int awayTeamId, string homeTeam, string awayTeam, string scoreWinner, int scoreHomeTeam, int scoreAwayTeam)
+        public Match(Guid id, Guid homeTeamId, Guid awayTeamId, string homeTeam, string awayTeam, string scoreWinner, int scoreHomeTeam, int scoreAwayTeam)
         {
             Id = id;
             HomeTeamId = homeTeamId;
@@ -20,9 +20,9 @@ namespace Web.HttpAggregator.Models.Match
             ScoreAwayTeam = scoreAwayTeam;
         }
 
-        public int Id { get; set; }
-        public int HomeTeamId { get; set; }
-        public int AwayTeamId { get; set; }
+        public Guid Id { get; set; }
+        public Guid HomeTeamId { get; set; }
+        public Guid AwayTeamId { get; set; }
         public string HomeTeam { get; set; }
         public string AwayTeam { get; set; }
         public string ScoreWinner { get; set; }

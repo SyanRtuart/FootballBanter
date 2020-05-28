@@ -10,8 +10,8 @@ using Phrases.Infrastructure.Persistence;
 namespace Phrases.Infrastructure.Migrations
 {
     [DbContext(typeof(PhraseContext))]
-    [Migration("20200527113257_AddedScoreToPhrase")]
-    partial class AddedScoreToPhrase
+    [Migration("20200528133445_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,17 +19,13 @@ namespace Phrases.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("Relational:Sequence:phrase.phraseseq", "'phraseseq', 'phrase', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Phrases.Domain.Phrase.Phrase", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "phraseseq")
-                        .HasAnnotation("SqlServer:HiLoSequenceSchema", "phrase")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("_dateCreated")
                         .HasColumnName("DateCreated")
@@ -48,9 +44,9 @@ namespace Phrases.Infrastructure.Migrations
                         .HasColumnName("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("_matchId")
+                    b.Property<Guid>("_matchId")
                         .HasColumnName("MatchId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("_positive")
                         .HasColumnName("Positive")
@@ -60,9 +56,9 @@ namespace Phrases.Infrastructure.Migrations
                         .HasColumnName("Score")
                         .HasColumnType("int");
 
-                    b.Property<int>("_teamId")
+                    b.Property<Guid>("_teamId")
                         .HasColumnName("TeamId")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

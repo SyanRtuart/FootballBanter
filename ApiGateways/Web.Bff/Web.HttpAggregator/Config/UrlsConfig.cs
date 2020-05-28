@@ -17,15 +17,15 @@ namespace Web.HttpAggregator.Config
         {
             public static string GetTeams() => "team";
 
-            public static string GetRecentMatches(int teamId) => QueryHelpers.AddQueryString("match", nameof(teamId), teamId.ToString());
+            public static string GetRecentMatches(Guid teamId) => QueryHelpers.AddQueryString("match", nameof(teamId), teamId.ToString());
 
-            public static string GetMatch(int id) => $"match/{id}";
+            public static string GetMatch(Guid id) => $"match/{id}";
 
         }
 
         public class PhraseOperations
         {
-            public static string GetPhrases(int matchId)
+            public static string GetPhrases(Guid matchId)
             {
                 var queryArguments = new Dictionary<string, string>
                 {
@@ -36,8 +36,8 @@ namespace Web.HttpAggregator.Config
             }
 
             public static string CreatePhrase => "phrase";
-            public static string UpvotePhrase(int phraseId) => $"phrase/{phraseId}/upvote";
-            public static string DownvotePhrase(int phraseId) => $"phrase/{phraseId}/downvote";
+            public static string UpvotePhrase(Guid phraseId) => $"phrase/{phraseId}/upvote";
+            public static string DownvotePhrase(Guid phraseId) => $"phrase/{phraseId}/downvote";
 
 
         }

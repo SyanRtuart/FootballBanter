@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediatR;
 
 namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
 {
     public class GetPhrasesForMatchQuery : IRequest<List<PhraseDto>>
     {
-        public GetPhrasesForMatchQuery(int matchId)
+        public GetPhrasesForMatchQuery(Guid matchId)
         {
             MatchId = matchId;
         }
 
-        public int MatchId { get;}
+        public Guid MatchId { get;}
     }
 }

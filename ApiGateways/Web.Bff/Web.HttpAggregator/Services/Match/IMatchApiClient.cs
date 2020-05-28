@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.HttpAggregator.Models.Match;
 
@@ -8,9 +9,9 @@ namespace Web.HttpAggregator.Services.Match
     {
         Task<List<TeamData>> GetTeamsAsync();
 
-        Task<List<MatchData>> GetRecentMatchesAsync(int teamId);
+        Task<List<MatchData>> GetRecentMatchesAsync(Guid teamId);
 
-        Task<MatchData> GetMatch(int id);
+        Task<MatchData> GetMatch(Guid id);
 
     }
 }

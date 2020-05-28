@@ -32,7 +32,7 @@ namespace Phrases.API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<PhraseDto>> GetPhrasesForMatchAsync(int matchId)
+        public async Task<List<PhraseDto>> GetPhrasesForMatchAsync(Guid matchId)
         {
             return await _mediator.Send(new GetPhrasesForMatchQuery(matchId));
         }

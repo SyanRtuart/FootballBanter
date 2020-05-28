@@ -9,7 +9,7 @@ namespace Web.HttpAggregator.Models.Phrase
 {
     public class PhraseData
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Description { get; set; }
 

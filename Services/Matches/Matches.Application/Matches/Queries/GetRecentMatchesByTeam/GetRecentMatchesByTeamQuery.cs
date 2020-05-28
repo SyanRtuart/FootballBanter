@@ -10,11 +10,11 @@ namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
 {
     public class GetRecentMatchesByTeamQuery : IRequest<List<MatchDto>>
     {
-        public GetRecentMatchesByTeamQuery(int teamId)
+        public GetRecentMatchesByTeamQuery(Guid teamId)
         {
             TeamId = teamId;
         }
 
-        public int TeamId { get; }
+        public Guid TeamId { get; }
     }
 }

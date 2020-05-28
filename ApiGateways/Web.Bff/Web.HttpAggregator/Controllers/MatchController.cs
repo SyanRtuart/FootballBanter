@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpGet]
         [Route("getRecentMatches")]
-        public async Task<List<Match>> GetRecentMatchesAsync(int teamId)
+        public async Task<List<Match>> GetRecentMatchesAsync(Guid teamId)
         {
             var response = await _matchApiClient.GetRecentMatchesAsync(teamId);
 
@@ -51,7 +52,7 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpGet]
         [Route("getMatch")]
-        public async Task<Match> GetMatchById(int id)
+        public async Task<Match> GetMatchById(Guid id)
         {
             var response = await _matchApiClient.GetMatch(id);
 

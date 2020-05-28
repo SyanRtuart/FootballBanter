@@ -9,7 +9,7 @@ namespace Web.HttpAggregator.Services.Phrase
 {
     public interface IPhraseApiClient
     {
-        Task<List<PhraseData>> GetPhrasesAsync(int matchId);
+        Task<List<PhraseData>> GetPhrasesAsync(Guid matchId);
 
         Task CreatePhrase(CreatePhraseRequest request);
 

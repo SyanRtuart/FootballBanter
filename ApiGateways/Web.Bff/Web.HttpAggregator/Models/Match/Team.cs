@@ -8,13 +8,13 @@ namespace Web.HttpAggregator.Models.Match
 {
     public class Team
     {
-        public Team(int id, string name)
+        public Team(Guid id, string name)
         {
             Id = id;
             Name = name;
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
     }
 }

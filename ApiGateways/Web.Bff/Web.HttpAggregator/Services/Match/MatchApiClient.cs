@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -30,7 +31,7 @@ namespace Web.HttpAggregator.Services.Match
             return JsonConvert.DeserializeObject<List<TeamData>>(content);
         }
 
-        public async Task<List<MatchData>> GetRecentMatchesAsync(int teamId)
+        public async Task<List<MatchData>> GetRecentMatchesAsync(Guid teamId)
         {
             var url = _urls.Match + UrlsConfig.MatchOperations.GetRecentMatches(teamId);
 
@@ -41,7 +42,7 @@ namespace Web.HttpAggregator.Services.Match
             return JsonConvert.DeserializeObject<List<MatchData>>(content);
         }
 
-        public async Task<MatchData> GetMatch(int id)
+        public async Task<MatchData> GetMatch(Guid id)
         {
             var url = _urls.Match + UrlsConfig.MatchOperations.GetMatch(id);
 

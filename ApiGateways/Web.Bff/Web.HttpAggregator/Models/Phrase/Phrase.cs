@@ -9,7 +9,7 @@ namespace Web.HttpAggregator.Models.Phrase
 {
     public class Phrase
     {
-        public Phrase(int id, string description, bool positive, int score)
+        public Phrase(Guid id, string description, bool positive, int score)
         {
             Id = id;
             Description = description;
@@ -17,7 +17,7 @@ namespace Web.HttpAggregator.Models.Phrase
             Score = score;
         }
 
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
 
         public string Description { get; private set; }
 

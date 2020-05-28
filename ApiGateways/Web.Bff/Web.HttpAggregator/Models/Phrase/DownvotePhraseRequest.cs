@@ -8,11 +8,11 @@ namespace Web.HttpAggregator.Models.Phrase
 {
     public class DownvotePhraseRequest
     {
-        public DownvotePhraseRequest(int phraseId)
+        public DownvotePhraseRequest(Guid phraseId)
         {
             PhraseId = phraseId;
         }
 
-        public int PhraseId { get; set; }
+        public Guid PhraseId { get; set; }
     }
 }

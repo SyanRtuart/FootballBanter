@@ -57,12 +57,12 @@ namespace Matches.Infrastructure.Persistence
         }
         private async void SeedMatches()
         {
-            var homeTeamId = Guid.NewGuid();
+            var celticGuid = Guid.Parse("24521bf6-5467-4304-a6e5-14143330e605");
             var matches = new List<Match>();
 
             foreach (var team in _context.Teams.ToList())
             {
-                matches.Add(Match.Create(homeTeamId, team.Id, DateTime.Today.Subtract(TimeSpan.FromDays(2)),
+                matches.Add(Match.Create(celticGuid, team.Id, DateTime.Today.Subtract(TimeSpan.FromDays(2)),
                     new Score("Celtic", 2, 1)));
             }
 
