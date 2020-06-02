@@ -39,11 +39,11 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpPost]
         [Route("createPhrase")]
-        public async Task<IActionResult> CreatePhrase(CreatePhraseRequest request)
+        public async Task<Guid> CreatePhrase(CreatePhraseRequest request)
         {
-            await _phraseApiClient.CreatePhrase(request);
+            var id = await _phraseApiClient.CreatePhrase(request);
 
-            return Ok();
+            return id;
         }
 
         [HttpPut]

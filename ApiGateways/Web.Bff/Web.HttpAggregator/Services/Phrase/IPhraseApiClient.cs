@@ -11,7 +11,7 @@ namespace Web.HttpAggregator.Services.Phrase
     {
         Task<List<PhraseData>> GetPhrasesAsync(Guid matchId);
 
-        Task CreatePhrase(CreatePhraseRequest request);
+        Task<Guid> CreatePhrase(CreatePhraseRequest request);
 
         Task UpvotePhrase(UpvotePhraseRequest request);
 

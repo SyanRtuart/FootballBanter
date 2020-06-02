@@ -1,11 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Phrases.Domain.Phrase;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {
-    public class CreatePhraseCommandHandler : IRequestHandler<CreatePhraseCommand, Unit>
+    public class CreatePhraseCommandHandler : IRequestHandler<CreatePhraseCommand, Guid>
     {
         private readonly IPhraseRepository _phraseRepository;
 
@@ -14,7 +15,7 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
             _phraseRepository = phraseRepository;
         }
 
-        public async Task<Unit> Handle(CreatePhraseCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreatePhraseCommand request, CancellationToken cancellationToken)
         {
             var phrase = new Phrase(request.MatchId, request.TeamId, request.Description, request.Positive);
 
@@ -22,7 +23,7 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
 
             await _phraseRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return phrase.Id;
         }
     }
 }

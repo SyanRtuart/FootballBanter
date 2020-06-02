@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Web.HttpAggregator.Config;
@@ -22,7 +23,7 @@ namespace Web.HttpAggregator.Services.Phrase
             _urls = config.Value;
         }
 
-        public async Task CreatePhrase(CreatePhraseRequest request)
+        public async Task<Guid> CreatePhrase(CreatePhraseRequest request)
         {
             var url = _urls.Phrase + UrlsConfig.PhraseOperations.CreatePhrase;
 
@@ -30,7 +31,10 @@ namespace Web.HttpAggregator.Services.Phrase
 
             var response = await _httpClient.PostAsync(url, content);
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<Guid>(responseContent);
         }
         
         public async Task<List<PhraseData>> GetPhrasesAsync(Guid matchId)

@@ -23,12 +23,12 @@ namespace Phrases.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePhraseAsync(CreatePhraseRequest request)
+        public async Task<Guid> CreatePhraseAsync(CreatePhraseRequest request)
         {
-            await _mediator.Send(new CreatePhraseCommand(request.MatchId, request.TeamId, request.Description,
+            var id = await _mediator.Send(new CreatePhraseCommand(request.MatchId, request.TeamId, request.Description,
                 request.Positive));
 
-            return Ok();
+            return id;
         }
 
         [HttpGet]

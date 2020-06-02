@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {
-    public class CreatePhraseCommand : IRequest
+    public class CreatePhraseCommand : IRequest<Guid>
     {
         public CreatePhraseCommand(Guid matchId, Guid teamId, string description, bool positive)
         {
