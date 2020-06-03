@@ -21,7 +21,7 @@ namespace Phrases.Domain.Phrase
 
         private int _score;
 
-        public Phrase(Guid matchId, Guid teamId, string description, bool positive)
+        private Phrase(Guid matchId, Guid teamId, string description, bool positive)
         {
             _matchId = matchId;
             _teamId = teamId;
@@ -33,8 +33,12 @@ namespace Phrases.Domain.Phrase
 
         public static Phrase Create(Guid matchId, Guid teamId, string description, bool positive)
         {
-            return new Phrase(matchId, teamId, description, positive);
+            var phrase = new Phrase(matchId, teamId, description, positive);
 
+            //TODO The user creating should upvote
+            phrase.Upvote();
+
+            return phrase;
             //TODO EVENT: Phrase Created Event
         }
 
