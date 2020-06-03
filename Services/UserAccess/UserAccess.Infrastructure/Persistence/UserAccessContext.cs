@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
@@ -9,22 +12,23 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
-using Phrases.Domain.Phrase;
+using UserAccess.Domain.UserRegistrations;
+using UserAccess.Domain.Users;
 
-namespace Phrases.Infrastructure.Persistence
+namespace UserAccess.Infrastructure.Persistence
 {
-    public class PhraseContext : DbContext, IUnitOfWork
+    public class UserAccessContext : DbContext, IUnitOfWork
     {
-        public const string DEFAULT_SCHEMA = "phrase";
+        public const string DEFAULT_SCHEMA = "user";
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
 
-        private PhraseContext(DbContextOptions<PhraseContext> options) : base(options)
+        private UserAccessContext(DbContextOptions<UserAccessContext> options) : base(options)
         {
         }
 
-        public PhraseContext(DbContextOptions<PhraseContext> options, IMediator mediator) : base(options)
+        public UserAccessContext(DbContextOptions<UserAccessContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
@@ -32,7 +36,9 @@ namespace Phrases.Infrastructure.Persistence
             Debug.WriteLine("PhraseContext::ctor ->" + GetHashCode());
         }
 
-        public DbSet<Phrase> Phrases { get; set; }
+        public DbSet<UserRegistration> UserRegistrations { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         public bool HasActiveTransaction => _currentTransaction != null;
 
@@ -52,7 +58,7 @@ namespace Phrases.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PhraseContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserAccessContext).Assembly);
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
@@ -106,15 +112,13 @@ namespace Phrases.Infrastructure.Persistence
             }
         }
     }
-    //TODO Cleanup, string password used
-    public class PhraseContextDesignFactory : IDesignTimeDbContextFactory<PhraseContext>
+    public class MatchContextDesignFactory : IDesignTimeDbContextFactory<UserAccessContext>
     {
-        public PhraseContext CreateDbContext(string[] args)
+        public UserAccessContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<PhraseContext>()
+            var optionsBuilder = new DbContextOptionsBuilder<UserAccessContext>()
                 .UseSqlServer("Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-
-            return new PhraseContext(optionsBuilder.Options, new NoMediator());
+            return new UserAccessContext(optionsBuilder.Options, new NoMediator());
         }
 
         private class NoMediator : IMediator

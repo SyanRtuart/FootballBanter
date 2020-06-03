@@ -1,11 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.Application\Base.Application.csproj" />
+    <ProjectReference Include="..\UserAccess.Domain\UserAccess.Domain.csproj" />
+    <ProjectReference Include="..\UserAccess.Infrastructure\UserAccess.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

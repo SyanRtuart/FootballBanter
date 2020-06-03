@@ -8,19 +8,19 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Matches.Infrastructure.Persistence
 {
-    public class MatchContextInitalizer
+    public class MatchContextInitializer
     {
         private readonly MatchContext _context;
 
-        public MatchContextInitalizer(MatchContext context)
+        public MatchContextInitializer(MatchContext context)
         {
             _context = context;
         }
 
         public static void Initialize(MatchContext context)
         {
-            var initilizer = new MatchContextInitalizer(context);
-            initilizer.SeedEverything();
+            var initializer = new MatchContextInitializer(context);
+            initializer.SeedEverything();
         }
 
         public async void SeedEverything()

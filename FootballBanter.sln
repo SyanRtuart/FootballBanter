@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAccess.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAccess.IntegrationEvents", "..\UserAccess.IntegrationEvents\UserAccess.IntegrationEvents.csproj", "{4D856F5C-C877-4E8D-A373-D0C69C0BF5AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserAccess.API", "Services\UserAccess\UserAccess.API\UserAccess.API\UserAccess.API.csproj", "{22799A79-610D-407D-AC00-3DE8B921E1E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,10 @@ Global
 		{4D856F5C-C877-4E8D-A373-D0C69C0BF5AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D856F5C-C877-4E8D-A373-D0C69C0BF5AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D856F5C-C877-4E8D-A373-D0C69C0BF5AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22799A79-610D-407D-AC00-3DE8B921E1E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22799A79-610D-407D-AC00-3DE8B921E1E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22799A79-610D-407D-AC00-3DE8B921E1E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22799A79-610D-407D-AC00-3DE8B921E1E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,6 +181,7 @@ Global
 		{D49505DE-3A93-4D8B-8E16-21231E590208} = {F7BA23FA-84D6-4D4F-8426-520540763A75}
 		{50D47D8C-5857-4E61-8A7A-04119F1CF60D} = {F7BA23FA-84D6-4D4F-8426-520540763A75}
 		{4D856F5C-C877-4E8D-A373-D0C69C0BF5AC} = {F7BA23FA-84D6-4D4F-8426-520540763A75}
+		{22799A79-610D-407D-AC00-3DE8B921E1E6} = {F7BA23FA-84D6-4D4F-8426-520540763A75}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AC029FF3-7352-42D2-9867-5662078FCEC2}

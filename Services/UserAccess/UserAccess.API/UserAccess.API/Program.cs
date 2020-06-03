@@ -1,11 +1,16 @@
 using System;
-using Matches.Infrastructure.Persistence;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using UserAccess.Infrastructure.Persistence;
 
-namespace Matches.API
+namespace UserAccess.API
 {
     public class Program
     {
@@ -17,10 +22,10 @@ namespace Matches.API
             {
                 try
                 {
-                    var context = scope.ServiceProvider.GetService<MatchContext>();
+                    var context = scope.ServiceProvider.GetService<UserAccessContext>();
                     context.Database.Migrate();
 
-                    MatchContextInitializer.Initialize(context);
+                    UserAccessContextInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
@@ -32,10 +37,11 @@ namespace Matches.API
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-        }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
