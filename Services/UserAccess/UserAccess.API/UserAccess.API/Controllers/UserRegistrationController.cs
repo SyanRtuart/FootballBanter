@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
-using UserAccess.Application.UserRegistrations.RegisterNewUser;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using UserAccess.API.Configuration.Authorization;
+using UserAccess.Application.Authentication.Authenticate;
+using UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration;
+using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 
 namespace UserAccess.API.Controllers
 {
@@ -15,10 +23,15 @@ namespace UserAccess.API.Controllers
     public class UserRegistrationController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IConfiguration _config;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserRegistrationController(IMediator mediator)
+
+        public UserRegistrationController(IMediator mediator, IConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
             _mediator = mediator;
+            _config = config;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [AllowAnonymous]
@@ -39,5 +52,17 @@ namespace UserAccess.API.Controllers
 
             return Ok();
         }
+
+        [HttpGet("rs")]
+        [HasPermission(PaymentsPermissions.RegisterPayment)]
+        public async Task<IActionResult> TestRs()
+        {
+            return Ok();
+        }
+    }
+
+    public class PaymentsPermissions
+    {
+        public const string RegisterPayment = "RegisterPayment";
     }
 }

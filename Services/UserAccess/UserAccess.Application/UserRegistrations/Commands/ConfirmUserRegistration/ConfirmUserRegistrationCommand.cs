@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MediatR;
 
-namespace UserAccess.Application.UserRegistrations.ConfirmUserRegistration
+namespace UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration
 {
     public class ConfirmUserRegistrationCommand :IRequest
     {
