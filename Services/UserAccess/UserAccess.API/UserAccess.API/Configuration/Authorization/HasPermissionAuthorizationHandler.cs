@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Application.BuildingBlocks;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -17,24 +18,19 @@ namespace UserAccess.API.Configuration.Authorization
     internal class HasPermissionAuthorizationHandler : AttributeAuthorizationHandler<HasPermissionAuthorizationRequirement, HasPermissionAttribute>
     {
         private readonly IMediator _mediator;
-        //private readonly IExecutionContextAccessor _executionContextAccessor;
+        private readonly IExecutionContextAccessor _executionContextAccessor;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HasPermissionAuthorizationHandler(IMediator mediator, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public HasPermissionAuthorizationHandler(IMediator mediator, IHttpContextAccessor httpContextAccessor, IExecutionContextAccessor executionContextAccessor) : base(httpContextAccessor)
         {
             _mediator = mediator;
             _httpContextAccessor = httpContextAccessor;
+            _executionContextAccessor = executionContextAccessor;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, HasPermissionAuthorizationRequirement requirement, IEnumerable<HasPermissionAttribute> attributes)
         {
-            var authorizationHeader = this._httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            var tokenValue = authorizationHeader.First().Replace("Bearer ", "");
-            var handler = new JwtSecurityTokenHandler();
-            
-            var userId = Guid.Parse(handler.ReadJwtToken(tokenValue).Claims.SingleOrDefault(x => x.Type == "sub")?.Value ?? throw new InvalidOperationException());
-
-            var permissions = await _mediator.Send(new GetUserPermissionsQuery(userId));
+            var permissions = _executionContextAccessor.UserPermissions;
             
             foreach (var permissionAttribute in attributes)
             {
@@ -48,13 +44,13 @@ namespace UserAccess.API.Configuration.Authorization
             context.Succeed(requirement);
         }
 
-        private Task<bool> AuthorizeAsync(string permission, List<UserPermissionDto> permissions)
+        private Task<bool> AuthorizeAsync(string permission, List<string> permissions)
         {
 #if !DEBUG
             return Task.FromResult(true);
 #endif
 
-            if (permissions.Any(x => x.Code == permission))
+            if (permissions.Any(x => x == permission))
             {
                 return Task.FromResult(true);
             }

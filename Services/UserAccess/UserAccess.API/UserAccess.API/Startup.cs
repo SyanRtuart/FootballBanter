@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Application.BuildingBlocks;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
@@ -113,8 +114,6 @@ namespace UserAccess.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
             app.UseIdentityServer();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
@@ -199,6 +198,7 @@ namespace UserAccess.API
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
+            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
             services.AddHttpContextAccessor();
             return services;
         }
@@ -260,7 +260,7 @@ namespace UserAccess.API
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
                 {
-                    x.Authority = "http://localhost:5000";
+                    x.Authority = "https://localhost:5001";
                     x.ApiName = "userAccessApi";
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;

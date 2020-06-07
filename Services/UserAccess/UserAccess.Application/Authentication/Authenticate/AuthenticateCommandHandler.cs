@@ -59,7 +59,7 @@ namespace UserAccess.Application.Authentication.Authenticate
             user.Claims = new List<Claim>();
             user.Claims.Add(new Claim(CustomClaimTypes.Name, user.Name));
             user.Claims.Add(new Claim(CustomClaimTypes.Email, user.Email));
-
+            
             return new AuthenticationResult(user);
 
         }

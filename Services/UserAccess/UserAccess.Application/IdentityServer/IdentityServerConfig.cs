@@ -32,9 +32,9 @@ namespace UserAccess.Application.IdentityServer
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResource(CustomClaimTypes.Roles, new List<string>
+                new IdentityResource(CustomClaimTypes.Permission, new List<string>
                 {
-                    CustomClaimTypes.Roles
+                    CustomClaimTypes.Permission
                 })
             };
         }

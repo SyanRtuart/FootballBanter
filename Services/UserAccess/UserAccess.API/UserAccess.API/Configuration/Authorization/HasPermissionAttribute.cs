@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace UserAccess.API.Configuration.Authorization
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-    internal class HasPermissionAttribute : AuthorizeAttribute
+    public class HasPermissionAttribute : AuthorizeAttribute
     {
         internal static string HasPermissionPolicyName = "HasPermission";
         public string Name { get; }
