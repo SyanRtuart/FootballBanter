@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -102,7 +103,11 @@ namespace UserAccess.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                IdentityModelEventSource.ShowPII = true;
+                app.UseDeveloperExceptionPage();
+            }
 
             //app.UseHttpsRedirection();
 
@@ -247,7 +252,7 @@ namespace UserAccess.API
 
         public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services)
         {
-            services.AddIdentityServer()
+            services.AddIdentityServer(options => { options.IssuerUri = "http://useraccess.api"; })
                 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
                 .AddInMemoryApiResources(IdentityServerConfig.GetApis())
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
@@ -260,7 +265,7 @@ namespace UserAccess.API
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
                 {
-                    x.Authority = "https://localhost:5001";
+                    x.Authority = "http://useraccess.api";
                     x.ApiName = "userAccessApi";
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;

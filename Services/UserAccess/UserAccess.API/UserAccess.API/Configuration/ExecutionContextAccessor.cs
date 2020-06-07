@@ -45,6 +45,7 @@ namespace UserAccess.API.Configuration
         {
             get
             {
+
                 var permissionClaims = _httpContextAccessor
                     .HttpContext?
                     .User?
