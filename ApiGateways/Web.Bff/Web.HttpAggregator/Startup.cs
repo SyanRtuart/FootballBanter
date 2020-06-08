@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Web.HttpAggregator.Config;
 using Web.HttpAggregator.Services.Match;
 using Web.HttpAggregator.Services.Phrase;
+using Web.HttpAggregator.Services.UserAccess;
 
 namespace Web.HttpAggregator
 {
@@ -26,6 +27,8 @@ namespace Web.HttpAggregator
             services.AddApplicationServices();
 
             services.Configure<UrlsConfig>(Configuration.GetSection("urls"));
+            services.Configure<IdentityConfig>(Configuration.GetSection("IdentityConfig"));
+
 
             services.AddSwaggerGen(c =>
             {
@@ -67,7 +70,7 @@ namespace Web.HttpAggregator
 
             services.AddHttpClient<IMatchApiClient, MatchApiClient>();
             services.AddHttpClient<IPhraseApiClient, PhraseApiClient>();
-
+            services.AddHttpClient<IUserAccessApiClient, UserAccessApiClient>();
 
             return services;
         }

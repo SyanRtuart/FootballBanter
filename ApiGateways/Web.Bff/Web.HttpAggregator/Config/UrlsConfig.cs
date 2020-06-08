@@ -8,6 +8,7 @@ namespace Web.HttpAggregator.Config
     {
         public string Match { get; set; }
         public string Phrase { get; set; }
+        public string UserAccess { get; set; }
 
         public class MatchOperations
         {
@@ -50,6 +51,13 @@ namespace Web.HttpAggregator.Config
             {
                 return $"phrase/{phraseId}/downvote";
             }
+        }
+
+        public class UserAccessOperations
+        {
+            public static string RegisterNewUser => "userRegistration";
+
+            public static string Login => "connect/token";
         }
     }
 }

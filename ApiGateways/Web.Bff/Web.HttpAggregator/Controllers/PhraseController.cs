@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Web.HttpAggregator.Models.Phrase;
 using Web.HttpAggregator.Services.Phrase;
@@ -10,7 +9,6 @@ namespace Web.HttpAggregator.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [EnableCors("AllowOrigin")]
     public class PhraseController : ControllerBase
     {
         private readonly IPhraseApiClient _phraseApiClient;

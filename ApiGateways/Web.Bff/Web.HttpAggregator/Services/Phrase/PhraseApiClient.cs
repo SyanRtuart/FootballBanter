@@ -29,7 +29,6 @@ namespace Web.HttpAggregator.Services.Phrase
 
             var response = await _httpClient.PostAsync(url, content);
 
-            //response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<Guid>(responseContent);

@@ -39,7 +39,8 @@ namespace UserAccess.Application.IdentityServer
                     ClientId = "ro.client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
-
+                    AllowOfflineAccess = true,
+                    
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
@@ -48,6 +49,7 @@ namespace UserAccess.Application.IdentityServer
                     {
                         "userAccessApi",
                         "matchesApi",
+                        "phrasesApi",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     }

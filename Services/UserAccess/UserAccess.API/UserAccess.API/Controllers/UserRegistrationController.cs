@@ -20,7 +20,7 @@ namespace UserAccess.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("")]
-        public async Task<IActionResult> RegisterNewUser(RegisterNewUserRequest request)
+        public async Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserRequest request)
         {
             await _mediator.Send(new RegisterNewUserCommand(request.Login, request.Password, request.Email,
                 request.FirstName, request.LastName));
