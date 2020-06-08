@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Base.Api\Base.Api.csproj" />
     <ProjectReference Include="..\..\UserAccess.Application\UserAccess.Application.csproj" />
     <ProjectReference Include="..\..\UserAccess.Infrastructure\UserAccess.Infrastructure.csproj" />
   </ItemGroup>

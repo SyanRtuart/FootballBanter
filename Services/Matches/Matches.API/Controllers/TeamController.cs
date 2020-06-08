@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Matches.API.Configuration.Authorization;
+using Base.Api.Configuration.Authorization;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Application.Teams.Queries.GetAllTeams;
 using MediatR;

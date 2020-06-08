@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Base.Api.Configuration;
+using Base.Api.Configuration.Authorization;
 using Base.Application.BuildingBlocks;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
 using Matches.API.Behaviours;
-using Matches.API.Configuration;
-using Matches.API.Configuration.Authorization;
 using Matches.API.Filters;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Domain.Match;
