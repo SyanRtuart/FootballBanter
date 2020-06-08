@@ -8,14 +8,14 @@ namespace UserAccess.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "user");
+                "user");
 
             migrationBuilder.CreateTable(
-                name: "UserRegistrations",
+                "UserRegistrations",
                 schema: "user",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(),
                     ConfirmedDate = table.Column<DateTime>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
@@ -23,47 +23,41 @@ namespace UserAccess.Infrastructure.Migrations
                     Login = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    RegisterDate = table.Column<DateTime>(nullable: false),
+                    RegisterDate = table.Column<DateTime>(),
                     StatusCode = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRegistrations", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_UserRegistrations", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                "Users",
                 schema: "user",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(),
                     Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
-                    IsActive = table.Column<bool>(nullable: false),
+                    IsActive = table.Column<bool>(),
                     LastName = table.Column<string>(nullable: true),
                     Login = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                "UserRoles",
                 schema: "user",
                 columns: table => new
                 {
-                    RoleCode = table.Column<string>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
+                    RoleCode = table.Column<string>(),
+                    UserId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleCode });
+                    table.PrimaryKey("PK_UserRoles", x => new {x.UserId, x.RoleCode});
                     table.ForeignKey(
-                        name: "FK_UserRoles_Users_UserId",
-                        column: x => x.UserId,
+                        "FK_UserRoles_Users_UserId",
+                        x => x.UserId,
                         principalSchema: "user",
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -74,16 +68,16 @@ namespace UserAccess.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserRegistrations",
-                schema: "user");
+                "UserRegistrations",
+                "user");
 
             migrationBuilder.DropTable(
-                name: "UserRoles",
-                schema: "user");
+                "UserRoles",
+                "user");
 
             migrationBuilder.DropTable(
-                name: "Users",
-                schema: "user");
+                "Users",
+                "user");
         }
     }
 }

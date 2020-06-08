@@ -23,6 +23,7 @@ namespace Matches.API.Behaviours
             _validators = validators;
             _logger = logger;
         }
+
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {

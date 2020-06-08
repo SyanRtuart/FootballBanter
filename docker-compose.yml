@@ -20,3 +20,10 @@ services:
       context: .
       dockerfile: ApiGateways/Web.Bff/Web.HttpAggregator/Dockerfile
 
+
+  useraccess.api:
+    image: ${DOCKER_REGISTRY-}useraccessapi
+    build:
+      context: .
+      dockerfile: Services/UserAccess/UserAccess.API/UserAccess.API/Dockerfile
+

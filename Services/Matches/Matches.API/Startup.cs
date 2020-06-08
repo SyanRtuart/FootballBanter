@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using Base.Api.Configuration;
+using Base.Api.Configuration.Authorization;
+using Base.Application.BuildingBlocks;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
+using IdentityServer4.AccessTokenValidation;
 using Matches.API.Behaviours;
 using Matches.API.Filters;
 using Matches.Application.Teams.Commands.CreateTeam;
@@ -10,6 +15,7 @@ using Matches.Domain.Team;
 using Matches.Infrastructure.Persistence;
 using Matches.Infrastructure.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +25,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Matches.API
 {
@@ -34,6 +43,8 @@ namespace Matches.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AddLogging();
+
             services
                 .AddCustomMvc()
                 .AddApplication(Configuration)
@@ -41,12 +52,40 @@ namespace Matches.API
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
-                .AddDapper(Configuration);
+                .AddDapper(Configuration)
+                .ConfigureAuthentication(Configuration);
 
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Matches API", Version = "v1"});
+                options.SwaggerDoc("v1", new OpenApiInfo {Title = "Matches API", Version = "v1"});
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
@@ -64,8 +103,25 @@ namespace Matches.API
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private void AddLogging()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
+                    theme: AnsiConsoleTheme.Code)
+                .CreateLogger();
         }
     }
 
@@ -154,6 +210,35 @@ namespace Matches.API
         {
             services.AddTransient<ISqlConnectionFactory>(s =>
                 new SqlConnectionFactory(configuration["ConnectionString"]));
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
+            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
+            services.AddHttpContextAccessor();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                {
+                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                    policyBuilder.AddAuthenticationSchemes("Bearer");
+                });
+            });
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+                {
+                    x.Authority = "http://useraccess.api";
+                    x.ApiName = "matchesApi";
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                });
 
             return services;
         }

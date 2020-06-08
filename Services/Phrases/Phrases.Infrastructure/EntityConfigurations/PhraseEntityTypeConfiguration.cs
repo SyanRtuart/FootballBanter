@@ -13,7 +13,7 @@ namespace Phrases.Infrastructure.EntityConfigurations
             builder.ToTable("phrases", PhraseContext.DEFAULT_SCHEMA);
 
             builder.HasKey(o => o.Id);
-            
+
             builder.Ignore(b => b.DomainEvents);
 
 

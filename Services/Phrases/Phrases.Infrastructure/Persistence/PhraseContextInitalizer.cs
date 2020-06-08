@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using Phrases.Domain.Phrase;
 
 namespace Phrases.Infrastructure.Persistence
 {
@@ -15,7 +10,6 @@ namespace Phrases.Infrastructure.Persistence
         public PhraseContextInitalizer(PhraseContext context)
         {
             _context = context;
-
         }
 
         public static void Initialize(PhraseContext context)
@@ -32,14 +26,12 @@ namespace Phrases.Infrastructure.Persistence
 
                 await _context.SaveEntitiesAsync(CancellationToken.None);
             }
-
         }
 
         private void SeedPhrases()
         {
-
             //var phrases = new List<Phrase>();
-            
+
             //for (int i = 0; i < 10; i++)
             //{
             //    var newPhrases = new List<Phrase>
@@ -48,7 +40,6 @@ namespace Phrases.Infrastructure.Persistence
             //        Phrase.Create(i,i, "Good Banter 2", true),
             //        Phrase.Create(i,i, "Bad Banter 1", false),
             //        Phrase.Create(i,i, "Bad Banter 1", false),
-
 
 
             //    };

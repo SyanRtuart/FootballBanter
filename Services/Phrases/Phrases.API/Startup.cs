@@ -1,8 +1,13 @@
 using System;
 using System.Reflection;
+using Base.Api.Configuration;
+using Base.Api.Configuration.Authorization;
+using Base.Application.BuildingBlocks;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
+using IdentityServer4.AccessTokenValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -40,7 +45,8 @@ namespace Phrases.API
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
-                .AddDapper(Configuration);
+                .AddDapper(Configuration)
+                .ConfigureAuthentication(Configuration);
 
             services.AddSwaggerGen(c =>
             {
@@ -52,11 +58,10 @@ namespace Phrases.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-            
+
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
@@ -91,7 +96,6 @@ namespace Phrases.API
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IPhraseRepository, PhraseRepository>();
-
 
             return services;
         }
@@ -152,6 +156,35 @@ namespace Phrases.API
         {
             services.AddTransient<ISqlConnectionFactory>(s =>
                 new SqlConnectionFactory(configuration["ConnectionString"]));
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
+            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
+            services.AddHttpContextAccessor();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                {
+                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                    policyBuilder.AddAuthenticationSchemes("Bearer");
+                });
+            });
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+                {
+                    x.Authority = "http://useraccess.api";
+                    x.ApiName = "phrasesApi";
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                });
 
             return services;
         }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UserAccess.Domain.UserRegistrations;
@@ -27,10 +23,8 @@ namespace UserAccess.Infrastructure.EntityConfigurations
             builder.Property<DateTime>("_registerDate").HasColumnName("RegisterDate");
             builder.Property<DateTime?>("_confirmedDate").HasColumnName("ConfirmedDate");
 
-            builder.OwnsOne<UserRegistrationStatus>("_status", b =>
-            {
-                b.Property(x => x.Value).HasColumnName("StatusCode");
-            });
+            builder.OwnsOne<UserRegistrationStatus>("_status",
+                b => { b.Property(x => x.Value).HasColumnName("StatusCode"); });
         }
     }
 }

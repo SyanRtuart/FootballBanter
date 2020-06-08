@@ -5,6 +5,14 @@ namespace Matches.Domain.Match
 {
     public class Match : Entity, IAggregateRoot
     {
+        private Guid _awayTeamId;
+
+        private Guid _homeTeamId;
+
+        private Score _score;
+
+        private DateTime _utcDate;
+
         private Match(Guid homeTeamId, Guid awayTeamId, DateTime utcDate, Score score)
         {
             _homeTeamId = homeTeamId;
@@ -12,14 +20,6 @@ namespace Matches.Domain.Match
             _utcDate = utcDate;
             _score = score;
         }
-
-        private Guid _homeTeamId;
-
-        private Guid _awayTeamId;
-
-        private DateTime _utcDate;
-
-        private Score _score;
 
 
         private Match()

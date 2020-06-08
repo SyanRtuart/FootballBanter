@@ -8,34 +8,31 @@ namespace Phrases.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "phrase");
+                "phrase");
 
             migrationBuilder.CreateTable(
-                name: "phrases",
+                "phrases",
                 schema: "phrase",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false),
-                    DateDeleted = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    MatchId = table.Column<Guid>(nullable: false),
-                    Positive = table.Column<bool>(nullable: false),
-                    Score = table.Column<int>(nullable: false),
-                    TeamId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    DateCreated = table.Column<DateTime>(),
+                    DateDeleted = table.Column<DateTime>(),
+                    Description = table.Column<string>(),
+                    IsDeleted = table.Column<bool>(),
+                    MatchId = table.Column<Guid>(),
+                    Positive = table.Column<bool>(),
+                    Score = table.Column<int>(),
+                    TeamId = table.Column<Guid>()
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_phrases", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_phrases", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "phrases",
-                schema: "phrase");
+                "phrases",
+                "phrase");
         }
     }
 }

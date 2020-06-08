@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using UserAccess.Application.Authentication;
 using UserAccess.Domain.UserRegistrations;
 
-namespace UserAccess.Application.UserRegistrations.RegisterNewUser
+namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
 {
     public class RegisterNewUserCommandHandler : IRequestHandler<RegisterNewUserCommand, Guid>
     {
@@ -41,4 +38,3 @@ namespace UserAccess.Application.UserRegistrations.RegisterNewUser
         }
     }
 }
-

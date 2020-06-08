@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
-using UserAccess.Application.UserRegistrations.RegisterNewUser;
+using UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration;
+using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 
 namespace UserAccess.API.Controllers
 {
@@ -23,7 +20,7 @@ namespace UserAccess.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("")]
-        public async Task<IActionResult> RegisterNewUser(RegisterNewUserRequest request)
+        public async Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserRequest request)
         {
             await _mediator.Send(new RegisterNewUserCommand(request.Login, request.Password, request.Email,
                 request.FirstName, request.LastName));

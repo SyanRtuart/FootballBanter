@@ -1,26 +1,34 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using Base.Api.Configuration;
+using Base.Api.Configuration.Authorization;
+using Base.Application.BuildingBlocks;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
+using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Validation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 using UserAccess.API.Behaviours;
+using UserAccess.API.Configuration;
 using UserAccess.API.Filters;
+using UserAccess.Application.IdentityServer;
 using UserAccess.Application.UserRegistrations;
-using UserAccess.Application.UserRegistrations.RegisterNewUser;
+using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Infrastructure.Persistence;
 using UserAccess.Infrastructure.Repositories;
@@ -39,38 +47,91 @@ namespace UserAccess.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AddLogging();
+
             services
-                .AddCustomMvc()
+                .ConfigureIdentityServer()
+                .AddAuth(Configuration)
                 .AddApplication(Configuration)
                 .AddDomain(Configuration)
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
-                .AddDapper(Configuration);
+                .AddDapper(Configuration)
+                .AddCustomMvc();
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Phrases API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo {Title = "User Access API", Version = "v1"});
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                IdentityModelEventSource.ShowPII = true;
+                app.UseDeveloperExceptionPage();
+            }
 
             //app.UseHttpsRedirection();
 
             app.UseRouting();
 
-
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseIdentityServer();
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private void AddLogging()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
+                    theme: AnsiConsoleTheme.Code)
+                .CreateLogger();
         }
     }
 
@@ -91,7 +152,6 @@ namespace UserAccess.API
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 
-
             return services;
         }
 
@@ -107,7 +167,6 @@ namespace UserAccess.API
         {
             services.AddTransient<IUserRegistrationRepository, UserRegistrationRepository>();
 
-
             return services;
         }
 
@@ -116,18 +175,35 @@ namespace UserAccess.API
         {
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<UserAccessContext>(options =>
-                {
-                    options.UseSqlServer(configuration["ConnectionString"],
-                        sqlOptions =>
-                        {
-                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                            sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                        });
-                } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                    {
+                        options.UseSqlServer(configuration["ConnectionString"],
+                            sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                                sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                            });
+                    } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                 );
             return services;
         }
 
+        public static IServiceCollection AddAuth(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                {
+                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                    policyBuilder.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
+                });
+            });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
+            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
+            services.AddHttpContextAccessor();
+            return services;
+        }
 
         public static IServiceCollection AddCustomConfiguration(this IServiceCollection services,
             IConfiguration configuration)
@@ -146,7 +222,7 @@ namespace UserAccess.API
 
                     return new BadRequestObjectResult(problemDetails)
                     {
-                        ContentTypes = { "application/problem+json", "application/problem+xml" }
+                        ContentTypes = {"application/problem+json", "application/problem+xml"}
                     };
                 };
             });
@@ -171,5 +247,28 @@ namespace UserAccess.API
             return services;
         }
 
+        public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services)
+        {
+            services.AddIdentityServer(options => { options.IssuerUri = "http://useraccess.api"; })
+                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+                .AddInMemoryApiResources(IdentityServerConfig.GetApis())
+                .AddInMemoryClients(IdentityServerConfig.GetClients())
+                .AddInMemoryPersistedGrants()
+                .AddProfileService<ProfileService>()
+                .AddDeveloperSigningCredential();
+
+            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+                {
+                    x.Authority = "http://useraccess.api";
+                    x.ApiName = "userAccessApi";
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                });
+
+            return services;
+        }
     }
 }

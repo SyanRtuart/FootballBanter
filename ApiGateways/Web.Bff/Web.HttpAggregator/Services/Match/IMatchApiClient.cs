@@ -12,6 +12,5 @@ namespace Web.HttpAggregator.Services.Match
         Task<List<MatchData>> GetRecentMatchesAsync(Guid teamId);
 
         Task<MatchData> GetMatch(Guid id);
-
     }
 }

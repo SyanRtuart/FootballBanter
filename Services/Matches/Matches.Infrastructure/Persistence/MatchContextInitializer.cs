@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using Matches.Domain.Match;
 using Matches.Domain.Team;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Matches.Infrastructure.Persistence
 {
@@ -53,18 +52,16 @@ namespace Matches.Infrastructure.Persistence
             };
 
             _context.Teams.AddRange(teams);
-      
         }
+
         private async void SeedMatches()
         {
             var celticGuid = Guid.Parse("24521bf6-5467-4304-a6e5-14143330e605");
             var matches = new List<Match>();
 
             foreach (var team in _context.Teams.ToList())
-            {
                 matches.Add(Match.Create(celticGuid, team.Id, DateTime.Today.Subtract(TimeSpan.FromDays(2)),
                     new Score("Celtic", 2, 1)));
-            }
 
             //var matches = new List<Match>
             //{

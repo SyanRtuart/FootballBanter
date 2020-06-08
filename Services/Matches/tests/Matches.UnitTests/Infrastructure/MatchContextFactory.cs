@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +25,5 @@ namespace Matches.UnitTests.Infrastructure
 
             context.Dispose();
         }
-
     }
 }
