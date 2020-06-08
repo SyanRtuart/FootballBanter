@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Base.Application.Emails;
 using Base.Infrastructure;
+using Base.Infrastructure.Emails;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +45,7 @@ namespace UserAccess.API
                 .AddCustomMvc()
                 .AddApplication(Configuration)
                 .AddDomain(Configuration)
+                .AddInfrastructure(Configuration)
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
@@ -102,6 +105,13 @@ namespace UserAccess.API
             return services;
         }
 
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(configuration);
+
+            return services;
+        }
 
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
