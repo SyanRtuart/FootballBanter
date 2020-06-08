@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Base.Infrastructure;
+﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace UserAccess.Infrastructure.Persistence
 {
@@ -60,9 +53,11 @@ namespace UserAccess.Infrastructure.Persistence
                                             );"
             );
         }
+
         private void SeedTestUsers()
         {
-            _context.Database.ExecuteSqlRaw(@"INSERT INTO [user].UserRegistrations (Id, Login, Email, Password, FirstName, LastName, Name, StatusCode, RegisterDate, ConfirmedDate) VALUES 
+            _context.Database.ExecuteSqlRaw(
+                @"INSERT INTO [user].UserRegistrations (Id, Login, Email, Password, FirstName, LastName, Name, StatusCode, RegisterDate, ConfirmedDate) VALUES 
                                             (
 	                                            '2EBFECFC-ED13-43B8-B516-6AC89D51C410',
 	                                            'testMember@mail.com',

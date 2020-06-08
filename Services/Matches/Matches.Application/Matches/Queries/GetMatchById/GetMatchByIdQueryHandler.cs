@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
-using Matches.Application.Matches.Queries.GetRecentMatchesByTeam;
 using Matches.Application.Matches.SharedModels;
 using MediatR;
 
@@ -42,7 +38,7 @@ namespace Matches.Application.Matches.Queries.GetMatchById
                                INNER JOIN match.teams AS team1 
                                        ON m.hometeamid = team1.id " +
                                "WHERE m.id = @id";
-            
+
             var response = await connection.QueryAsync<MatchDto>(sql, new
             {
                 request.Id

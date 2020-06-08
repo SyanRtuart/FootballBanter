@@ -38,4 +38,3 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
         }
     }
 }
-

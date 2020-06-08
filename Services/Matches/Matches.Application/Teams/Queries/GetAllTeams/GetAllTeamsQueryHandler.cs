@@ -22,7 +22,7 @@ namespace Matches.Application.Teams.Queries.GetAllTeams
 
             const string sql = "SELECT * " +
                                "FROM Match.Teams ";
-            
+
             var teams = await connection.QueryAsync<TeamDto>(sql);
 
             return teams.AsList();

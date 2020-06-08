@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Application.Permissions;
@@ -38,30 +35,21 @@ namespace UserAccess.Application.Authentication.Authenticate
             var user = await connection.QuerySingleOrDefaultAsync<UserDto>(sql,
                 new
                 {
-                    request.Login,
+                    request.Login
                 });
 
-            if (user == null)
-            {
-                return new AuthenticationResult("Incorrect login or password");
-            }
+            if (user == null) return new AuthenticationResult("Incorrect login or password");
 
-            if (!user.IsActive)
-            {
-                return new AuthenticationResult("User is not active");
-            }
+            if (!user.IsActive) return new AuthenticationResult("User is not active");
 
             if (!PasswordManager.VerifyHashedPassword(user.Password, request.Password))
-            {
                 return new AuthenticationResult("Incorrect login or password");
-            }
 
             user.Claims = new List<Claim>();
             user.Claims.Add(new Claim(CustomClaimTypes.Name, user.Name));
             user.Claims.Add(new Claim(CustomClaimTypes.Email, user.Email));
-            
-            return new AuthenticationResult(user);
 
+            return new AuthenticationResult(user);
         }
     }
 }

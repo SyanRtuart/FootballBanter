@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using Base.Api.Configuration.Authorization;
-using Base.Application.Permissions;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using UserAccess.Application.Authentication.Authenticate;
 using UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration;
 using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 
@@ -24,15 +12,10 @@ namespace UserAccess.API.Controllers
     public class UserRegistrationController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IConfiguration _config;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public UserRegistrationController(IMediator mediator, IConfiguration config, IHttpContextAccessor httpContextAccessor)
+        public UserRegistrationController(IMediator mediator)
         {
             _mediator = mediator;
-            _config = config;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [AllowAnonymous]

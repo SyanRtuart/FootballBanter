@@ -106,13 +106,15 @@ namespace Phrases.Infrastructure.Persistence
             }
         }
     }
+
     //TODO Cleanup, string password used
     public class PhraseContextDesignFactory : IDesignTimeDbContextFactory<PhraseContext>
     {
         public PhraseContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<PhraseContext>()
-                .UseSqlServer("Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                .UseSqlServer(
+                    "Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
             return new PhraseContext(optionsBuilder.Options, new NoMediator());
         }

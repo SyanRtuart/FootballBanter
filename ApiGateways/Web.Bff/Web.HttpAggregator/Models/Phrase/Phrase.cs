@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.HttpAggregator.Models.Phrase
 {
@@ -17,13 +12,12 @@ namespace Web.HttpAggregator.Models.Phrase
             Score = score;
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public bool Positive { get; private set; }
+        public bool Positive { get; }
 
-        public int Score { get; private set; }
-
+        public int Score { get; }
     }
 }

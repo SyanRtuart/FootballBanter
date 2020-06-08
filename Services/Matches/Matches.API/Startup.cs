@@ -15,7 +15,6 @@ using Matches.Domain.Team;
 using Matches.Infrastructure.Persistence;
 using Matches.Infrastructure.Repositories;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,7 +45,7 @@ namespace Matches.API
         {
             AddLogging();
 
-            services.ConfigureAuthentication(Configuration)
+            services
                 .AddCustomMvc()
                 .AddApplication(Configuration)
                 .AddRepositories(Configuration)
@@ -54,7 +53,7 @@ namespace Matches.API
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
                 .AddDapper(Configuration)
-                ;
+                .ConfigureAuthentication(Configuration);
 
 
             services.AddSwaggerGen(options =>
@@ -63,7 +62,8 @@ namespace Matches.API
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
@@ -81,8 +81,7 @@ namespace Matches.API
                             },
                             Scheme = "oauth2",
                             Name = "Bearer",
-                            In = ParameterLocation.Header,
-
+                            In = ParameterLocation.Header
                         },
                         new List<string>()
                     }
@@ -118,7 +117,10 @@ namespace Matches.API
                 .MinimumLevel.Override("System", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
+                    theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
         }
     }
@@ -212,35 +214,13 @@ namespace Matches.API
             return services;
         }
 
-        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
+            IConfiguration configuration)
         {
-            services.AddSingleton<OpenIdConnectPostConfigureOptions>();
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
             services.AddHttpContextAccessor();
-
-            //services.AddAuthentication(options =>
-            //    {
-            //        options.DefaultScheme = "Cookies";
-            //        options.DefaultChallengeScheme = "oidc";
-            //    })
-            //    .AddCookie("Cookies")
-            //    .AddOpenIdConnect("oidc", options =>
-            //    {
-            //        options.Authority = "http://userAccess.api";
-            //        options.RequireHttpsMetadata = false;
-
-            //        options.ClientId = "ro.client";
-            //        options.ClientSecret = "secret";
-            //        options.ResponseType = "code";
-
-            //        options.SaveTokens = true;
-
-            //        options.Scope.Add("api1");
-            //        options.Scope.Add("offline_access");
-            //    });
 
             services.AddAuthorization(options =>
             {
@@ -258,9 +238,7 @@ namespace Matches.API
                     x.ApiName = "matchesApi";
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
-                    
                 });
-
 
             return services;
         }

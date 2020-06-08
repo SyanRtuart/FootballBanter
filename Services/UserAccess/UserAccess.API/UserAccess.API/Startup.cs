@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using Base.Api.Configuration;
 using Base.Api.Configuration.Authorization;
 using Base.Application.BuildingBlocks;
@@ -14,7 +9,6 @@ using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Validation;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +19,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
@@ -67,14 +60,15 @@ namespace UserAccess.API
                 .AddFluentValidation(Configuration)
                 .AddDapper(Configuration)
                 .AddCustomMvc();
-            
+
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "User Access API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo {Title = "User Access API", Version = "v1"});
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
@@ -92,8 +86,7 @@ namespace UserAccess.API
                             },
                             Scheme = "oauth2",
                             Name = "Bearer",
-                            In = ParameterLocation.Header,
-
+                            In = ParameterLocation.Header
                         },
                         new List<string>()
                     }
@@ -134,7 +127,10 @@ namespace UserAccess.API
                 .MinimumLevel.Override("System", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
+                    theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
         }
     }
@@ -179,14 +175,14 @@ namespace UserAccess.API
         {
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<UserAccessContext>(options =>
-                {
-                    options.UseSqlServer(configuration["ConnectionString"],
-                        sqlOptions =>
-                        {
-                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                            sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                        });
-                } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
+                    {
+                        options.UseSqlServer(configuration["ConnectionString"],
+                            sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                                sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                            });
+                    } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
                 );
             return services;
         }
@@ -226,7 +222,7 @@ namespace UserAccess.API
 
                     return new BadRequestObjectResult(problemDetails)
                     {
-                        ContentTypes = { "application/problem+json", "application/problem+xml" }
+                        ContentTypes = {"application/problem+json", "application/problem+xml"}
                     };
                 };
             });
@@ -259,7 +255,7 @@ namespace UserAccess.API
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
                 .AddInMemoryPersistedGrants()
                 .AddProfileService<ProfileService>()
-                .AddDeveloperSigningCredential(); 
+                .AddDeveloperSigningCredential();
 
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
 
@@ -270,7 +266,6 @@ namespace UserAccess.API
                     x.ApiName = "userAccessApi";
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
-                    
                 });
 
             return services;

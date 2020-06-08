@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace Phrases.UnitTests
@@ -8,7 +7,6 @@ namespace Phrases.UnitTests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

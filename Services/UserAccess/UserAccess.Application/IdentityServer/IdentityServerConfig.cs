@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Base.Application.Permissions;
-using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
-
 
 namespace UserAccess.Application.IdentityServer
 {
@@ -22,13 +14,12 @@ namespace UserAccess.Application.IdentityServer
                 new ApiResource("userAccessApi", "User Access API"),
                 new ApiResource("matchesApi", "Matches API"),
                 new ApiResource("phrasesApi", "Phrases API")
-
             };
         }
 
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            return new IdentityResource[]
+            return new[]
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
@@ -53,13 +44,14 @@ namespace UserAccess.Application.IdentityServer
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = {
+                    AllowedScopes =
+                    {
                         "userAccessApi",
                         "matchesApi",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     }
-                },
+                }
             };
         }
     }

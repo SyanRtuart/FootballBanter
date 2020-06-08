@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +14,7 @@ namespace Web.HttpAggregator.Controllers
     public class PhraseController : ControllerBase
     {
         private readonly IPhraseApiClient _phraseApiClient;
+
         public PhraseController(IPhraseApiClient phraseApiClient)
         {
             _phraseApiClient = phraseApiClient;
@@ -30,9 +29,7 @@ namespace Web.HttpAggregator.Controllers
             var phrases = new List<Phrase>();
 
             foreach (var phraseData in response)
-            {
                 phrases.Add(new Phrase(phraseData.Id, phraseData.Description, phraseData.Positive, phraseData.Score));
-            }
 
             return phrases;
         }
@@ -64,7 +61,7 @@ namespace Web.HttpAggregator.Controllers
             var request = new DownvotePhraseRequest(phraseId);
 
             await _phraseApiClient.DownvotePhrase(request);
-            
+
             return Ok();
         }
     }

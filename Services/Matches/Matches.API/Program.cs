@@ -19,17 +19,10 @@ namespace Matches.API
 
                 using (var scope = host.Services.CreateScope())
                 {
-                    try
-                    {
-                        var context = scope.ServiceProvider.GetService<MatchContext>();
-                        context.Database.Migrate();
+                    var context = scope.ServiceProvider.GetService<MatchContext>();
+                    context.Database.Migrate();
 
-                        MatchContextInitializer.Initialize(context);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw;
-                    }
+                    MatchContextInitializer.Initialize(context);
 
 
                     host.Run();
@@ -45,12 +38,11 @@ namespace Matches.API
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
     }
 }

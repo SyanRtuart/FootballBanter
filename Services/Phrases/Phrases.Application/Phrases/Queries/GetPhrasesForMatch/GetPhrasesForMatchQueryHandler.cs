@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure;
@@ -25,7 +24,7 @@ namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
                                "FROM Phrase.Phrases AS p " +
                                "WHERE (IsDeleted = 0) AND " +
                                "p.MatchId = @MatchId";
-            
+
             var phrases = await connection.QueryAsync<PhraseDto>(sql, new
             {
                 request.MatchId

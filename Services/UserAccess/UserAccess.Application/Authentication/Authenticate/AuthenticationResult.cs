@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UserAccess.Application.Authentication.Authenticate
+﻿namespace UserAccess.Application.Authentication.Authenticate
 {
     public class AuthenticationResult
     {
@@ -16,9 +10,10 @@ namespace UserAccess.Application.Authentication.Authenticate
 
         public AuthenticationResult(UserDto user)
         {
-            this.IsAuthenticated = true;
-            this.User = user;
+            IsAuthenticated = true;
+            User = user;
         }
+
         public bool IsAuthenticated { get; }
 
         public string AuthenticationError { get; }

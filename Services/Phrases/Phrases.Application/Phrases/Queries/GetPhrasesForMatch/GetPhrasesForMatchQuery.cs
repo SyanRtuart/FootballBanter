@@ -11,6 +11,6 @@ namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
             MatchId = matchId;
         }
 
-        public Guid MatchId { get;}
+        public Guid MatchId { get; }
     }
 }

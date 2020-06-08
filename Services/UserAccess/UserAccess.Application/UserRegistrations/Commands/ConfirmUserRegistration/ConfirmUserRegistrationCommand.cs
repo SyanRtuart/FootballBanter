@@ -3,7 +3,7 @@ using MediatR;
 
 namespace UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration
 {
-    public class ConfirmUserRegistrationCommand :IRequest
+    public class ConfirmUserRegistrationCommand : IRequest
     {
         public ConfirmUserRegistrationCommand(Guid userRegistrationId)
         {

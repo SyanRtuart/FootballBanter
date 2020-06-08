@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-
 namespace UserAccess.API.Filters
 {
     public class ExceptionFilter : IExceptionFilter
@@ -42,21 +41,21 @@ namespace UserAccess.API.Filters
 
                 foreach (var error in validationException.Errors) errorBuilder.AppendLine(error.ErrorMessage);
 
-                problemDetails.Errors.Add("DomainValidations", new[] { errorBuilder.ToString() });
+                problemDetails.Errors.Add("DomainValidations", new[] {errorBuilder.ToString()});
 
                 context.Result = new BadRequestObjectResult(problemDetails);
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
             }
             else
             {
                 var json = new JsonErrorResponse
                 {
-                    Messages = new[] { "An error occur.Try it again." }
+                    Messages = new[] {"An error occur.Try it again."}
                 };
 
                 if (env.IsDevelopment()) json.DeveloperMessage = context.Exception;
 
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.HttpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
             }
 
             context.ExceptionHandled = true;
