@@ -258,7 +258,7 @@ namespace UserAccess.API
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
                 .AddInMemoryPersistedGrants()
                 .AddProfileService<ProfileService>()
-                .AddDeveloperSigningCredential();
+                .AddDeveloperSigningCredential(); 
 
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
 

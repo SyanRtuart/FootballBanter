@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Matches.API.Configuration.Authorization;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Application.Teams.Queries.GetAllTeams;
 using MediatR;
@@ -18,6 +19,7 @@ namespace Matches.API.Controllers
             _mediator = mediator;
         }
 
+        [HasPermission("DeleteBanter")]
         [HttpGet]
         public async Task<List<TeamDto>> GetAll()
         {

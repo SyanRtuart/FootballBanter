@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Base.Application.BuildingBlocks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
-namespace UserAccess.API.Configuration.Authorization
+namespace Matches.API.Configuration.Authorization
 {
     internal class HasPermissionAuthorizationHandler : AttributeAuthorizationHandler<HasPermissionAuthorizationRequirement, HasPermissionAttribute>
     {
@@ -25,7 +26,7 @@ namespace UserAccess.API.Configuration.Authorization
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, HasPermissionAuthorizationRequirement requirement, IEnumerable<HasPermissionAttribute> attributes)
         {
             var userPermissions = _executionContextAccessor.UserPermissions;
-            
+
             foreach (var permissionAttribute in attributes)
             {
                 if (!await AuthorizeAsync(permissionAttribute.Name, userPermissions))

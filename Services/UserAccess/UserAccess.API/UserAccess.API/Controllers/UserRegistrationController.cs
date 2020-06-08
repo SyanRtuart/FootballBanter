@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Application.Permissions;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -54,15 +55,12 @@ namespace UserAccess.API.Controllers
         }
 
         [HttpGet("rs")]
-        [HasPermission(PaymentsPermissions.RegisterPayment)]
+        [HasPermission("DeleteBanter")]
         public async Task<IActionResult> TestRs()
         {
             return Ok();
         }
     }
 
-    public class PaymentsPermissions
-    {
-        public const string RegisterPayment = "RegisterPayment";
-    }
+ 
 }

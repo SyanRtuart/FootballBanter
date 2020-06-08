@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Application.Permissions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-using UserAccess.Application.Contracts;
 
 namespace UserAccess.Application.IdentityServer
 {

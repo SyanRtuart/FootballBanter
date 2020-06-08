@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserAccess.Application.Contracts
+namespace Base.Application.Permissions
 {
     public class CustomClaimTypes
     {

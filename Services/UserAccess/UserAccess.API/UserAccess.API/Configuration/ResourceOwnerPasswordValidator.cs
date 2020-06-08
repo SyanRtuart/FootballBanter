@@ -4,11 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Application.Permissions;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using MediatR;
 using UserAccess.Application.Authentication.Authenticate;
-using UserAccess.Application.Contracts;
 using UserAccess.Application.Users.Queries;
 
 namespace UserAccess.API.Configuration

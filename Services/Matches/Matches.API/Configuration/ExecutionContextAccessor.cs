@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Base.Application.BuildingBlocks;
 using Base.Application.Permissions;
 using Microsoft.AspNetCore.Http;
 
-namespace UserAccess.API.Configuration
+namespace Matches.API.Configuration
 {
     public class ExecutionContextAccessor : IExecutionContextAccessor
     {
@@ -52,7 +51,7 @@ namespace UserAccess.API.Configuration
                     .Claims?
                     .Where(x => x.Type == CustomClaimTypes.Permission)
                     .ToList();
-                
+
                 var userPermissions = new List<string>();
                 if (permissionClaims != null)
                 {

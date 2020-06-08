@@ -4,11 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Base.Application.Permissions;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
-using UserAccess.Application.Contracts;
 
 
 namespace UserAccess.Application.IdentityServer
@@ -55,6 +55,7 @@ namespace UserAccess.Application.IdentityServer
                     },
                     AllowedScopes = {
                         "userAccessApi",
+                        "matchesApi",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     }
