@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Web.HttpAggregator.Models.Match
 {
     public class Match
     {
-        public Match(Guid id, Guid homeTeamId, Guid awayTeamId, string homeTeam, string awayTeam, string scoreWinner, int scoreHomeTeam, int scoreAwayTeam)
+        public Match(Guid id, Guid homeTeamId, Guid awayTeamId, string homeTeam, string awayTeam, string scoreWinner,
+            int scoreHomeTeam, int scoreAwayTeam)
         {
             Id = id;
             HomeTeamId = homeTeamId;

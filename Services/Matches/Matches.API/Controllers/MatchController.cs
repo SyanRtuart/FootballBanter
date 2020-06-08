@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Matches.Application.Matches.Commands.CreateMatch;
 using Matches.Application.Matches.Queries.GetMatchById;
 using Matches.Application.Matches.Queries.GetRecentMatchesByTeam;
+using Matches.Application.Matches.SharedModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MatchDto = Matches.Application.Matches.SharedModels.MatchDto;
 
 namespace Matches.API.Controllers
 {
@@ -27,7 +27,7 @@ namespace Matches.API.Controllers
         {
             return await _mediator.Send(new GetMatchByIdQuery(id));
         }
-        
+
         [HttpGet]
         public async Task<List<MatchDto>> GetRecentMatchesByTeam([FromQuery] Guid teamId)
         {
@@ -42,6 +42,5 @@ namespace Matches.API.Controllers
 
             return Ok();
         }
-
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,17 +14,10 @@ namespace Phrases.API
 
             using (var scope = host.Services.CreateScope())
             {
-                try
-                {
-                    var context = scope.ServiceProvider.GetService<PhraseContext>();
-                    context.Database.Migrate();
+                var context = scope.ServiceProvider.GetService<PhraseContext>();
+                context.Database.Migrate();
 
-                    //PhraseContextInitalizer.Initialize(context);
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
+                //PhraseContextInitalizer.Initialize(context);
 
 
                 host.Run();

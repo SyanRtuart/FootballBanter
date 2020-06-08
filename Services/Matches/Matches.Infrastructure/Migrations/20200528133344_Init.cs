@@ -8,50 +8,44 @@ namespace Matches.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "match");
+                "match");
 
             migrationBuilder.CreateTable(
-                name: "matches",
+                "matches",
                 schema: "match",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    AwayTeamId = table.Column<Guid>(nullable: false),
-                    HomeTeamId = table.Column<Guid>(nullable: false),
-                    StatusId = table.Column<Guid>(nullable: false),
-                    UtcDate = table.Column<DateTime>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    AwayTeamId = table.Column<Guid>(),
+                    HomeTeamId = table.Column<Guid>(),
+                    StatusId = table.Column<Guid>(),
+                    UtcDate = table.Column<DateTime>(),
                     ScoreWinner = table.Column<string>(nullable: true),
                     ScoreHomeTeam = table.Column<int>(nullable: true),
                     ScoreAwayTeam = table.Column<int>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_matches", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_matches", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "teams",
+                "teams",
                 schema: "match",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    Name = table.Column<string>()
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_teams", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_teams", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "matches",
-                schema: "match");
+                "matches",
+                "match");
 
             migrationBuilder.DropTable(
-                name: "teams",
-                schema: "match");
+                "teams",
+                "match");
         }
     }
 }

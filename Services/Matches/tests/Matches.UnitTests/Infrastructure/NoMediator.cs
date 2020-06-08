@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -10,7 +7,8 @@ namespace Matches.UnitTests.Infrastructure
 {
     public class NoMediator : IMediator
     {
-        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default(CancellationToken)) where TNotification : INotification
+        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
+            where TNotification : INotification
         {
             return Task.CompletedTask;
         }
@@ -25,10 +23,10 @@ namespace Matches.UnitTests.Infrastructure
             return Task.CompletedTask;
         }
 
-        public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
+            CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<TResponse>(default(TResponse));
+            return Task.FromResult(default(TResponse));
         }
-
     }
 }

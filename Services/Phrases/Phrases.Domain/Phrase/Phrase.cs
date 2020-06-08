@@ -7,19 +7,19 @@ namespace Phrases.Domain.Phrase
     {
         private DateTime _dateCreated;
 
+        private DateTime _dateDeleted;
+
         private string _description;
+
+        private bool _isDeleted;
 
         private Guid _matchId;
 
         private bool _positive;
 
-        private Guid _teamId;
-
-        private bool _isDeleted;
-
-        private DateTime _dateDeleted;
-
         private int _score;
+
+        private Guid _teamId;
 
         private Phrase(Guid matchId, Guid teamId, string description, bool positive)
         {
