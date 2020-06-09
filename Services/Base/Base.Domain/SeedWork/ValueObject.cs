@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Base.Domain.Exceptions;
 
 namespace Base.Domain.SeedWork
 {

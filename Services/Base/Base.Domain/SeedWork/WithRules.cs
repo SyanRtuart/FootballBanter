@@ -1,4 +1,6 @@
-﻿namespace Base.Domain.SeedWork
+﻿using Base.Domain.Exceptions;
+
+namespace Base.Domain.SeedWork
 {
     public abstract class WithRules
     {

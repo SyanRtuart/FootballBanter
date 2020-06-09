@@ -10,4 +10,8 @@
     <PackageReference Include="Dapper" Version="2.0.35" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Base.Domain\Base.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

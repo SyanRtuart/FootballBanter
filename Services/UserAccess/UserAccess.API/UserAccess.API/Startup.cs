@@ -26,6 +26,9 @@ using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Base.Api.Configuration.Validation;
+using Base.Domain.Exceptions;
+using Hellang.Middleware.ProblemDetails;
 using UserAccess.API.Behaviours;
 using UserAccess.API.Configuration;
 using UserAccess.API.Filters;
@@ -77,11 +80,13 @@ namespace UserAccess.API
             {
                 IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
+                app.UseProblemDetails();
             }
 
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
@@ -131,7 +136,7 @@ namespace UserAccess.API
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
-            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); })
+            services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             return services;
@@ -210,22 +215,10 @@ namespace UserAccess.API
             IConfiguration configuration)
         {
             services.AddOptions();
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = context =>
-                {
-                    var problemDetails = new ValidationProblemDetails(context.ModelState)
-                    {
-                        Instance = context.HttpContext.Request.Path,
-                        Status = StatusCodes.Status400BadRequest,
-                        Detail = "Please refer to the errors property for additional details."
-                    };
 
-                    return new BadRequestObjectResult(problemDetails)
-                    {
-                        ContentTypes = {"application/problem+json", "application/problem+xml"}
-                    };
-                };
+            services.AddProblemDetails(x =>
+            {
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             });
 
             return services;

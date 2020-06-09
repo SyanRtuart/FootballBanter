@@ -1,5 +1,6 @@
 ﻿using System;
 using Base.Domain.SeedWork;
+using UserAccess.Domain.UserRegistrations.Rules;
 
 namespace UserAccess.Domain.UserRegistrations
 {
@@ -35,7 +36,7 @@ namespace UserAccess.Domain.UserRegistrations
             string lastName,
             IUsersCounter usersCounter)
         {
-            //this.CheckRule(new UserLoginMustBeUniqueRule(usersCounter, login));
+            this.CheckRule(new UserLoginMustBeUniqueRule(usersCounter, login));
 
             _login = login;
             _password = password;
