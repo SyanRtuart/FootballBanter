@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using Base.Api.Configuration;
 using Base.Api.Configuration.Authorization;
+using Base.Api.Configuration.Validation;
 using Base.Application.BuildingBlocks;
+using Base.Domain.Exceptions;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
+using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using Matches.API.Behaviours;
-using Matches.API.Filters;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Domain.Match;
 using Matches.Domain.Team;
@@ -27,12 +29,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
+using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Matches.API
 {
     public class Startup
     {
+        public static ILogger ApiLogger;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -43,12 +48,12 @@ namespace Matches.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AddLogging();
+            AddLogging(services);
 
             services
                 .AddCustomMvc()
                 .AddApplication(Configuration)
-                .AddRepositories(Configuration)
+                .AddDomain(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
@@ -95,9 +100,10 @@ namespace Matches.API
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             //app.UseHttpsRedirection();
+            
+            app.UseProblemDetails();
 
             app.UseRouting();
-
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
@@ -108,7 +114,7 @@ namespace Matches.API
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
-        private void AddLogging()
+        private IServiceCollection AddLogging(IServiceCollection services)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -122,6 +128,23 @@ namespace Matches.API
                     "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
                     theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
+
+            ApiLogger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/Logs")
+                .CreateLogger();
+
+            services.AddSingleton(ApiLogger);
+
+            return services;
         }
     }
 
@@ -129,7 +152,7 @@ namespace Matches.API
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
-            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); })
+            services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             return services;
@@ -146,10 +169,15 @@ namespace Matches.API
             return services;
         }
 
-        public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<ITeamRepository, TeamRepository>();
             services.AddTransient<IMatchRepository, MatchRepository>();
+
+            services.AddProblemDetails(x =>
+            {
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
+            });
 
             return services;
         }

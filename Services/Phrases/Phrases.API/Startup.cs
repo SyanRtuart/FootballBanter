@@ -2,9 +2,12 @@ using System;
 using System.Reflection;
 using Base.Api.Configuration;
 using Base.Api.Configuration.Authorization;
+using Base.Api.Configuration.Validation;
 using Base.Application.BuildingBlocks;
+using Base.Domain.Exceptions;
 using Base.Infrastructure;
 using FluentValidation.AspNetCore;
+using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,16 +21,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Phrases.API.Behaviours;
-using Phrases.API.Filters;
 using Phrases.Application.Phrases.Commands.CreatePhrase;
 using Phrases.Domain.Phrase;
 using Phrases.Infrastructure.Persistence;
 using Phrases.Infrastructure.Repositories;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Phrases.API
 {
     public class Startup
     {
+        public static ILogger ApiLogger;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,10 +46,12 @@ namespace Phrases.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AddLogging(services);
+            
             services
                 .AddCustomMvc()
                 .AddApplication(Configuration)
-                .AddRepositories(Configuration)
+                .AddDomain(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
@@ -61,6 +71,8 @@ namespace Phrases.API
 
             //app.UseHttpsRedirection();
 
+            app.UseProblemDetails();
+
             app.UseRouting();
 
             app.UseSwagger();
@@ -70,13 +82,46 @@ namespace Phrases.API
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
+
+        private IServiceCollection AddLogging(IServiceCollection services)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
+                    theme: AnsiConsoleTheme.Code)
+                .CreateLogger();
+
+            ApiLogger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/Logs")
+                .CreateLogger();
+
+            services.AddSingleton(ApiLogger);
+
+            return services;
+        }
     }
 
     internal static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
-            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter)); })
+            services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             return services;
@@ -92,10 +137,14 @@ namespace Phrases.API
 
             return services;
         }
-
-        public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IPhraseRepository, PhraseRepository>();
+
+            services.AddProblemDetails(x =>
+            {
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
+            });
 
             return services;
         }

@@ -62,7 +62,6 @@ namespace UserAccess.API
                 .AddApplication(Configuration)
                 .AddDomain(Configuration)
                 .AddInfrastructure(Configuration)
-                .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
@@ -78,13 +77,12 @@ namespace UserAccess.API
             {
                 IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
-                app.UseProblemDetails();
             }
 
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseProblemDetails();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
@@ -153,6 +151,13 @@ namespace UserAccess.API
 
         public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IUserRegistrationRepository, UserRegistrationRepository>();
+
+            services.AddProblemDetails(x =>
+            {
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
+            });
+
             services.AddTransient<IUsersCounter, UsersCounter>();
 
             return services;
@@ -165,13 +170,6 @@ namespace UserAccess.API
             services.Configure<AuthMessageSenderOptions>(configuration);
             services.Configure<EmailsConfiguration>(configuration.GetSection("EmailsConfiguration"));
 
-
-            return services;
-        }
-
-        public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddTransient<IUserRegistrationRepository, UserRegistrationRepository>();
 
             return services;
         }
@@ -216,10 +214,6 @@ namespace UserAccess.API
         {
             services.AddOptions();
 
-            services.AddProblemDetails(x =>
-            {
-                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
-            });
 
             return services;
         }
