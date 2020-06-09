@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Base.Api.Configuration;
 using Base.Api.Configuration.Authorization;
 using Base.Application.BuildingBlocks;
+using Base.Application.Emails;
 using Base.Infrastructure;
+using Base.Infrastructure.Emails;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Validation;
@@ -22,7 +21,11 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
+using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using UserAccess.API.Behaviours;
 using UserAccess.API.Configuration;
 using UserAccess.API.Filters;
@@ -37,6 +40,9 @@ namespace UserAccess.API
 {
     public class Startup
     {
+        public static ILogger _apiLogger;
+        public static ILogger _loggerForApi;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -47,13 +53,15 @@ namespace UserAccess.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AddLogging();
+            AddLogging(services);
+
 
             services
                 .ConfigureIdentityServer()
                 .AddAuth(Configuration)
                 .AddApplication(Configuration)
                 .AddDomain(Configuration)
+                .AddInfrastructure(Configuration)
                 .AddRepositories(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomConfiguration(Configuration)
@@ -118,7 +126,7 @@ namespace UserAccess.API
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
-        private void AddLogging()
+        private IServiceCollection AddLogging(IServiceCollection services)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -131,8 +139,25 @@ namespace UserAccess.API
                     outputTemplate:
                     "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
                     theme: AnsiConsoleTheme.Code)
+                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/Logs")
                 .CreateLogger();
+
+            _apiLogger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/ApiLogs")
+                .CreateLogger();
+
+            services.AddSingleton<ILogger>(_apiLogger);
+
+            return services;
         }
+
     }
 
     internal static class ServiceCollectionExtensions
@@ -162,6 +187,15 @@ namespace UserAccess.API
             return services;
         }
 
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(configuration);
+            services.Configure<EmailsConfiguration>(configuration.GetSection("EmailsConfiguration"));
+            
+
+            return services;
+        }
 
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {

@@ -4,52 +4,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Base.Application.Emails;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Serilog;
 
 namespace Base.Infrastructure.Emails
 {
     public class EmailSender : IEmailSender
     {
-        private readonly EmailsConfiguration _configuration;
+        private readonly ILogger _logger;
         private readonly AuthMessageSenderOptions _options;
+        private readonly EmailsConfiguration _emailsConfiguration;
 
-        public EmailSender(EmailsConfiguration configuration, IOptions<AuthMessageSenderOptions> optionsAccessor)
+        public EmailSender(ILogger logger, IOptions<AuthMessageSenderOptions> optionsAccessor, IOptions<EmailsConfiguration> emailsConfigurationOptions)
         {
-            _configuration = configuration;
+            _logger = logger;
             _options = optionsAccessor.Value;
+            _emailsConfiguration = emailsConfigurationOptions.Value;
         }
         public Task SendEmail(EmailMessage message)
         {
-            //_logger.Information(
-            //    "Email sent. From: {From}, To: {To}, Subject: {Subject}, Content: {Content}.",
-            //    _configuration.FromEmail,
-            //    message.To,
-            //    message.Subject,
-            //    message.Content);
+            _logger.Information(
+                $"Email sent. From: {_emailsConfiguration.FromEmail}, To: {message.To}, Subject: {message.Subject}, Content: {message.Content}.",
+                _emailsConfiguration.FromEmail,
+                message.To,
+                message.Subject,
+                message.Content);
             return Execute(_options.SendGridKey, message.To, message.Subject, message.Content);
         }
 
         public Task Execute(string apiKey, string to, string subject, string content)
         {
             var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            var msg = new SendGridMessage
             {
-                From = new EmailAddress("ryan_7229@hotmail.co.uk", _options.SendGridUser),
+                From = new EmailAddress(_emailsConfiguration.FromEmail, _options.SendGridUser),
                 Subject = subject,
                 PlainTextContent = content,
                 HtmlContent = content
             };
-            msg.AddTo(new EmailAddress("ryan_7229@hotmail.co.uk"));
 
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
+            msg.AddTo(new EmailAddress(to));
+
             msg.SetClickTracking(false, false);
 
             return client.SendEmailAsync(msg);
         }
-
     }
 }

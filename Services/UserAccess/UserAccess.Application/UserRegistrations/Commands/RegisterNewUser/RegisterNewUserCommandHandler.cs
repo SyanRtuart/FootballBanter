@@ -16,10 +16,11 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
 
         public RegisterNewUserCommandHandler(
             IUserRegistrationRepository userRegistrationRepository,
-            IUsersCounter usersCounter)
+            IUsersCounter usersCounter, IEmailSender emailSender)
         {
             _userRegistrationRepository = userRegistrationRepository;
             _usersCounter = usersCounter;
+            _emailSender = emailSender;
         }
 
         public async Task<Guid> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
@@ -36,8 +37,8 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
 
             await _userRegistrationRepository.AddAsync(registration);
 
-            var email = new EmailMessage("ryan_7229@hotmail.co.uk",
-                "MyMeetings - Please confirm your registration",
+            var email = new EmailMessage(request.Email,
+                "Football Banter - Please confirm your registration",
                 "This should be link to confirmation page. For now, please execute HTTP request " +
                 $"PATCH http://localhost:5000/userAccess/userRegistrations/{registration.Id}/confirm");
 
