@@ -1,10 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Base.Api.Configuration;
 using Base.Api.Configuration.Authorization;
+using Base.Api.Configuration.Validation;
 using Base.Application.BuildingBlocks;
 using Base.Application.Emails;
+using Base.Domain.Exceptions;
 using Base.Infrastructure;
 using Base.Infrastructure.Emails;
 using FluentValidation.AspNetCore;
+using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Validation;
 using MediatR;
@@ -23,15 +29,8 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Base.Api.Configuration.Validation;
-using Base.Domain.Exceptions;
-using Hellang.Middleware.ProblemDetails;
 using UserAccess.API.Behaviours;
 using UserAccess.API.Configuration;
-using UserAccess.API.Filters;
 using UserAccess.Application.IdentityServer;
 using UserAccess.Application.UserRegistrations;
 using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
@@ -70,7 +69,6 @@ namespace UserAccess.API
                 .AddDapper(Configuration)
                 .AddSwagger(Configuration)
                 .AddCustomMvc();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,15 +119,16 @@ namespace UserAccess.API
                 .MinimumLevel.Override("System", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
                 .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/Logs")
                 .CreateLogger();
 
-            services.AddSingleton<ILogger>(ApiLogger);
+            services.AddSingleton(ApiLogger);
 
             return services;
         }
-
     }
 
     internal static class ServiceCollectionExtensions
@@ -159,12 +158,13 @@ namespace UserAccess.API
             return services;
         }
 
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(configuration);
             services.Configure<EmailsConfiguration>(configuration.GetSection("EmailsConfiguration"));
-            
+
 
             return services;
         }
@@ -241,7 +241,8 @@ namespace UserAccess.API
             return services;
         }
 
-        public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddIdentityServer(options => { options.IssuerUri = "http://useraccess.api"; })
                 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
@@ -269,7 +270,7 @@ namespace UserAccess.API
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "User Access API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo {Title = "User Access API", Version = "v1"});
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

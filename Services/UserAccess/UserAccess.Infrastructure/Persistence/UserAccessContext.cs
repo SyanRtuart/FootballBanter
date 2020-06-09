@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Base.Infrastructure.Extensions;
+using Base.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -107,6 +108,16 @@ namespace UserAccess.Infrastructure.Persistence
                     _currentTransaction = null;
                 }
             }
+        }
+
+        bool IDbContextAccessor.HasActiveTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DbContext GetDbContext()
+        {
+            return this;
         }
     }
 
