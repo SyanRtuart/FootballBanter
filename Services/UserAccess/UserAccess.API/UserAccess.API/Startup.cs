@@ -31,11 +31,13 @@ using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
 using UserAccess.API.Behaviours;
 using UserAccess.API.Configuration;
+using UserAccess.Application.Configuration.Commands;
 using UserAccess.Application.IdentityServer;
 using UserAccess.Application.UserRegistrations;
 using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Infrastructure.Persistence;
+using UserAccess.Infrastructure.Processing.InternalCommands;
 using UserAccess.Infrastructure.Repositories;
 
 namespace UserAccess.API
@@ -145,6 +147,8 @@ namespace UserAccess.API
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+
+            services.AddScoped<ICommandsScheduler, CommandsScheduler>();
 
             return services;
         }

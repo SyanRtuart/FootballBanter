@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.Application\Base.Application.csproj" />
     <ProjectReference Include="..\UserAccess.Domain\UserAccess.Domain.csproj" />
-    <ProjectReference Include="..\UserAccess.Infrastructure\UserAccess.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Base.Domain.SeedWork;
+using UserAccess.Domain.UserRegistrations.Events;
 using UserAccess.Domain.UserRegistrations.Rules;
 
 namespace UserAccess.Domain.UserRegistrations
@@ -63,13 +64,13 @@ namespace UserAccess.Domain.UserRegistrations
 
         public void Confirm()
         {
-            //this.CheckRule(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
-            //this.CheckRule(new UserRegistrationCannotBeConfirmedAfterExpirationRule(_status));
+            this.CheckRule(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
+            this.CheckRule(new UserRegistrationCannotBeConfirmedAfterExpirationRule(_status));
 
             _status = UserRegistrationStatus.Confirmed;
             _confirmedDate = DateTime.UtcNow;
 
-            //this.AddDomainEvent(new UserRegistrationConfirmedDomainEvent(this.Id));
+            this.AddDomainEvent(new UserRegistrationConfirmedDomainEvent(this.Id));
         }
     }
 }
