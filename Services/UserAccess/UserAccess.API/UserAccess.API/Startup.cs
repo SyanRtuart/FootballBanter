@@ -40,8 +40,7 @@ namespace UserAccess.API
 {
     public class Startup
     {
-        public static ILogger _apiLogger;
-        public static ILogger _loggerForApi;
+        public static ILogger ApiLogger;
 
         public Startup(IConfiguration configuration)
         {
@@ -55,9 +54,8 @@ namespace UserAccess.API
         {
             AddLogging(services);
 
-
             services
-                .ConfigureIdentityServer()
+                .ConfigureIdentityServer(Configuration)
                 .AddAuth(Configuration)
                 .AddApplication(Configuration)
                 .AddDomain(Configuration)
@@ -67,39 +65,9 @@ namespace UserAccess.API
                 .AddCustomConfiguration(Configuration)
                 .AddFluentValidation(Configuration)
                 .AddDapper(Configuration)
+                .AddSwagger(Configuration)
                 .AddCustomMvc();
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "User Access API", Version = "v1"});
-
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description =
-                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header
-                        },
-                        new List<string>()
-                    }
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,10 +107,9 @@ namespace UserAccess.API
                     outputTemplate:
                     "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
                     theme: AnsiConsoleTheme.Code)
-                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/Logs")
                 .CreateLogger();
 
-            _apiLogger = new LoggerConfiguration()
+            ApiLogger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
@@ -150,10 +117,10 @@ namespace UserAccess.API
                 .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
-                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/ApiLogs")
+                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/Logs")
                 .CreateLogger();
 
-            services.AddSingleton<ILogger>(_apiLogger);
+            services.AddSingleton<ILogger>(ApiLogger);
 
             return services;
         }
@@ -281,7 +248,7 @@ namespace UserAccess.API
             return services;
         }
 
-        public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services)
+        public static IServiceCollection ConfigureIdentityServer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentityServer(options => { options.IssuerUri = "http://useraccess.api"; })
                 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
@@ -301,6 +268,43 @@ namespace UserAccess.API
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
                 });
+
+            return services;
+        }
+
+        public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "User Access API", Version = "v1" });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
+            });
 
             return services;
         }
