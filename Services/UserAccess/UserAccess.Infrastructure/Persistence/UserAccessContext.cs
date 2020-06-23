@@ -30,7 +30,7 @@ namespace UserAccess.Infrastructure.Persistence
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
 
-            Debug.WriteLine("PhraseContext::ctor ->" + GetHashCode());
+            Debug.WriteLine("UserAccessContext::ctor ->" + GetHashCode());
         }
 
         public DbSet<UserRegistration> UserRegistrations { get; set; }
@@ -48,10 +48,7 @@ namespace UserAccess.Infrastructure.Persistence
             return true;
         }
 
-        public IDbContextTransaction GetCurrentTransaction()
-        {
-            return _currentTransaction;
-        }
+        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,6 +73,7 @@ namespace UserAccess.Infrastructure.Persistence
             try
             {
                 await SaveChangesAsync();
+
                 transaction.Commit();
             }
             catch

@@ -8,6 +8,7 @@ using Base.Application.BuildingBlocks;
 using Base.Application.Emails;
 using Base.Domain.Exceptions;
 using Base.Infrastructure;
+using Base.Infrastructure.DomainEventsDispatching;
 using Base.Infrastructure.Emails;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
@@ -36,6 +37,7 @@ using UserAccess.Application.IdentityServer;
 using UserAccess.Application.UserRegistrations;
 using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 using UserAccess.Domain.UserRegistrations;
+using UserAccess.Infrastructure.DomainEventsDispatching;
 using UserAccess.Infrastructure.Persistence;
 using UserAccess.Infrastructure.Processing.InternalCommands;
 using UserAccess.Infrastructure.Repositories;
@@ -171,6 +173,9 @@ namespace UserAccess.API
             IConfiguration configuration)
         {
             services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddScoped<DbContext, UserAccessContext>();
+            services.AddScoped<IDomainEventsAccessor, UserAccess.Infrastructure.DomainEventsDispatching.DomainEventsAccessor>();
+            services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
             services.Configure<AuthMessageSenderOptions>(configuration);
             services.Configure<EmailsConfiguration>(configuration.GetSection("EmailsConfiguration"));
 

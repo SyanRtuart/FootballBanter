@@ -7,20 +7,20 @@ namespace Base.Domain.SeedWork
 {
     public abstract class Entity
     {
-        private List<INotification> _domainEvents;
+        private List<IDomainEvent> _domainEvents;
         private int? _requestedHashCode;
 
         public Guid Id { get; protected set; }
 
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
 
-        public void AddDomainEvent(INotification eventItem)
+        public void AddDomainEvent(IDomainEvent eventItem)
         {
-            _domainEvents = _domainEvents ?? new List<INotification>();
+            _domainEvents = _domainEvents ?? new List<IDomainEvent>();
             _domainEvents.Add(eventItem);
         }
 
-        public void RemoveDomainEvent(INotification eventItem)
+        public void RemoveDomainEvent(IDomainEvent eventItem)
         {
             _domainEvents?.Remove(eventItem);
         }

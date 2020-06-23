@@ -48,7 +48,7 @@ namespace UserAccess.Domain.UserRegistrations
             _registerDate = DateTime.UtcNow;
             _status = UserRegistrationStatus.WaitingForConfirmation;
 
-            //this.AddDomainEvent(new NewUserRegisteredDomainEvent(this.Id, _login, _email, _firstName, _lastName, _name, _registerDate));
+            this.AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _login, _email, _firstName, _lastName, _name, _registerDate));
         }
 
         public static UserRegistration RegisterNewUser(
@@ -70,7 +70,7 @@ namespace UserAccess.Domain.UserRegistrations
             _status = UserRegistrationStatus.Confirmed;
             _confirmedDate = DateTime.UtcNow;
 
-            this.AddDomainEvent(new UserRegistrationConfirmedDomainEvent(this.Id));
+            this.AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id));
         }
     }
 }

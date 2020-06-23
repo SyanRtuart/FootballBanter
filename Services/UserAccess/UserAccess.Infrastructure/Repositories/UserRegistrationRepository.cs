@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Base.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Infrastructure.Persistence;
@@ -8,21 +9,29 @@ namespace UserAccess.Infrastructure.Repositories
 {
     public class UserRegistrationRepository : IUserRegistrationRepository
     {
-        private readonly UserAccessContext _userAccessContext;
+        private readonly UserAccessContext _context;
 
-        public UserRegistrationRepository(UserAccessContext userAccessContext)
+        public UserRegistrationRepository(UserAccessContext context)
         {
-            _userAccessContext = userAccessContext;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task AddAsync(UserRegistration userRegistration)
         {
-            await _userAccessContext.AddAsync(userRegistration);
+            await _context.AddAsync(userRegistration);
         }
 
         public async Task<UserRegistration> GetByIdAsync(Guid userRegistrationId)
         {
-            return await _userAccessContext.UserRegistrations.FirstOrDefaultAsync(x => x.Id == userRegistrationId);
+            return await _context.UserRegistrations.FirstOrDefaultAsync(x => x.Id == userRegistrationId);
+        }
+
+        public IUnitOfWork UnitOfWork
+        {
+            get
+            {
+                return _context;
+            }
         }
     }
 }

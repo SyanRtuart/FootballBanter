@@ -20,6 +20,8 @@ namespace Phrases.Application.Phrases.Commands.DownvotePhrase
 
             phrase.Downvote();
 
+            await _phraseRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
             return Unit.Value;
         }
     }

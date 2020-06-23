@@ -21,6 +21,8 @@ namespace UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistrat
 
             userRegistration.Confirm();
 
+            await _userRegistrationRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            
             return Unit.Value;
         }
     }

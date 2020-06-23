@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Base.Infrastructure.DomainEventsDispatching;
 using Base.Infrastructure.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,15 @@ namespace UserAccess.API.Behaviours
     {
         private readonly UserAccessContext _dbContext;
         private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
+        private readonly IDomainEventsDispatcher _domainEventsDispatcher;
 
         public TransactionBehaviour(UserAccessContext dbContext,
-            ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
+            ILogger<TransactionBehaviour<TRequest, TResponse>> logger, 
+            IDomainEventsDispatcher domainEventsDispatcher)
         {
             _dbContext = dbContext ?? throw new ArgumentException(nameof(UserAccessContext));
             _logger = logger ?? throw new ArgumentException(nameof(ILogger));
+            _domainEventsDispatcher = domainEventsDispatcher;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
@@ -45,18 +49,19 @@ namespace UserAccess.API.Behaviours
                             transaction.TransactionId, typeName, request);
 
                         response = await next();
-
+                            
                         _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}",
                             transaction.TransactionId, typeName);
 
                         await _dbContext.CommitTransactionAsync(transaction);
+                        await _domainEventsDispatcher.DispatchEventsAsync();
 
                         transactionId = transaction.TransactionId;
                     }
 
                     //await _orderingIntegrationEventService.PublishEventsThroughEventBusAsync(transactionId);
                 });
-
+                
                 return response;
             }
             catch (Exception ex)
