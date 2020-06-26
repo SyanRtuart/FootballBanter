@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\UserAccess.IntegrationEvents\UserAccess.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\Base\Base.Application\Base.Application.csproj" />
     <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
     <ProjectReference Include="..\UserAccess.Domain\UserAccess.Domain.csproj" />

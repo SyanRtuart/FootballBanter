@@ -13,7 +13,7 @@ using Phrases.Domain.Phrase;
 
 namespace Phrases.Infrastructure.Persistence
 {
-    public class PhraseContext : DbContext, IUnitOfWork
+    public class PhraseContext : DbContext
     {
         public const string DEFAULT_SCHEMA = "phrase";
 

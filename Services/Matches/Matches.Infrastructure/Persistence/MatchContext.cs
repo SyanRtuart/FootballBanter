@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Matches.Infrastructure.Persistence
 {
-    public class MatchContext : DbContext, IUnitOfWork
+    public class MatchContext : DbContext
     {
         public const string DEFAULT_SCHEMA = "match";
 

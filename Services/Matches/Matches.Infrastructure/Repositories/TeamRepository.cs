@@ -15,8 +15,6 @@ namespace Matches.Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IUnitOfWork UnitOfWork => _context;
-
         public async Task AddAsync(Team team)
         {
             await _context.Teams.AddAsync(team);

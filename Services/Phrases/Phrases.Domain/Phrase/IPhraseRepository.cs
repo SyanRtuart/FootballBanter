@@ -4,7 +4,7 @@ using Base.Domain.SeedWork;
 
 namespace Phrases.Domain.Phrase
 {
-    public interface IPhraseRepository : IRepository<Phrase>
+    public interface IPhraseRepository 
     {
         Phrase Add(Phrase phrase);
 

@@ -3,7 +3,7 @@ using Base.Domain.SeedWork;
 
 namespace Matches.Domain.Team
 {
-    public interface ITeamRepository : IRepository<Team>
+    public interface ITeamRepository
     {
         Task AddAsync(Team team);
     }

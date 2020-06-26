@@ -6,7 +6,7 @@ using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.Infrastructure.EntityConfigurations
 {
-    public class UserRegistrationEntityTypeConfiguration : IEntityTypeConfiguration<UserRegistration>
+    internal class UserRegistrationEntityTypeConfiguration : IEntityTypeConfiguration<UserRegistration>
     {
         public void Configure(EntityTypeBuilder<UserRegistration> builder)
         {

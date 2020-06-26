@@ -21,8 +21,6 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
 
             _phraseRepository.Add(phrase);
 
-            await _phraseRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-
             return phrase.Id;
         }
     }

@@ -20,8 +20,6 @@ namespace Phrases.Application.Phrases.Commands.DeletePhrase
 
             phrase.Delete();
 
-            await _phraseRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
-
             return Unit.Value;
         }
     }

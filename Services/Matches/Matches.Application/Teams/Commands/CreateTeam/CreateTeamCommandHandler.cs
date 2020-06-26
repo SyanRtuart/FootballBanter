@@ -21,8 +21,6 @@ namespace Matches.Application.Teams.Commands.CreateTeam
 
             await _teamRepository.AddAsync(team);
 
-            await _teamRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
-
             return team.Id;
         }
     }

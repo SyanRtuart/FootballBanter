@@ -9,6 +9,7 @@ using UserAccess.Infrastructure.Configuration.Email;
 using UserAccess.Infrastructure.Configuration.EventsBus;
 using UserAccess.Infrastructure.Configuration.Logging;
 using UserAccess.Infrastructure.Configuration.Mediator;
+using UserAccess.Infrastructure.Configuration.Outbox;
 using UserAccess.Infrastructure.Configuration.Processing;
 using UserAccess.Infrastructure.Configuration.UserAccess;
 
@@ -54,7 +55,7 @@ namespace UserAccess.Infrastructure.Configuration
             builder.RegisterModule(new ProcessingModule());
             builder.RegisterModule(new EventsBusModule());
             builder.RegisterModule(new MediatorModule());
-            //containerBuilder.RegisterModule(new OutboxModule());
+            builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
 
             builder.RegisterInstance(executionContextAccessor);

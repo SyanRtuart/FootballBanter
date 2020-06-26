@@ -6,7 +6,7 @@ using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.Infrastructure.EntityConfigurations
 {
-    public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
+    internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {

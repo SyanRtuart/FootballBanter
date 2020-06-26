@@ -12,18 +12,16 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
     public class RegisterNewUserCommandHandler : ICommandHandler<RegisterNewUserCommand, Guid>
     {
         private readonly IEmailSender _emailSender;
-        private readonly IMediator _mediator;
         private readonly IUserRegistrationRepository _userRegistrationRepository;
         private readonly IUsersCounter _usersCounter;
 
         public RegisterNewUserCommandHandler(
             IUserRegistrationRepository userRegistrationRepository,
-            IUsersCounter usersCounter, IEmailSender emailSender, IMediator mediator)
+            IUsersCounter usersCounter, IEmailSender emailSender)
         {
             _userRegistrationRepository = userRegistrationRepository;
             _usersCounter = usersCounter;
             _emailSender = emailSender;
-            _mediator = mediator;
         }
 
         public async Task<Guid> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
@@ -39,9 +37,6 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
                 _usersCounter);
 
             await _userRegistrationRepository.AddAsync(registration);
-
-            //await _mediator.Send(new NewUserRegisteredNotification(
-            //     new NewUserRegisteredDomainEvent(Guid.NewGuid(), "2", "2", "", "", "", DateTime.Now)));
 
             var email = new EmailMessage(request.Email,
                 "Football Banter - Please confirm your registration",

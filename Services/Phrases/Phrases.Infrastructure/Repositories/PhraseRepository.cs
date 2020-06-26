@@ -25,8 +25,5 @@ namespace Phrases.Infrastructure.Repositories
         {
             return await _context.Phrases.FirstOrDefaultAsync(o => o.Id == phraseId);
         }
-
-
-        public IUnitOfWork UnitOfWork => _context;
     }
 }

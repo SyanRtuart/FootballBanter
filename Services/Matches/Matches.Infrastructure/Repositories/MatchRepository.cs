@@ -15,8 +15,6 @@ namespace Matches.Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IUnitOfWork UnitOfWork => _context;
-
         public async Task AddAsync(Match match)
         {
             await _context.Matches.AddAsync(match);
