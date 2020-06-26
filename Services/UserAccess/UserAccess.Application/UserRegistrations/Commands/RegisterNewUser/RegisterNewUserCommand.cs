@@ -1,9 +1,9 @@
 ﻿using System;
-using MediatR;
+using UserAccess.Application.Contracts;
 
 namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
 {
-    public class RegisterNewUserCommand : IRequest<Guid>
+    public class RegisterNewUserCommand : CommandBase<Guid>
     {
         public RegisterNewUserCommand(string login, string password, string email, string firstName, string lastName)
         {

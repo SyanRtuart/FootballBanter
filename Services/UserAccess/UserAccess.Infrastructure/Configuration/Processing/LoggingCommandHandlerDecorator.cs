@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Application.BuildingBlocks;
@@ -17,9 +14,9 @@ namespace UserAccess.Infrastructure.Configuration.Processing
 {
     internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
     {
-        private readonly ILogger _logger;
-        private readonly IExecutionContextAccessor _executionContextAccessor;
         private readonly ICommandHandler<T> _decorated;
+        private readonly IExecutionContextAccessor _executionContextAccessor;
+        private readonly ILogger _logger;
 
         public LoggingCommandHandlerDecorator(
             ILogger logger,
@@ -30,12 +27,10 @@ namespace UserAccess.Infrastructure.Configuration.Processing
             _executionContextAccessor = executionContextAccessor;
             _decorated = decorated;
         }
+
         public async Task<Unit> Handle(T command, CancellationToken cancellationToken)
         {
-            if (command is IRecurringCommand)
-            {
-                return await _decorated.Handle(command, cancellationToken);
-            }
+            if (command is IRecurringCommand) return await _decorated.Handle(command, cancellationToken);
             using (
                 LogContext.Push(
                     new RequestLogEnricher(_executionContextAccessor),
@@ -43,19 +38,19 @@ namespace UserAccess.Infrastructure.Configuration.Processing
             {
                 try
                 {
-                    this._logger.Information(
+                    _logger.Information(
                         "Executing command {Command}",
                         command.GetType().Name);
 
                     var result = await _decorated.Handle(command, cancellationToken);
 
-                    this._logger.Information("Command {Command} processed successful", command.GetType().Name);
+                    _logger.Information("Command {Command} processed successful", command.GetType().Name);
 
                     return result;
                 }
                 catch (Exception exception)
                 {
-                    this._logger.Error(exception, "Command {Command} processing failed", command.GetType().Name);
+                    _logger.Error(exception, "Command {Command} processing failed", command.GetType().Name);
                     throw;
                 }
             }
@@ -69,25 +64,28 @@ namespace UserAccess.Infrastructure.Configuration.Processing
             {
                 _command = command;
             }
+
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
-                logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{_command.Id.ToString()}")));
+                logEvent.AddOrUpdateProperty(new LogEventProperty("Context",
+                    new ScalarValue($"Command:{_command.Id.ToString()}")));
             }
         }
 
         private class RequestLogEnricher : ILogEventEnricher
         {
             private readonly IExecutionContextAccessor _executionContextAccessor;
+
             public RequestLogEnricher(IExecutionContextAccessor executionContextAccessor)
             {
                 _executionContextAccessor = executionContextAccessor;
             }
+
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
                 if (_executionContextAccessor.IsAvailable)
-                {
-                    logEvent.AddOrUpdateProperty(new LogEventProperty("CorrelationId", new ScalarValue(_executionContextAccessor.CorrelationId)));
-                }
+                    logEvent.AddOrUpdateProperty(new LogEventProperty("CorrelationId",
+                        new ScalarValue(_executionContextAccessor.CorrelationId)));
             }
         }
     }

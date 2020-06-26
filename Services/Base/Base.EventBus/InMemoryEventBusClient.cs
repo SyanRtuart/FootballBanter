@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Base.Infrastructure.EventBus;
+﻿using Base.Infrastructure.EventBus;
 using Serilog;
 
 namespace Base.EventBus
@@ -19,7 +14,6 @@ namespace Base.EventBus
 
         public void Dispose()
         {
-
         }
 
         public void Publish<T>(T @event) where T : IntegrationEvent
@@ -36,7 +30,6 @@ namespace Base.EventBus
 
         public void StartConsuming()
         {
-
         }
     }
 }

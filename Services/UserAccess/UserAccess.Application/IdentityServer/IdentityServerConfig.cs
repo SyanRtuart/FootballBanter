@@ -40,7 +40,7 @@ namespace UserAccess.Application.IdentityServer
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AllowOfflineAccess = true,
-                    
+
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())

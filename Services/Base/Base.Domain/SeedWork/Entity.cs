@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Base.Domain.Exceptions;
-using MediatR;
 
 namespace Base.Domain.SeedWork
 {

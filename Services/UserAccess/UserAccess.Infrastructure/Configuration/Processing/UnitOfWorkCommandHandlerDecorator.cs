@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using MediatR;
@@ -30,7 +26,7 @@ namespace UserAccess.Infrastructure.Configuration.Processing
 
         public async Task<Unit> Handle(T command, CancellationToken cancellationToken)
         {
-            await this._decorated.Handle(command, cancellationToken);
+            await _decorated.Handle(command, cancellationToken);
 
             if (command is InternalCommandBase)
             {
@@ -42,7 +38,7 @@ namespace UserAccess.Infrastructure.Configuration.Processing
                 //}
             }
 
-            await this._unitOfWork.CommitAsync(cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }

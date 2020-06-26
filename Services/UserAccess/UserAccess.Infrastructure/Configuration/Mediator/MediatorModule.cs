@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
 using Autofac.Features.Variance;
 using FluentValidation;
 using MediatR;
-using MediatR.Extensions.Autofac.DependencyInjection;
-using MediatR.Pipeline;
-using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
-
+using Module = Autofac.Module;
 
 namespace UserAccess.Infrastructure.Configuration.Mediator
 {
-    public class MediatorModule : Autofac.Module
+    public class MediatorModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -39,22 +34,11 @@ namespace UserAccess.Infrastructure.Configuration.Mediator
             };
 
             foreach (var mediatorOpenType in mediatorOpenTypes)
-            {
                 builder
                     .RegisterAssemblyTypes(ThisAssembly, Assemblies.Application)
                     .AsClosedTypesOf(mediatorOpenType)
                     .AsImplementedInterfaces()
                     .FindConstructorsWith(new AllConstructorFinder());
-            }
-
-            builder.RegisterGeneric(typeof(RequestPostProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            builder.RegisterGeneric(typeof(RequestPreProcessorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-
-
-
-            //builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            //builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            //builder.RegisterGeneric(typeof(TransactionBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
 
 
             builder.Register<ServiceFactory>(ctx =>
@@ -62,8 +46,6 @@ namespace UserAccess.Infrastructure.Configuration.Mediator
                 var c = ctx.Resolve<IComponentContext>();
                 return t => c.Resolve(t);
             }).InstancePerLifetimeScope();
-
-
         }
 
         private class ScopedContravariantRegistrationSource : IRegistrationSource

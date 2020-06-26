@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Base.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Infrastructure.Persistence;
@@ -25,6 +24,5 @@ namespace UserAccess.Infrastructure.Repositories
         {
             return await _context.UserRegistrations.FirstOrDefaultAsync(x => x.Id == userRegistrationId);
         }
-
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,14 +13,14 @@ namespace UserAccess.Infrastructure.Configuration.Processing
 {
     internal class ValidationCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
     {
-        private readonly IList<IValidator<T>> _validators;
         private readonly ICommandHandler<T> _decorated;
+        private readonly IList<IValidator<T>> _validators;
 
         public ValidationCommandHandlerDecorator(
             IList<IValidator<T>> validators,
             ICommandHandler<T> decorated)
         {
-            this._validators = validators;
+            _validators = validators;
             _decorated = decorated;
         }
 
@@ -39,10 +38,7 @@ namespace UserAccess.Infrastructure.Configuration.Processing
 
                 errorBuilder.AppendLine("Invalid command, reason: ");
 
-                foreach (var error in errors)
-                {
-                    errorBuilder.AppendLine(error.ErrorMessage);
-                }
+                foreach (var error in errors) errorBuilder.AppendLine(error.ErrorMessage);
 
                 throw new InvalidCommandException(errorBuilder.ToString(), null);
             }

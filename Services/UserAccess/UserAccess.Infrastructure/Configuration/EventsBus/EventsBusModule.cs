@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Base.EventBus;
 using Base.Infrastructure.EventBus;
 
 namespace UserAccess.Infrastructure.Configuration.EventsBus
 {
-    internal class EventsBusModule : Autofac.Module
+    internal class EventsBusModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

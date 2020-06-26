@@ -1,11 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using UserAccess.Application.Configuration.Commands;
 using UserAccess.Domain.UserRegistrations;
 
 namespace UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration
 {
-    public class ConfirmUserRegistrationCommandHandler : IRequestHandler<ConfirmUserRegistrationCommand, Unit>
+    public class ConfirmUserRegistrationCommandHandler : ICommandHandler<ConfirmUserRegistrationCommand, Unit>
     {
         private readonly IUserRegistrationRepository _userRegistrationRepository;
 

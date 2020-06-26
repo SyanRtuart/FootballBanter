@@ -1,9 +1,10 @@
 ﻿using System;
 using MediatR;
+using UserAccess.Application.Contracts;
 
 namespace UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration
 {
-    public class ConfirmUserRegistrationCommand : IRequest
+    public class ConfirmUserRegistrationCommand : CommandBase<Unit>
     {
         public ConfirmUserRegistrationCommand(Guid userRegistrationId)
         {

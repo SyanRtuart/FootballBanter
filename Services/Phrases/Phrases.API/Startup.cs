@@ -47,7 +47,7 @@ namespace Phrases.API
         public void ConfigureServices(IServiceCollection services)
         {
             AddLogging(services);
-            
+
             services
                 .AddCustomMvc()
                 .AddApplication(Configuration)
@@ -137,6 +137,7 @@ namespace Phrases.API
 
             return services;
         }
+
         public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IPhraseRepository, PhraseRepository>();

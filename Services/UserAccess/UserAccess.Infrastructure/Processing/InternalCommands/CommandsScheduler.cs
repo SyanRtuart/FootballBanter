@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Base.Infrastructure;
-using Dapper;
-using Newtonsoft.Json;
 using UserAccess.Application.Configuration.Commands;
 using UserAccess.Application.Contracts;
 
@@ -22,7 +16,7 @@ namespace UserAccess.Infrastructure.Processing.InternalCommands
 
         public async Task EnqueueAsync(ICommand command)
         {
-            var connection = this._sqlConnectionFactory.GetOpenConnection();
+            var connection = _sqlConnectionFactory.GetOpenConnection();
 
             //const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
             //                         "(@Id, @EnqueueDate, @Type, @Data)";
@@ -41,7 +35,7 @@ namespace UserAccess.Infrastructure.Processing.InternalCommands
 
         public async Task EnqueueAsync<T>(ICommand<T> command)
         {
-            var connection = this._sqlConnectionFactory.GetOpenConnection();
+            var connection = _sqlConnectionFactory.GetOpenConnection();
 
             //const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
             //                         "(@Id, @EnqueueDate, @Type, @Data)";

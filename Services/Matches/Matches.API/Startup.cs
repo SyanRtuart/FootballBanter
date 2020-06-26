@@ -100,7 +100,7 @@ namespace Matches.API
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             //app.UseHttpsRedirection();
-            
+
             app.UseProblemDetails();
 
             app.UseRouting();

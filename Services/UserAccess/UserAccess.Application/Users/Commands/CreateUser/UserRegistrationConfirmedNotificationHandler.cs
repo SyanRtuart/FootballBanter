@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using UserAccess.Application.Configuration.Commands;
 
 namespace UserAccess.Application.Users.Commands.CreateUser
 {
-    public class UserRegistrationConfirmedNotificationHandler : INotificationHandler<UserRegistrationConfirmedNotification>
+    public class
+        UserRegistrationConfirmedNotificationHandler : INotificationHandler<UserRegistrationConfirmedNotification>
     {
         private readonly ICommandsScheduler _commandsScheduler;
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Base.Application.Events;
 using Base.Domain.SeedWork;
 using Base.Infrastructure;
@@ -15,7 +10,7 @@ using UserAccess.Infrastructure.Processing.InternalCommands;
 
 namespace UserAccess.Infrastructure.Configuration.Processing
 {
-    internal class ProcessingModule : Autofac.Module
+    internal class ProcessingModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -34,6 +29,15 @@ namespace UserAccess.Infrastructure.Configuration.Processing
             builder.RegisterType<CommandsScheduler>()
                 .As<ICommandsScheduler>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<CommandExecutor>()
+                .As<ICommandExecutor>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<QueryExecutor>()
+                .As<IQueryExecutor>()
+                .InstancePerLifetimeScope();
+
 
             builder.RegisterGenericDecorator(
                 typeof(UnitOfWorkCommandHandlerDecorator<>),

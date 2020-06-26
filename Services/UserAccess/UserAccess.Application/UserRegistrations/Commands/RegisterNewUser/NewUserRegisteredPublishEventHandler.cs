@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
@@ -11,13 +7,6 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
     public class NewUserRegisteredPublishEventHandler : INotificationHandler<NewUserRegisteredNotification>
     {
         //private readonly IEventsBus _eventsBus;
-
-        public NewUserRegisteredPublishEventHandler(
-            //IEventsBus eventsBus
-            )
-        {
-            //_eventsBus = eventsBus;
-        }
 
         public Task Handle(NewUserRegisteredNotification notification, CancellationToken cancellationToken)
         {

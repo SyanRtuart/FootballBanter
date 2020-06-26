@@ -9,18 +9,18 @@ namespace UserAccess.Domain.UserRegistrations
     {
         private DateTime? _confirmedDate;
 
-        private string _email;
+        private readonly string _email;
 
-        private string _firstName;
+        private readonly string _firstName;
 
-        private string _lastName;
-        private string _login;
+        private readonly string _lastName;
+        private readonly string _login;
 
-        private string _name;
+        private readonly string _name;
 
         private string _password;
 
-        private DateTime _registerDate;
+        private readonly DateTime _registerDate;
 
         private UserRegistrationStatus _status;
 
@@ -37,7 +37,7 @@ namespace UserAccess.Domain.UserRegistrations
             string lastName,
             IUsersCounter usersCounter)
         {
-            this.CheckRule(new UserLoginMustBeUniqueRule(usersCounter, login));
+            CheckRule(new UserLoginMustBeUniqueRule(usersCounter, login));
 
             _login = login;
             _password = password;
@@ -48,7 +48,8 @@ namespace UserAccess.Domain.UserRegistrations
             _registerDate = DateTime.UtcNow;
             _status = UserRegistrationStatus.WaitingForConfirmation;
 
-            this.AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _login, _email, _firstName, _lastName, _name, _registerDate));
+            AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _login, _email, _firstName, _lastName, _name,
+                _registerDate));
         }
 
         public static UserRegistration RegisterNewUser(
@@ -64,13 +65,13 @@ namespace UserAccess.Domain.UserRegistrations
 
         public void Confirm()
         {
-            this.CheckRule(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
-            this.CheckRule(new UserRegistrationCannotBeConfirmedAfterExpirationRule(_status));
+            CheckRule(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
+            CheckRule(new UserRegistrationCannotBeConfirmedAfterExpirationRule(_status));
 
             _status = UserRegistrationStatus.Confirmed;
             _confirmedDate = DateTime.UtcNow;
 
-            this.AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id));
+            AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id));
         }
     }
 }

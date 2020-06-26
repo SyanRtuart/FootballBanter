@@ -1,3 +1,31 @@
 {"@t":"2020-06-26T09:55:09.1498065Z","@mt":"Logger configured","Module":"API"}
 {"@t":"2020-06-26T09:57:08.6350379Z","@mt":"Logger configured","Module":"API"}
 {"@t":"2020-06-26T09:57:14.8807340Z","@mt":"Email sent. From: ryan_7229@hotmail.co.uk, To: string, Subject: Football Banter - Please confirm your registration, Content: This should be link to confirmation page. For now, please execute HTTP request PATCH http://localhost:5000/userAccess/userRegistrations/cfec3f0f-7ace-4941-4e69-08d819b74d70/confirm.","Module":"UserAccess"}
+{"@t":"2020-06-26T10:02:47.8270357Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T10:19:01.5513511Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T10:23:45.3000151Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T10:23:54.3305896Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T10:25:06.7234937Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T10:28:52.0116441Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T10:29:13.5811523Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T11:52:14.4001792Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T11:59:53.9620356Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:00:38.1604910Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:00:45.6711518Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:02:58.7837673Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:15:20.9140785Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:15:29.7757977Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:15:57.8328942Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:29:43.5395699Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:30:24.0264460Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:32:48.5736344Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:36:24.0538433Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:36:45.5393520Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T12:40:24.3028641Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T13:01:15.6790194Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T13:10:20.9806338Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T13:18:00.7488112Z","@mt":"Executing command {@Command}","Command":{"Login":"","Password":"","Email":"","FirstName":"","LastName":"","Id":"597acb0c-a788-4fea-ad2e-1a8687fef118","$type":"RegisterNewUserCommand"},"Module":"UserAccess","Context":"Command:597acb0c-a788-4fea-ad2e-1a8687fef118"}
+{"@t":"2020-06-26T13:42:19.0871256Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T13:43:25.4836753Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-26T13:43:51.3846043Z","@mt":"Executing command {@Command}","Command":{"Login":"stridng","Password":"string","Email":"string","FirstName":"string","LastName":"string","Id":"0547e3be-73bf-4fcf-9884-fc65ba53f743","$type":"RegisterNewUserCommand"},"Module":"UserAccess","Context":"Command:0547e3be-73bf-4fcf-9884-fc65ba53f743"}
+{"@t":"2020-06-26T13:44:15.3751087Z","@mt":"Logger configured","Module":"API"}

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Base.Application.Emails;
 using Microsoft.Extensions.Options;
 using SendGrid;
@@ -13,16 +9,18 @@ namespace Base.Infrastructure.Emails
 {
     public class EmailSender : IEmailSender
     {
+        private readonly EmailsConfiguration _emailsConfiguration;
         private readonly ILogger _logger;
         private readonly AuthMessageSenderOptions _options;
-        private readonly EmailsConfiguration _emailsConfiguration;
 
-        public EmailSender(ILogger logger, IOptions<AuthMessageSenderOptions> optionsAccessor, EmailsConfiguration configuration)
+        public EmailSender(ILogger logger, IOptions<AuthMessageSenderOptions> optionsAccessor,
+            EmailsConfiguration configuration)
         {
             _logger = logger;
             _options = optionsAccessor.Value;
             _emailsConfiguration = configuration;
         }
+
         public Task SendEmail(EmailMessage message)
         {
             _logger.Information(

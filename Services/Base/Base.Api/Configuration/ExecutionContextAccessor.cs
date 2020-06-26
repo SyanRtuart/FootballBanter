@@ -20,7 +20,6 @@ namespace Base.Api.Configuration
         {
             get
             {
-
                 if (_httpContextAccessor
                     .HttpContext?
                     .User?

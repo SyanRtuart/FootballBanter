@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Base.Infrastructure.EventBus;
 
 namespace Base.EventBus
 {
     public sealed class InMemoryEventBus
     {
+        private readonly List<HandlerSubscription> _handlers;
+
         static InMemoryEventBus()
         {
         }
@@ -19,8 +18,6 @@ namespace Base.EventBus
         }
 
         public static InMemoryEventBus Instance { get; } = new InMemoryEventBus();
-
-        private readonly List<HandlerSubscription> _handlers;
 
         public void Subscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEvent
         {
@@ -34,12 +31,8 @@ namespace Base.EventBus
             var integrationEventHandlers = _handlers.Where(x => x.EventName == eventType.FullName).ToList();
 
             foreach (var integrationEventHandler in integrationEventHandlers)
-            {
                 if (integrationEventHandler.Handler is IIntegrationEventHandler<T> handler)
-                {
                     handler.Handle(@event);
-                }
-            }
         }
 
         private class HandlerSubscription

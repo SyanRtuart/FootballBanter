@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure.DomainEventsDispatching;
 using MediatR;
@@ -24,9 +20,9 @@ namespace UserAccess.Infrastructure.Configuration.Processing
 
         public async Task Handle(T notification, CancellationToken cancellationToken)
         {
-            await this._decorated.Handle(notification, cancellationToken);
+            await _decorated.Handle(notification, cancellationToken);
 
-            await this._domainEventsDispatcher.DispatchEventsAsync();
+            await _domainEventsDispatcher.DispatchEventsAsync();
         }
     }
 }

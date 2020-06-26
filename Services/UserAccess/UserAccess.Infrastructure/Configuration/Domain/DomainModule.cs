@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using UserAccess.Application.UserRegistrations;
 using UserAccess.Domain.UserRegistrations;
 
@@ -16,9 +11,6 @@ namespace UserAccess.Infrastructure.Configuration
             builder.RegisterType<UsersCounter>()
                 .As<IUsersCounter>()
                 .InstancePerLifetimeScope();
-
-
-
         }
     }
 }

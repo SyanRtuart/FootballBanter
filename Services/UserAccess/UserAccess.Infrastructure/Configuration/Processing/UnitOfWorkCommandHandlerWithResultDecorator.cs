@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using UserAccess.Application.Configuration.Commands;
@@ -11,7 +7,8 @@ using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.Infrastructure.Configuration.Processing
 {
-    internal class UnitOfWorkCommandHandlerWithResultDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
+    internal class UnitOfWorkCommandHandlerWithResultDecorator<T, TResult> : ICommandHandler<T, TResult>
+        where T : ICommand<TResult>
     {
         private readonly ICommandHandler<T, TResult> _decorated;
         private readonly IUnitOfWork _unitOfWork;
@@ -29,7 +26,7 @@ namespace UserAccess.Infrastructure.Configuration.Processing
 
         public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
         {
-            var result = await this._decorated.Handle(command, cancellationToken);
+            var result = await _decorated.Handle(command, cancellationToken);
 
             if (command is InternalCommandBase<TResult>)
             {
@@ -41,7 +38,7 @@ namespace UserAccess.Infrastructure.Configuration.Processing
                 //}
             }
 
-            await this._unitOfWork.CommitAsync(cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return result;
         }

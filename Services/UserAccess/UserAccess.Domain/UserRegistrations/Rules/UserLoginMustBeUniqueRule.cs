@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Base.Domain.SeedWork;
+﻿using Base.Domain.SeedWork;
 
 namespace UserAccess.Domain.UserRegistrations.Rules
 {
     public class UserLoginMustBeUniqueRule : IBusinessRule
     {
-        private readonly IUsersCounter _usersCounter;
         private readonly string _login;
+        private readonly IUsersCounter _usersCounter;
 
         internal UserLoginMustBeUniqueRule(IUsersCounter usersCounter, string login)
         {
@@ -18,7 +13,10 @@ namespace UserAccess.Domain.UserRegistrations.Rules
             _login = login;
         }
 
-        public bool IsBroken() => _usersCounter.CountUsersWithLogin(_login) > 0;
+        public bool IsBroken()
+        {
+            return _usersCounter.CountUsersWithLogin(_login) > 0;
+        }
 
         public string Message => "User Login must be unique";
     }

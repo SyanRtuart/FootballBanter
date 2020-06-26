@@ -20,9 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Serilog.Events;
 using Serilog.Formatting.Compact;
-using Serilog.Sinks.SystemConsole.Themes;
 using UserAccess.API.Configuration;
 using UserAccess.Application.IdentityServer;
 using UserAccess.Infrastructure.Configuration;
@@ -109,7 +107,9 @@ namespace UserAccess.API
         {
             _logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Console(
+                    outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level:u3}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
                 .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/logs")
                 .CreateLogger();
 
@@ -131,6 +131,16 @@ namespace UserAccess.API
                 Configuration["Security:TextEncryptionKey"],
                 null,
                 builder);
+
+            //var container = builder.Build();
+
+            //UserAccessCompositionRoot.SetContainer(container);
+
+            //using (var scope = UserAccessCompositionRoot.BeginLifetimeScope())
+            //{
+            //    var mediator = scope.Resolve<IMediator>();
+            //    mediator.Send(new RegisterNewUserCommand("", "", "", "", ""));
+            //}
         }
     }
 

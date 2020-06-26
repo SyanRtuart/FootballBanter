@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Base.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.Infrastructure.Configuration.DataAccess
 {
-    internal class DataAccessModule : Autofac.Module
+    internal class DataAccessModule : Module
     {
         private readonly string _databaseConnectionString;
         private readonly ILoggerFactory _loggerFactory;
@@ -48,7 +42,8 @@ namespace UserAccess.Infrastructure.Configuration.DataAccess
                 .Where(type => type.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope()
-                .FindConstructorsWith(new AllConstructorFinder()); ;
+                .FindConstructorsWith(new AllConstructorFinder());
+            ;
         }
     }
 }

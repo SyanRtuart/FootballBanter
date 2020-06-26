@@ -1,14 +1,6 @@
-﻿using System;
-using System.Data;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using Base.Domain.SeedWork;
-using Base.Infrastructure.Extensions;
-using MediatR;
+﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using UserAccess.Domain.UserRegistrations;
@@ -26,7 +18,8 @@ namespace UserAccess.Infrastructure.Persistence
         {
         }
 
-        public UserAccessContext(DbContextOptions<UserAccessContext> options, ILoggerFactory loggerFactory) : base(options)
+        public UserAccessContext(DbContextOptions<UserAccessContext> options, ILoggerFactory loggerFactory) :
+            base(options)
         {
             _loggerFactory = loggerFactory;
 
@@ -42,7 +35,6 @@ namespace UserAccess.Infrastructure.Persistence
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserAccessContext).Assembly);
         }
-      
     }
 
     public class MatchContextDesignFactory : IDesignTimeDbContextFactory<UserAccessContext>
@@ -52,7 +44,7 @@ namespace UserAccess.Infrastructure.Persistence
             var optionsBuilder = new DbContextOptionsBuilder<UserAccessContext>()
                 .UseSqlServer(
                     "Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            return new UserAccessContext(optionsBuilder.Options, new NullLoggerFactory() );
+            return new UserAccessContext(optionsBuilder.Options, new NullLoggerFactory());
         }
 
         //private class NoMediator : IMediator

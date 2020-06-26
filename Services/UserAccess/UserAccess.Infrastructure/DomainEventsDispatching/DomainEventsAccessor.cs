@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Base.Domain;
 using Base.Domain.SeedWork;
 using Base.Infrastructure.DomainEventsDispatching;
-using Microsoft.EntityFrameworkCore;
 using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.Infrastructure.DomainEventsDispatching
@@ -33,7 +29,7 @@ namespace UserAccess.Infrastructure.DomainEventsDispatching
 
         public void ClearAllDomainEvents()
         {
-            var domainEntities = this._context.ChangeTracker
+            var domainEntities = _context.ChangeTracker
                 .Entries<Entity>()
                 .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any()).ToList();
 
