@@ -4,7 +4,7 @@ using Base.Domain.SeedWork;
 
 namespace UserAccess.Domain.UserRegistrations
 {
-    public interface IUserRegistrationRepository : IRepository<UserRegistration>
+    public interface IUserRegistrationRepository 
     {
         Task AddAsync(UserRegistration userRegistration);
 

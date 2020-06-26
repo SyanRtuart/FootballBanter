@@ -11,6 +11,7 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
 {
     public class NewUserRegisteredNotification : DomainNotificationBase<NewUserRegisteredDomainEvent>
     {
+        [JsonConstructor]
         public NewUserRegisteredNotification(NewUserRegisteredDomainEvent domainEvent) : base(domainEvent)
         {
         }

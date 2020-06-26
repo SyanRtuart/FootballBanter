@@ -17,11 +17,11 @@ namespace Base.Infrastructure.Emails
         private readonly AuthMessageSenderOptions _options;
         private readonly EmailsConfiguration _emailsConfiguration;
 
-        public EmailSender(ILogger logger, IOptions<AuthMessageSenderOptions> optionsAccessor, IOptions<EmailsConfiguration> emailsConfigurationOptions)
+        public EmailSender(ILogger logger, IOptions<AuthMessageSenderOptions> optionsAccessor, EmailsConfiguration configuration)
         {
             _logger = logger;
             _options = optionsAccessor.Value;
-            _emailsConfiguration = emailsConfigurationOptions.Value;
+            _emailsConfiguration = configuration;
         }
         public Task SendEmail(EmailMessage message)
         {

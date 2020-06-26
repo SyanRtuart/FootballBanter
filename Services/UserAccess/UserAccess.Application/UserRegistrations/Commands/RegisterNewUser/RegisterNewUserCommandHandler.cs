@@ -43,7 +43,6 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
             //await _mediator.Send(new NewUserRegisteredNotification(
             //     new NewUserRegisteredDomainEvent(Guid.NewGuid(), "2", "2", "", "", "", DateTime.Now)));
 
-
             var email = new EmailMessage(request.Email,
                 "Football Banter - Please confirm your registration",  
                 "This should be link to confirmation page. For now, please execute HTTP request " +

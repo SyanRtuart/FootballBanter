@@ -11,11 +11,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Scrutor" Version="3.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FootballBanter\Services\Base\Base.Application\Base.Application.csproj" />
-    <ProjectReference Include="..\FootballBanter\Services\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
+    <ProjectReference Include="..\Base.Application\Base.Application.csproj" />
+    <ProjectReference Include="..\Base.Infrastructure\Base.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

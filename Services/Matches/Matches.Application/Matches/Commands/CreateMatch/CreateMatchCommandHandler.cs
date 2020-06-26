@@ -24,7 +24,6 @@ namespace Matches.Application.Matches.Commands.CreateMatch
 
             await _matchRepository.AddAsync(match);
 
-            await _matchRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
             return match.Id;
         }

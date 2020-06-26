@@ -1,26 +1,19 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection;
+using Autofac;
 using Base.Api.Configuration;
 using Base.Api.Configuration.Authorization;
 using Base.Api.Configuration.Validation;
 using Base.Application.BuildingBlocks;
-using Base.Application.Emails;
 using Base.Domain.Exceptions;
-using Base.Infrastructure;
-using Base.Infrastructure.DomainEventsDispatching;
 using Base.Infrastructure.Emails;
-using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Validation;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,23 +23,17 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
-using UserAccess.API.Behaviours;
 using UserAccess.API.Configuration;
-using UserAccess.Application.Configuration.Commands;
 using UserAccess.Application.IdentityServer;
-using UserAccess.Application.UserRegistrations;
-using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
-using UserAccess.Domain.UserRegistrations;
-using UserAccess.Infrastructure.DomainEventsDispatching;
-using UserAccess.Infrastructure.Persistence;
-using UserAccess.Infrastructure.Processing.InternalCommands;
-using UserAccess.Infrastructure.Repositories;
+using UserAccess.Infrastructure.Configuration;
 
 namespace UserAccess.API
 {
     public class Startup
     {
+        private static ILogger _logger;
         public static ILogger ApiLogger;
+        private static ILogger _loggerForApi;
 
         public Startup(IConfiguration configuration)
         {
@@ -60,16 +47,35 @@ namespace UserAccess.API
         {
             AddLogging(services);
 
+            services.AddControllers();
+
+            services.ConfigureIdentityServer(Configuration);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
+
+            services.AddProblemDetails(x =>
+            {
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                {
+                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                    policyBuilder.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
+                });
+            });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
+            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
+            services.AddHttpContextAccessor();
+
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
             services
-                .ConfigureIdentityServer(Configuration)
-                .AddAuth(Configuration)
-                .AddApplication(Configuration)
-                .AddDomain(Configuration)
-                .AddInfrastructure(Configuration)
-                .AddCustomDbContext(Configuration)
-                .AddCustomConfiguration(Configuration)
-                .AddFluentValidation(Configuration)
-                .AddDapper(Configuration)
+                .AddOptions()
                 .AddSwagger(Configuration)
                 .AddCustomMvc();
         }
@@ -99,37 +105,32 @@ namespace UserAccess.API
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
-        private IServiceCollection AddLogging(IServiceCollection services)
+        private void AddLogging(IServiceCollection services)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+            _logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .WriteTo.Console(
-                    outputTemplate:
-                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
-                    theme: AnsiConsoleTheme.Code)
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
+                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/logs")
                 .CreateLogger();
 
-            ApiLogger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console(
-                    outputTemplate:
-                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
-                .WriteTo.RollingFile(new CompactJsonFormatter(), "logs/Logs")
-                .CreateLogger();
+            _loggerForApi = _logger.ForContext("Module", "API");
 
-            services.AddSingleton(ApiLogger);
+            _loggerForApi.Information("Logger configured");
+            // services.AddSingleton(ApiLogger);
+        }
 
-            return services;
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"]);
+
+            UserAccessStartup.Initialize(
+                Configuration["ConnectionString"],
+                new ExecutionContextAccessor(new HttpContextAccessor()),
+                _logger,
+                emailsConfiguration,
+                Configuration["Security:TextEncryptionKey"],
+                null,
+                builder);
         }
     }
 
@@ -139,107 +140,6 @@ namespace UserAccess.API
         {
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
-            return services;
-        }
-
-        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddMediatR(typeof(RegisterNewUserCommand).Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
-
-            services.AddScoped<ICommandsScheduler, CommandsScheduler>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddTransient<IUserRegistrationRepository, UserRegistrationRepository>();
-
-            services.AddProblemDetails(x =>
-            {
-                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
-            });
-
-            services.AddTransient<IUsersCounter, UsersCounter>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddTransient<IEmailSender, EmailSender>();
-            //services.AddScoped<DbContext, UserAccessContext>();
-            services.AddScoped<IDomainEventsAccessor, UserAccess.Infrastructure.DomainEventsDispatching.DomainEventsAccessor>();
-            services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
-            services.Configure<AuthMessageSenderOptions>(configuration);
-            services.Configure<EmailsConfiguration>(configuration.GetSection("EmailsConfiguration"));
-
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomDbContext(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<UserAccessContext>(options =>
-                    {
-                        options.UseSqlServer(configuration["ConnectionString"],
-                            sqlOptions =>
-                            {
-                                sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                            });
-                    } //Showing explicitly that the DbContext is shared across the HTTP request scope (graph of objects started in the HTTP request)
-                );
-            return services;
-        }
-
-        public static IServiceCollection AddAuth(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
-                {
-                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
-                    policyBuilder.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
-                });
-            });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
-            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
-            services.AddHttpContextAccessor();
-            return services;
-        }
-
-        public static IServiceCollection AddCustomConfiguration(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddOptions();
-
-
-            return services;
-        }
-
-        public static IServiceCollection AddFluentValidation(this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterNewUserCommand>());
-
-            return services;
-        }
-
-        public static IServiceCollection AddDapper(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddTransient<ISqlConnectionFactory>(s =>
-                new SqlConnectionFactory(configuration["ConnectionString"]));
 
             return services;
         }

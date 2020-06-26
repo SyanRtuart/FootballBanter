@@ -26,12 +26,5 @@ namespace UserAccess.Infrastructure.Repositories
             return await _context.UserRegistrations.FirstOrDefaultAsync(x => x.Id == userRegistrationId);
         }
 
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _context;
-            }
-        }
     }
 }
