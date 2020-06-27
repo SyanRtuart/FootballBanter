@@ -2,7 +2,7 @@
 using UserAccess.Application.UserRegistrations;
 using UserAccess.Domain.UserRegistrations;
 
-namespace UserAccess.Infrastructure.Configuration
+namespace UserAccess.Infrastructure.Configuration.Domain
 {
     public class DomainModule : Module
     {

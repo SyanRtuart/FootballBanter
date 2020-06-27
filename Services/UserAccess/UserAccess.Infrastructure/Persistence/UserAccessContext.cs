@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Domain.Users;
-using UserAccess.Infrastructure.Configuration.Outbox;
 
 namespace UserAccess.Infrastructure.Persistence
 {

@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Threading;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Autofac.Extras.Quartz;
 using Base.Api.Configuration;
 using Base.Api.Configuration.Authorization;
 using Base.Api.Configuration.Validation;
@@ -19,18 +23,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using Serilog;
 using Serilog.Formatting.Compact;
 using UserAccess.API.Configuration;
 using UserAccess.Application.IdentityServer;
 using UserAccess.Infrastructure.Configuration;
+using UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using UserAccess.Infrastructure.Configuration.Quartz;
 
 namespace UserAccess.API
 {
     public class Startup
     {
         private static ILogger _logger;
-        public static ILogger ApiLogger;
         private static ILogger _loggerForApi;
 
         public Startup(IConfiguration configuration)
@@ -39,6 +45,7 @@ namespace UserAccess.API
         }
 
         public IConfiguration Configuration { get; }
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -79,8 +86,15 @@ namespace UserAccess.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+
+            var scheduler = AutofacContainer.Resolve<IScheduler>();
+            var logger = AutofacContainer.Resolve<ILogger>();
+
+            QuartzStartup.Initialize(logger, scheduler);
+
             if (env.IsDevelopment())
             {
                 IdentityModelEventSource.ShowPII = true;
@@ -131,16 +145,6 @@ namespace UserAccess.API
                 Configuration["Security:TextEncryptionKey"],
                 null,
                 builder);
-
-            //var container = builder.Build();
-
-            //UserAccessCompositionRoot.SetContainer(container);
-
-            //using (var scope = UserAccessCompositionRoot.BeginLifetimeScope())
-            //{
-            //    var mediator = scope.Resolve<IMediator>();
-            //    mediator.Send(new RegisterNewUserCommand("", "", "", "", ""));
-            //}
         }
     }
 

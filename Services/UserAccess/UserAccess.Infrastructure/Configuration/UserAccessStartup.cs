@@ -1,16 +1,20 @@
-﻿using Autofac;
+﻿using System.Collections.Specialized;
+using Autofac;
+using Autofac.Extras.Quartz;
 using Base.Application.BuildingBlocks;
 using Base.Application.Emails;
 using Base.Infrastructure.Emails;
 using Serilog;
 using Serilog.Extensions.Logging;
 using UserAccess.Infrastructure.Configuration.DataAccess;
+using UserAccess.Infrastructure.Configuration.Domain;
 using UserAccess.Infrastructure.Configuration.Email;
 using UserAccess.Infrastructure.Configuration.EventsBus;
 using UserAccess.Infrastructure.Configuration.Logging;
 using UserAccess.Infrastructure.Configuration.Mediator;
-using UserAccess.Infrastructure.Configuration.Outbox;
 using UserAccess.Infrastructure.Configuration.Processing;
+using UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using UserAccess.Infrastructure.Configuration.Quartz;
 using UserAccess.Infrastructure.Configuration.UserAccess;
 
 namespace UserAccess.Infrastructure.Configuration
@@ -25,7 +29,7 @@ namespace UserAccess.Infrastructure.Configuration
             IEmailSender emailSender,
             ContainerBuilder builder)
         {
-            var moduleLogger = logger.ForContext("Module", "UserAccess");
+            //var moduleLogger = logger.ForContext("Module", "UserAccess");
 
             ConfigureCompositionRoot(connectionString,
                 executionContextAccessor,
@@ -34,6 +38,18 @@ namespace UserAccess.Infrastructure.Configuration
                 textEncryptionKey,
                 emailSender,
                 builder);
+
+            var schedulerConfiguration = new NameValueCollection
+            {
+                {"quartz.scheduler.instanceName", "UserAccess"}
+            };
+
+            builder.RegisterModule(new QuartzAutofacFactoryModule
+            {
+                ConfigurationProvider = c => schedulerConfiguration
+            });
+
+            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(ProcessOutboxJob).Assembly));
         }
 
         private static void ConfigureCompositionRoot(
@@ -57,6 +73,7 @@ namespace UserAccess.Infrastructure.Configuration
             builder.RegisterModule(new MediatorModule());
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
+            builder.RegisterModule(new QuartzModule());
 
             builder.RegisterInstance(executionContextAccessor);
         }

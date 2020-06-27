@@ -1,0 +1,104 @@
+{"@t":"2020-06-27T10:57:58.3755871Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T10:58:28.5221215Z","@mt":"Executing command {@Command}","Command":{"Login":"strillllng","Password":"string","Email":"string","FirstName":"string","LastName":"string","Id":"c010a56f-cff8-4fb2-b037-04bccda01f51","$type":"RegisterNewUserCommand"},"Module":"UserAccess","Context":"Command:c010a56f-cff8-4fb2-b037-04bccda01f51"}
+{"@t":"2020-06-27T10:58:29.9148143Z","@mt":"Email sent. From: ryan_7229@hotmail.co.uk, To: string, Subject: Football Banter - Please confirm your registration, Content: This should be link to confirmation page. For now, please execute HTTP request PATCH http://localhost:5000/userAccess/userRegistrations/bc801b9c-8eae-4ee4-82e2-08d81a8906b8/confirm.","Module":"UserAccess","Context":"Command:c010a56f-cff8-4fb2-b037-04bccda01f51"}
+{"@t":"2020-06-27T10:58:42.5740344Z","@mt":"Command processed successful, result {Result}","Result":"bc801b9c-8eae-4ee4-82e2-08d81a8906b8","Module":"UserAccess","Context":"Command:c010a56f-cff8-4fb2-b037-04bccda01f51"}
+{"@t":"2020-06-27T10:58:51.0870564Z","@mt":"Executing command {@Command}","Command":{"Login":"strillallng","Password":"string","Email":"string","FirstName":"string","LastName":"string","Id":"d70d5dd5-fd94-46f5-892f-e8dfe29de6c0","$type":"RegisterNewUserCommand"},"Module":"UserAccess","Context":"Command:d70d5dd5-fd94-46f5-892f-e8dfe29de6c0"}
+{"@t":"2020-06-27T10:58:51.2887474Z","@mt":"Email sent. From: ryan_7229@hotmail.co.uk, To: string, Subject: Football Banter - Please confirm your registration, Content: This should be link to confirmation page. For now, please execute HTTP request PATCH http://localhost:5000/userAccess/userRegistrations/a334b923-7b71-41d9-82e3-08d81a8906b8/confirm.","Module":"UserAccess","Context":"Command:d70d5dd5-fd94-46f5-892f-e8dfe29de6c0"}
+{"@t":"2020-06-27T11:23:08.7349578Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:23:09.9890714Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:23:10.2069255Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:28:24.3008251Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:28:25.1569193Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:28:25.3448475Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:29:50.7065516Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:29:51.5530162Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:29:51.8187900Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:34:45.1043435Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:34:47.4304499Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:34:51.4946334Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:35:13.5023800Z","@mt":"Executing command {@Command}","Command":{"Login":"strillalaalng","Password":"string","Email":"string","FirstName":"string","LastName":"string","Id":"e0c197a7-fc5a-404a-b368-9aa16c777b8e","$type":"RegisterNewUserCommand"},"Module":"UserAccess","Context":"Command:e0c197a7-fc5a-404a-b368-9aa16c777b8e"}
+{"@t":"2020-06-27T11:35:14.8897451Z","@mt":"Email sent. From: ryan_7229@hotmail.co.uk, To: string, Subject: Football Banter - Please confirm your registration, Content: This should be link to confirmation page. For now, please execute HTTP request PATCH http://localhost:5000/userAccess/userRegistrations/90ee6d5e-ed99-4ebf-f4ff-08d81a8e28fb/confirm.","Module":"UserAccess","Context":"Command:e0c197a7-fc5a-404a-b368-9aa16c777b8e"}
+{"@t":"2020-06-27T11:35:21.2031449Z","@mt":"Command processed successful, result {Result}","Result":"90ee6d5e-ed99-4ebf-f4ff-08d81a8e28fb","Module":"UserAccess","Context":"Command:e0c197a7-fc5a-404a-b368-9aa16c777b8e"}
+{"@t":"2020-06-27T11:44:15.8417696Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:44:16.8264656Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:44:23.2858068Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:44:51.2101456Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:44:52.5355556Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:45:10.0304075Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:46:02.6018097Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:46:03.7592384Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:46:04.0297244Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:47:01.9744755Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:47:02.9268576Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:47:03.0915661Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:47:35.4414762Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:47:36.5971084Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:47:36.7646035Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:49:50.7568855Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:49:51.8827029Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:49:52.0794744Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T11:50:20.1958237Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T11:50:21.4325236Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T11:50:21.6859707Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T12:34:16.1586816Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T12:34:17.3230612Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T12:34:17.5037043Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T12:49:30.6273905Z","@mt":"Job DEFAULT.22fc5e21-69d2-4c24-8590-f36297ed067f threw an unhandled Exception: ","@l":"Error","@x":"System.NotImplementedException: The method or operation is not implemented.\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxJob.Execute(IJobExecutionContext context) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxJob.cs:line 21\r\n   at Quartz.Core.JobRunShell.Run(CancellationToken cancellationToken)","Module":"UserAccess"}
+{"@t":"2020-06-27T12:54:17.2202993Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T12:54:18.3848600Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T12:54:18.5946830Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T12:54:48.9390508Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T12:54:50.1141349Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T12:55:00.9519680Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T12:58:40.9979185Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T12:58:42.1605109Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T12:58:45.4494933Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:01:12.8548757Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:07:24.5249573Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:08:36.9502859Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:08:37.9545865Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:08:39.8277432Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:08:40.3658609Z","@mt":"Initialized Scheduler Signaller of type: Quartz.Core.SchedulerSignalerImpl","Module":"UserAccess"}
+{"@t":"2020-06-27T13:08:40.3686119Z","@mt":"Quartz Scheduler v.{0} created.","0":"3.0.7.0","Module":"UserAccess"}
+{"@t":"2020-06-27T13:08:40.3709014Z","@mt":"JobFactory set to: Autofac.Extras.Quartz.AutofacJobFactory","Module":"UserAccess"}
+{"@t":"2020-06-27T13:08:40.3724666Z","@mt":"RAMJobStore initialized.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:08:40.3742861Z","@mt":"Scheduler meta-data: Quartz Scheduler (v3.0.7.0) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'\n  Scheduler class: 'Quartz.Core.QuartzScheduler' - running locally.\n  NOT STARTED.\n  Currently in standby mode.\n  Number of jobs executed: 0\n  Using thread pool 'Quartz.Simpl.DefaultThreadPool' - with 10 threads.\n  Using job-store 'Quartz.Simpl.RAMJobStore' - which does not support persistence. and is not clustered.\n","Module":"UserAccess"}
+{"@t":"2020-06-27T13:08:40.3794495Z","@mt":"Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:15:34.5889979Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:16:04.0047125Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:24:28.2612562Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:24:29.9772592Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:24:59.1633759Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:29:35.6721315Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:29:37.5444249Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:29:37.5628808Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:30:47.4869867Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:30:49.3106378Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:30:49.3327229Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:30:49.4364004Z","@mt":"Job DEFAULT.1e388447-c977-4fe4-bc53-23ab84bf8b72 threw an unhandled Exception: ","@l":"Error","@x":"System.NotImplementedException: The method or operation is not implemented.\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxJob.Execute(IJobExecutionContext context) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxJob.cs:line 20\r\n   at Quartz.Core.JobRunShell.Run(CancellationToken cancellationToken)","Module":"UserAccess"}
+{"@t":"2020-06-27T13:30:59.3380972Z","@mt":"Job DEFAULT.1e388447-c977-4fe4-bc53-23ab84bf8b72 threw an unhandled Exception: ","@l":"Error","@x":"System.NotImplementedException: The method or operation is not implemented.\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxJob.Execute(IJobExecutionContext context) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxJob.cs:line 20\r\n   at Quartz.Core.JobRunShell.Run(CancellationToken cancellationToken)","Module":"UserAccess"}
+{"@t":"2020-06-27T13:31:13.0629909Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:31:14.6839542Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:31:14.7118319Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:35:05.2121136Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:35:07.0569435Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:35:07.0808880Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:41:05.1512352Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:41:06.9680028Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:41:06.9887188Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:42:24.2383039Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:42:25.7670994Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:42:25.7948487Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:42:43.9667038Z","@mt":"Job DEFAULT.c0d9c1b8-853a-4554-a4a4-97453d3d6ce9 threw an unhandled Exception: ","@l":"Error","@x":"System.Data.SqlClient.SqlException (0x80131904): Invalid object name 'users.OutboxMessages'.\r\n   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__126_0(Task`1 result)\r\n   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()\r\n   at System.Threading.Tasks.Task.<>c.<.cctor>b__274_0(Object obj)\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at Dapper.SqlMapper.QueryAsync[T](IDbConnection cnn, Type effectiveType, CommandDefinition command) in /_/Dapper/SqlMapper.Async.cs:line 419\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxCommandHandler.Handle(ProcessOutboxCommand command, CancellationToken cancellationToken) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxCommandHandler.cs:line 40\r\n   at UserAccess.Infrastructure.Configuration.Processing.CommandExecutor.Execute(ICommand command) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\CommandExecutor.cs:line 18\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxJob.Execute(IJobExecutionContext context) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxJob.cs:line 18\r\n   at Quartz.Core.JobRunShell.Run(CancellationToken cancellationToken)\r\nClientConnectionId:334ed520-7edd-42e2-9609-eca9571af27e\r\nError Number:208,State:1,Class:16","Module":"UserAccess"}
+{"@t":"2020-06-27T13:42:44.0771076Z","@mt":"Job DEFAULT.c0d9c1b8-853a-4554-a4a4-97453d3d6ce9 threw an unhandled Exception: ","@l":"Error","@x":"System.Data.SqlClient.SqlException (0x80131904): Invalid object name 'users.OutboxMessages'.\r\n   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__126_0(Task`1 result)\r\n   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()\r\n   at System.Threading.Tasks.Task.<>c.<.cctor>b__274_0(Object obj)\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at Dapper.SqlMapper.QueryAsync[T](IDbConnection cnn, Type effectiveType, CommandDefinition command) in /_/Dapper/SqlMapper.Async.cs:line 419\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxCommandHandler.Handle(ProcessOutboxCommand command, CancellationToken cancellationToken) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxCommandHandler.cs:line 40\r\n   at UserAccess.Infrastructure.Configuration.Processing.CommandExecutor.Execute(ICommand command) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\CommandExecutor.cs:line 18\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxJob.Execute(IJobExecutionContext context) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxJob.cs:line 18\r\n   at Quartz.Core.JobRunShell.Run(CancellationToken cancellationToken)\r\nClientConnectionId:7aa5cb4a-8a5e-4b23-82d3-ba8d0f718838\r\nError Number:208,State:1,Class:16","Module":"UserAccess"}
+{"@t":"2020-06-27T13:42:52.7589599Z","@mt":"Job DEFAULT.c0d9c1b8-853a-4554-a4a4-97453d3d6ce9 threw an unhandled Exception: ","@l":"Error","@x":"System.Data.SqlClient.SqlException (0x80131904): Invalid object name 'users.OutboxMessages'.\r\n   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__126_0(Task`1 result)\r\n   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()\r\n   at System.Threading.Tasks.Task.<>c.<.cctor>b__274_0(Object obj)\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at Dapper.SqlMapper.QueryAsync[T](IDbConnection cnn, Type effectiveType, CommandDefinition command) in /_/Dapper/SqlMapper.Async.cs:line 419\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxCommandHandler.Handle(ProcessOutboxCommand command, CancellationToken cancellationToken) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxCommandHandler.cs:line 40\r\n   at UserAccess.Infrastructure.Configuration.Processing.CommandExecutor.Execute(ICommand command) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\CommandExecutor.cs:line 18\r\n   at UserAccess.Infrastructure.Configuration.Processing.Outbox.ProcessOutboxJob.Execute(IJobExecutionContext context) in C:\\Users\\ryan_\\source\\repos\\FootballBanter\\Services\\UserAccess\\UserAccess.Infrastructure\\Configuration\\Processing\\Outbox\\ProcessOutboxJob.cs:line 18\r\n   at Quartz.Core.JobRunShell.Run(CancellationToken cancellationToken)\r\nClientConnectionId:7aa5cb4a-8a5e-4b23-82d3-ba8d0f718838\r\nError Number:208,State:1,Class:16","Module":"UserAccess"}
+{"@t":"2020-06-27T13:44:30.8490206Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:44:32.6697846Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:44:32.6925974Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:45:19.7258547Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-06-27T13:45:21.5842026Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-06-27T13:45:21.6086714Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-06-27T13:46:05.9648174Z","@mt":"Publishing {Event}","Event":"UserAccess.IntegrationEvents.NewUserRegisteredIntegrationEvent","Module":"UserAccess","Context":"OutboxMessage:075aec77-aaf2-4a04-99ef-7207135315c7"}
+{"@t":"2020-06-27T13:46:11.3191283Z","@mt":"Publishing {Event}","Event":"UserAccess.IntegrationEvents.NewUserRegisteredIntegrationEvent","Module":"UserAccess","Context":"OutboxMessage:a775461c-61e3-4bd9-8d1f-d8a99fac47ab"}
+{"@t":"2020-06-27T13:46:17.3506662Z","@mt":"Publishing {Event}","Event":"UserAccess.IntegrationEvents.NewUserRegisteredIntegrationEvent","Module":"UserAccess","Context":"OutboxMessage:36348203-8263-487c-8d22-93204597c6de"}
+{"@t":"2020-06-27T13:46:23.1056218Z","@mt":"Publishing {Event}","Event":"UserAccess.IntegrationEvents.NewUserRegisteredIntegrationEvent","Module":"UserAccess","Context":"OutboxMessage:d2848298-da56-4197-b524-af437b6841de"}

@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Autofac;
+using Quartz;
+
+namespace UserAccess.Infrastructure.Configuration.Quartz
+{
+    public class QuartzModule : Autofac.Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(x => typeof(IJob).IsAssignableFrom(x)).InstancePerDependency();
+        }
+    }
+}

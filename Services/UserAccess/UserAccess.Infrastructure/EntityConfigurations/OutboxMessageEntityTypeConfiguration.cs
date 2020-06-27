@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Base.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using UserAccess.Infrastructure.Configuration.Outbox;
 using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.Infrastructure.EntityConfigurations

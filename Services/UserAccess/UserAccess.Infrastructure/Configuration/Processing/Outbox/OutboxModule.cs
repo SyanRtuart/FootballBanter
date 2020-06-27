@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Base.Infrastructure.Outbox;
+using UserAccess.Infrastructure.Outbox;
 
-namespace UserAccess.Infrastructure.Configuration.Outbox
+namespace UserAccess.Infrastructure.Configuration.Processing.Outbox
 {
     internal class OutboxModule : Module
     {

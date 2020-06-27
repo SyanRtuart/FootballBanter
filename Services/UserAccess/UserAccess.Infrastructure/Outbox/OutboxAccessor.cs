@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Base.Infrastructure.Outbox;
+﻿using Base.Infrastructure.Outbox;
 using UserAccess.Infrastructure.Persistence;
 
-namespace UserAccess.Infrastructure.Configuration.Outbox
+namespace UserAccess.Infrastructure.Outbox
 {
     public class OutboxAccessor : IOutbox
     {
