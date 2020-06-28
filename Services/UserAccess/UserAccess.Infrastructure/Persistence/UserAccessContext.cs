@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Base.Infrastructure.Inbox;
 using Base.Infrastructure.InternalCommands;
 using Base.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ namespace UserAccess.Infrastructure.Persistence
 
         public DbSet<InternalCommand> InternalCommands { get; set; }
 
+        public DbSet<InboxMessage> InboxMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

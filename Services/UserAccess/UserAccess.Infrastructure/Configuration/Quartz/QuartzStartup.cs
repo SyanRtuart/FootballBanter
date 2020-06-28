@@ -13,6 +13,8 @@ using Quartz.Impl;
 using Quartz.Logging;
 using Quartz.Spi;
 using Serilog;
+using UserAccess.Infrastructure.Configuration.Processing.Inbox;
+using UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
 using UserAccess.Infrastructure.Configuration.Processing.Outbox;
 
 namespace UserAccess.Infrastructure.Configuration.Quartz
@@ -30,40 +32,35 @@ namespace UserAccess.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithSimpleSchedule(x => x
-                        .WithIntervalInSeconds(10)
-                        .RepeatForever())
+                    .WithCronSchedule("0/15 * * ? * *")
                     .Build();
 
             scheduler
                 .ScheduleJob(processOutboxJob, trigger)
                 .GetAwaiter().GetResult();
-
+            
             var cts = new CancellationTokenSource();
-
             scheduler.ScheduleJob(processOutboxJob, trigger, cts.Token).ConfigureAwait(true);
-            //var processInboxJob = JobBuilder.Create<ProcessInboxJob>().Build();
-            //var processInboxTrigger =
-            //    TriggerBuilder
-            //        .Create()
-            //        .StartNow()
-            //        .WithCronSchedule("0/15 * * ? * *")
-            //        .Build();
 
-            //scheduler
-            //    .ScheduleJob(processInboxJob, processInboxTrigger)
-            //    .GetAwaiter().GetResult();
+            var processInboxJob = JobBuilder.Create<ProcessInboxJob>().Build();
+            var processInboxTrigger =
+                TriggerBuilder
+                    .Create()
+                    .StartNow()
+                    .WithCronSchedule("0/15 * * ? * *")
+                    .Build();
 
-            //var processInternalCommandsJob = JobBuilder.Create<ProcessInternalCommandsJob>().Build();
-            //var triggerCommandsProcessing =
-            //    TriggerBuilder
-            //        .Create()
-            //        .StartNow()
-            //        .WithCronSchedule("0/15 * * ? * *")
-            //        .Build();
-            //scheduler.ScheduleJob(processInternalCommandsJob, triggerCommandsProcessing).GetAwaiter().GetResult();
+            scheduler.ScheduleJob(processInboxJob, processInboxTrigger, cts.Token).ConfigureAwait(true);
 
-            //_scheduler = scheduler;
+            var processInternalCommandsJob = JobBuilder.Create<ProcessInternalCommandsJob>().Build(); 
+             var triggerCommandsProcessing =
+                 TriggerBuilder
+                     .Create()
+                     .StartNow()
+                     .WithCronSchedule("0/15 * * ? * *")
+                     .Build();
+             scheduler.ScheduleJob(processInternalCommandsJob, triggerCommandsProcessing, cts.Token).ConfigureAwait(true);
+
             scheduler.Start(cts.Token).ConfigureAwait(true);
             logger.Information("Quartz started.");
         }
