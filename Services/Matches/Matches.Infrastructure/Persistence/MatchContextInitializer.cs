@@ -28,8 +28,7 @@ namespace Matches.Infrastructure.Persistence
             {
                 SeedTeams();
                 SeedMatches();
-
-                await _context.SaveEntitiesAsync(CancellationToken.None);
+                
             }
         }
 

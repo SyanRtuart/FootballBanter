@@ -23,14 +23,14 @@ namespace UserAccess.Application.Authentication.Authenticate
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
             const string sql = "SELECT " +
-                               "[User].[Id], " +
-                               "[User].[Login], " +
-                               "[User].[Name], " +
-                               "[User].[Email], " +
-                               "[User].[IsActive], " +
-                               "[User].[Password] " +
-                               "FROM [user].[Users] AS [User] " +
-                               "WHERE [User].[Login] = @Login";
+                               "[Users].[Id], " +
+                               "[Users].[Login], " +
+                               "[Users].[Name], " +
+                               "[Users].[Email], " +
+                               "[Users].[IsActive], " +
+                               "[Users].[Password] " +
+                               "FROM [Users].[Users] AS [Users] " +
+                               "WHERE [Users].[Login] = @Login";
 
             var user = await connection.QuerySingleOrDefaultAsync<UserDto>(sql,
                 new

@@ -30,12 +30,12 @@ namespace UserAccess.Infrastructure.Configuration.Processing.Inbox
                                "[InboxMessage].[Id], " +
                                "[InboxMessage].[Type], " +
                                "[InboxMessage].[Data] " +
-                               "FROM [User].[InboxMessages] AS [InboxMessage] " +
+                               "FROM [Users].[InboxMessages] AS [InboxMessage] " +
                                "WHERE [InboxMessage].[ProcessedDate] IS NULL";
 
             var messages = await connection.QueryAsync<InboxMessageDto>(sql);
 
-            const string sqlUpdateProcessedDate = "UPDATE [User].[InboxMessages] " +
+            const string sqlUpdateProcessedDate = "UPDATE [Users].[InboxMessages] " +
                                                   "SET [ProcessedDate] = @Date " +
                                                   "WHERE [Id] = @Id";
 

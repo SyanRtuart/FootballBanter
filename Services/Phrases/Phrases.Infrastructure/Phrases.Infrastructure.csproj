@@ -5,12 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200306132134_Init.cs" />
-    <Compile Remove="Migrations\20200306132134_Init.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\Base\Base.EventBus\Base.EventBus.csproj" />
     <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
+    <ProjectReference Include="..\Phrases.Application\Phrases.Application.csproj" />
     <ProjectReference Include="..\Phrases.Domain\Phrases.Domain.csproj" />
   </ItemGroup>
 

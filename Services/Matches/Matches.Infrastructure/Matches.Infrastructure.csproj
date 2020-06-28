@@ -11,6 +11,12 @@
     <Compile Remove="Migrations\20200311150810_Init.Designer.cs" />
     <Compile Remove="Migrations\20200311150950_Init.cs" />
     <Compile Remove="Migrations\20200311150950_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200528133344_Init.cs" />
+    <Compile Remove="Migrations\20200528133344_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200628165142_Init.cs" />
+    <Compile Remove="Migrations\20200628165142_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200628171011_Init.cs" />
+    <Compile Remove="Migrations\20200628171011_Init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Base\Base.EventBus\Base.EventBus.csproj" />
     <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
+    <ProjectReference Include="..\Matches.Application\Matches.Application.csproj" />
     <ProjectReference Include="..\Matches.Domain\Matches.Domain.csproj" />
   </ItemGroup>
 

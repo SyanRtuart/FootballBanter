@@ -10,7 +10,7 @@ namespace Matches.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Match> builder)
         {
-            builder.ToTable("matches", MatchContext.DEFAULT_SCHEMA);
+            builder.ToTable("Matches", MatchContext.DEFAULT_SCHEMA);
 
             builder.HasKey(o => o.Id);
 

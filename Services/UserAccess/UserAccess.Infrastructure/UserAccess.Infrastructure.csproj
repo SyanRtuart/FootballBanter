@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200628125001_AddingInboxTable.cs" />
-    <Compile Remove="Migrations\20200628125001_AddingInboxTable.Designer.cs" />
+    <Compile Remove="Migrations\20200628151518_Init.cs" />
+    <Compile Remove="Migrations\20200628151518_Init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

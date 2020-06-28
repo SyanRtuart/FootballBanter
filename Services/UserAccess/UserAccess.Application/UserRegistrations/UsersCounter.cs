@@ -19,8 +19,8 @@ namespace UserAccess.Application.UserRegistrations
 
             const string sql = "SELECT " +
                                "COUNT(*) " +
-                               "FROM [user].UserRegistrations AS [User]" +
-                               "WHERE [User].[Login] = @Login";
+                               "FROM [Users].UserRegistrations AS [Users]" +
+                               "WHERE [Users].[Login] = @Login";
             return connection.QuerySingle<int>(sql,
                 new
                 {

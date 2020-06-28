@@ -24,8 +24,8 @@ namespace UserAccess.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Data")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OccurredOn")
                         .HasColumnType("datetime2");
@@ -38,7 +38,7 @@ namespace UserAccess.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InboxMessages","user");
+                    b.ToTable("InboxMessages","Users");
                 });
 
             modelBuilder.Entity("Base.Infrastructure.InternalCommands.InternalCommand", b =>
@@ -57,7 +57,7 @@ namespace UserAccess.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InternalCommands","user");
+                    b.ToTable("InternalCommands","Users");
                 });
 
             modelBuilder.Entity("Base.Infrastructure.Outbox.OutboxMessage", b =>
@@ -79,7 +79,7 @@ namespace UserAccess.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutboxMessages","user");
+                    b.ToTable("OutboxMessages","Users");
                 });
 
             modelBuilder.Entity("UserAccess.Domain.UserRegistrations.UserRegistration", b =>
@@ -122,7 +122,7 @@ namespace UserAccess.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRegistrations","user");
+                    b.ToTable("UserRegistrations","Users");
                 });
 
             modelBuilder.Entity("UserAccess.Domain.Users.User", b =>
@@ -161,7 +161,7 @@ namespace UserAccess.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users","user");
+                    b.ToTable("Users","Users");
                 });
 
             modelBuilder.Entity("UserAccess.Domain.UserRegistrations.UserRegistration", b =>
@@ -197,7 +197,7 @@ namespace UserAccess.Infrastructure.Migrations
 
                             b1.HasKey("UserId", "Value");
 
-                            b1.ToTable("UserRoles","user");
+                            b1.ToTable("UserRoles","Users");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

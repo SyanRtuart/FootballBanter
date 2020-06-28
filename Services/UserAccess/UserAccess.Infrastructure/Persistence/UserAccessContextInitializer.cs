@@ -35,7 +35,7 @@ namespace UserAccess.Infrastructure.Persistence
 
         private void CreatePermissionsTable()
         {
-            _context.Database.ExecuteSqlRaw(@"CREATE TABLE [user].[RolesToPermissions] (
+            _context.Database.ExecuteSqlRaw(@"CREATE TABLE [Users].[RolesToPermissions] (
                                             [RoleCode]       VARCHAR (50) NOT NULL,
                                             [PermissionCode] VARCHAR (50) NOT NULL,
                                             CONSTRAINT [PK_RolesToPermissions_RoleCode_PermissionCode] PRIMARY KEY CLUSTERED ([RoleCode] ASC, [PermissionCode] ASC)
@@ -45,7 +45,7 @@ namespace UserAccess.Infrastructure.Persistence
 
         private void CreateRolesToPermissionsTable()
         {
-            _context.Database.ExecuteSqlRaw(@"CREATE TABLE [user].[Permissions] (
+            _context.Database.ExecuteSqlRaw(@"CREATE TABLE [Users].[Permissions] (
                                             [Code]        VARCHAR (50)  NOT NULL,
                                             [Name]        VARCHAR (100) NOT NULL,
                                             [Description] VARCHAR (255) NULL,
@@ -57,7 +57,7 @@ namespace UserAccess.Infrastructure.Persistence
         private void SeedTestUsers()
         {
             _context.Database.ExecuteSqlRaw(
-                @"INSERT INTO [user].UserRegistrations (Id, Login, Email, Password, FirstName, LastName, Name, StatusCode, RegisterDate, ConfirmedDate) VALUES 
+                @"INSERT INTO [Users].UserRegistrations (Id, Login, Email, Password, FirstName, LastName, Name, StatusCode, RegisterDate, ConfirmedDate) VALUES 
                                             (
 	                                            '2EBFECFC-ED13-43B8-B516-6AC89D51C410',
 	                                            'testMember@mail.com',
@@ -71,7 +71,7 @@ namespace UserAccess.Infrastructure.Persistence
 	                                            GETDATE()
                                             )
 
-                                            INSERT INTO [user].Users (Id, Login, Email, Password, IsActive, FirstName, LastName, Name) VALUES
+                                            INSERT INTO [Users].Users (Id, Login, Email, Password, IsActive, FirstName, LastName, Name) VALUES
                                             (
 	                                            '2EBFECFC-ED13-43B8-B516-6AC89D51C410',
 	                                            'testMember@mail.com',
@@ -83,11 +83,11 @@ namespace UserAccess.Infrastructure.Persistence
 	                                            'John Doe'
                                             )
 
-                                            INSERT INTO [user].UserRoles VALUES
+                                            INSERT INTO [Users].UserRoles VALUES
                                             ('Member', '2EBFECFC-ED13-43B8-B516-6AC89D51C410')
 
                                             -- Add Test Administrator
-                                            INSERT INTO [user].UserRegistrations (Id, Login, Email, Password, FirstName, LastName, Name, StatusCode, RegisterDate, ConfirmedDate) VALUES 
+                                            INSERT INTO [Users].UserRegistrations (Id, Login, Email, Password, FirstName, LastName, Name, StatusCode, RegisterDate, ConfirmedDate) VALUES 
                                             (
 	                                            '4065630E-4A4C-4F01-9142-0BACF6B8C65D',
 	                                            'testAdmin@mail.com',
@@ -101,7 +101,7 @@ namespace UserAccess.Infrastructure.Persistence
 	                                            GETDATE()
                                             )
 
-                                            INSERT INTO [user].Users (Id, Login, Email, Password, IsActive, FirstName, LastName, Name) VALUES
+                                            INSERT INTO [Users].Users (Id, Login, Email, Password, IsActive, FirstName, LastName, Name) VALUES
                                             (
 	                                            '4065630E-4A4C-4F01-9142-0BACF6B8C65D',
 	                                            'testAdmin@mail.com',
@@ -113,7 +113,7 @@ namespace UserAccess.Infrastructure.Persistence
 	                                            'Jane Doe'
                                             )
 
-                                            INSERT INTO [user].UserRoles VALUES
+                                            INSERT INTO [Users].UserRoles VALUES
                                             ('Administrator', '4065630E-4A4C-4F01-9142-0BACF6B8C65D')
 
 
@@ -123,7 +123,7 @@ namespace UserAccess.Infrastructure.Persistence
 
         private void SeedPermission()
         {
-            _context.Database.ExecuteSqlRaw(@"INSERT INTO [user].[Permissions] (Code, Name) VALUES
+            _context.Database.ExecuteSqlRaw(@"INSERT INTO [Users].[Permissions] (Code, Name) VALUES
                                             ('AddBanter', 'AddBanter'),
                                             ('DeleteBanter', 'DeleteBanter')"
             );
@@ -131,7 +131,7 @@ namespace UserAccess.Infrastructure.Persistence
 
         private void SeedRolesToPermissions()
         {
-            _context.Database.ExecuteSqlRaw(@"INSERT INTO [user].[RolesToPermissions] VALUES
+            _context.Database.ExecuteSqlRaw(@"INSERT INTO [Users].[RolesToPermissions] VALUES
                                             ('Member', 'AddBanter'),
                                             ('Administrator', 'DeleteBanter')"
             );

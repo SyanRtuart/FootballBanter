@@ -30,9 +30,7 @@ using Serilog.Formatting.Compact;
 using UserAccess.API.Configuration;
 using UserAccess.Application.IdentityServer;
 using UserAccess.Infrastructure.Configuration;
-using UserAccess.Infrastructure.Configuration.Processing.Outbox;
 using UserAccess.Infrastructure.Configuration.Quartz;
-using UserAccess.Infrastructure.Migrations;
 using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.API
@@ -90,17 +88,17 @@ namespace UserAccess.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-            
-            InitializeQuartz();
-            
-            InitializeDbContext();
-
             if (env.IsDevelopment())
             {
                 IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
             }
+
+            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+            
+            InitializeQuartz();
+            
+            InitializeDbContext();
 
             //app.UseHttpsRedirection();
 

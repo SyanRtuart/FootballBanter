@@ -31,7 +31,7 @@ namespace UserAccess.Infrastructure.Configuration.Processing.InternalCommands
             const string sql = "SELECT " +
                                "[Command].[Type], " +
                                "[Command].[Data] " +
-                               "FROM [user].[InternalCommands] AS [Command] " +
+                               "FROM [Users].[InternalCommands] AS [Command] " +
                                "WHERE [Command].[ProcessedDate] IS NULL";
             var commands = await connection.QueryAsync<InternalCommandDto>(sql);
 

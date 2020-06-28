@@ -24,7 +24,6 @@ namespace Phrases.Infrastructure.Persistence
             {
                 SeedPhrases();
 
-                await _context.SaveEntitiesAsync(CancellationToken.None);
             }
         }
 

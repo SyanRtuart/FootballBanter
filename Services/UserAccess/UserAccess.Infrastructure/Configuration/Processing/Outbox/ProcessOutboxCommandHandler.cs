@@ -34,13 +34,13 @@ namespace UserAccess.Infrastructure.Configuration.Processing.Outbox
                                "[OutboxMessage].[Id], " +
                                "[OutboxMessage].[Type], " +
                                "[OutboxMessage].[Data] " +
-                               "FROM [user].[OutboxMessages] AS [OutboxMessage] " +
+                               "FROM [Users].[OutboxMessages] AS [OutboxMessage] " +
                                "WHERE [OutboxMessage].[ProcessedDate] IS NULL";
 
             var messages = await connection.QueryAsync<OutboxMessageDto>(sql);
             var messagesList = messages.AsList();
 
-            const string sqlUpdateProcessedDate = "UPDATE [user].[OutboxMessages] " +
+            const string sqlUpdateProcessedDate = "UPDATE [Users].[OutboxMessages] " +
                                                   "SET [ProcessedDate] = @Date " +
                                                   "WHERE [Id] = @Id";
             if (messagesList.Count > 0)

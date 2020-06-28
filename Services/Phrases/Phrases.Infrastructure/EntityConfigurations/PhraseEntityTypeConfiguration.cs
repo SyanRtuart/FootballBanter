@@ -10,7 +10,7 @@ namespace Phrases.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Phrase> builder)
         {
-            builder.ToTable("phrases", PhraseContext.DEFAULT_SCHEMA);
+            builder.ToTable("Phrases", PhraseContext.DEFAULT_SCHEMA);
 
             builder.HasKey(o => o.Id);
 

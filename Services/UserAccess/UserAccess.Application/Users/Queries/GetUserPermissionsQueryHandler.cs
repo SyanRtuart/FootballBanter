@@ -23,7 +23,7 @@ namespace UserAccess.Application.Users.Queries
 
             const string sql = "SELECT " +
                                "[UserPermission].[PermissionCode] AS [Code] " +
-                               "FROM [user].[v_UserPermissions] AS [UserPermission] " +
+                               "FROM [Users].[v_UserPermissions] AS [UserPermission] " +
                                "WHERE [UserPermission].UserId = @UserId";
 
             var permissions = await connection.QueryAsync<UserPermissionDto>(sql, new {request.UserId});

@@ -5,50 +5,47 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Base.Infrastructure.Extensions;
+using Base.Infrastructure.Inbox;
+using Base.Infrastructure.InternalCommands;
+using Base.Infrastructure.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Phrases.Domain.Phrase;
 
 namespace Phrases.Infrastructure.Persistence
 {
     public class PhraseContext : DbContext
     {
-        public const string DEFAULT_SCHEMA = "phrase";
+        public const string DEFAULT_SCHEMA = "Phrase";
 
-        private readonly IMediator _mediator;
+        private readonly ILoggerFactory _loggerFactory;
         private IDbContextTransaction _currentTransaction;
 
         private PhraseContext(DbContextOptions<PhraseContext> options) : base(options)
         {
         }
 
-        public PhraseContext(DbContextOptions<PhraseContext> options, IMediator mediator) : base(options)
+        public PhraseContext(DbContextOptions<PhraseContext> options, ILoggerFactory loggerFactory) :
+            base(options)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _loggerFactory = loggerFactory;
 
-
-            Debug.WriteLine("PhraseContext::ctor ->" + GetHashCode());
+            Debug.WriteLine("UserAccessContext::ctor ->" + GetHashCode());
         }
 
         public DbSet<Phrase> Phrases { get; set; }
 
+        public DbSet<OutboxMessage> OutboxMessages { get; set; }
+
+        public DbSet<InternalCommand> InternalCommands { get; set; }
+
+        public DbSet<InboxMessage> InboxMessages { get; set; }
+
         public bool HasActiveTransaction => _currentTransaction != null;
-
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-        {
-            await _mediator.DispatchDomainEventsAsync(this);
-
-            var result = await base.SaveChangesAsync(cancellationToken);
-
-            return true;
-        }
-
-        public IDbContextTransaction GetCurrentTransaction()
-        {
-            return _currentTransaction;
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -116,37 +113,7 @@ namespace Phrases.Infrastructure.Persistence
                 .UseSqlServer(
                     "Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
-            return new PhraseContext(optionsBuilder.Options, new NoMediator());
-        }
-
-        private class NoMediator : IMediator
-        {
-            public Task Publish<TNotification>(TNotification notification,
-                CancellationToken cancellationToken = default) where TNotification : INotification
-            {
-                return Task.CompletedTask;
-            }
-
-            public Task Publish(object notification, CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
-            }
-
-            public Task<TResponse> Send<TResponse>(IRequest<TResponse> request,
-                CancellationToken cancellationToken = default)
-            {
-                return Task.FromResult(default(TResponse));
-            }
-
-            public Task<object> Send(object request, CancellationToken cancellationToken = default)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task Send(IRequest request, CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
-            }
+            return new PhraseContext(optionsBuilder.Options, new NullLoggerFactory());
         }
     }
 }

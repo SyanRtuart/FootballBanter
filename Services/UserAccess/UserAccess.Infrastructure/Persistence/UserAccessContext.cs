@@ -13,7 +13,7 @@ namespace UserAccess.Infrastructure.Persistence
 {
     public class UserAccessContext : DbContext
     {
-        public const string DEFAULT_SCHEMA = "user";
+        public const string DEFAULT_SCHEMA = "Users";
 
         private readonly ILoggerFactory _loggerFactory;
 

@@ -1,0 +1,21 @@
+﻿using System.Threading.Tasks;
+using MediatR;
+using Phrases.Application.Contracts;
+
+namespace Phrases.Infrastructure.Configuration.Processing
+{
+    public class QueryExecutor : IQueryExecutor
+    {
+        private readonly IMediator _mediator;
+
+        public QueryExecutor(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        public Task<TResult> ExecuteQueryAsync<TResult>(IQuery<TResult> query)
+        {
+            return _mediator.Send(query);
+        }
+    }
+}

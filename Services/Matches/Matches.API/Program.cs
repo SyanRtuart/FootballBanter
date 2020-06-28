@@ -1,10 +1,7 @@
-using System;
-using Matches.Infrastructure.Persistence;
+using System.IO;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 
 namespace Matches.API
 {
@@ -12,36 +9,23 @@ namespace Matches.API
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                Log.Information("Starting host...");
-                var host = CreateHostBuilder(args).Build();
-
-                using (var scope = host.Services.CreateScope())
+            var host = Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .ConfigureWebHostDefaults(webHostBuilder =>
                 {
-                    var context = scope.ServiceProvider.GetService<MatchContext>();
-                    context.Database.Migrate();
+                    webHostBuilder
+                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .UseIISIntegration()
+                        .UseStartup<Startup>();
+                })
+                .Build();
 
-                    MatchContextInitializer.Initialize(context);
-
-
-                    host.Run();
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Host terminated unexpectedly.");
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         }
     }
