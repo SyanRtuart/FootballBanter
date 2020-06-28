@@ -16,15 +16,15 @@ namespace Base.Infrastructure.Inbox
 
         public DateTime Date { get; set; }
 
-        public DateTime ProcessedOn { get; set; }
+        public DateTime ProcessedDate { get; set; }
 
-        public InboxMessage(Guid id, DateTime occurredOn, string type, DateTime date, DateTime processedOn)
+        public InboxMessage(Guid id, DateTime occurredOn, string type, DateTime date, DateTime processedDate)
         {
             Id = id;
             OccurredOn = occurredOn;
             Type = type;
             Date = date;
-            ProcessedOn = processedOn;
+            ProcessedDate = processedDate;
         }
     }
 }

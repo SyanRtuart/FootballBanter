@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +32,8 @@ using UserAccess.Application.IdentityServer;
 using UserAccess.Infrastructure.Configuration;
 using UserAccess.Infrastructure.Configuration.Processing.Outbox;
 using UserAccess.Infrastructure.Configuration.Quartz;
+using UserAccess.Infrastructure.Migrations;
+using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.API
 {
@@ -47,7 +50,6 @@ namespace UserAccess.API
         public IConfiguration Configuration { get; }
         public ILifetimeScope AutofacContainer { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             AddLogging(services);
@@ -89,11 +91,10 @@ namespace UserAccess.API
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-
-            var scheduler = AutofacContainer.Resolve<IScheduler>();
-            var logger = AutofacContainer.Resolve<ILogger>();
-
-            QuartzStartup.Initialize(logger, scheduler);
+            
+            InitializeQuartz();
+            
+            InitializeDbContext();
 
             if (env.IsDevelopment())
             {
@@ -116,6 +117,20 @@ namespace UserAccess.API
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
+        
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"]);
+
+            UserAccessStartup.Initialize(
+                Configuration["ConnectionString"],
+                new ExecutionContextAccessor(new HttpContextAccessor()),
+                _logger,
+                emailsConfiguration,
+                Configuration["Security:TextEncryptionKey"],
+                null,
+                builder);
+        }
 
         private void AddLogging(IServiceCollection services)
         {
@@ -130,21 +145,22 @@ namespace UserAccess.API
             _loggerForApi = _logger.ForContext("Module", "API");
 
             _loggerForApi.Information("Logger configured");
-            // services.AddSingleton(ApiLogger);
         }
 
-        public void ConfigureContainer(ContainerBuilder builder)
+        private void InitializeQuartz()
         {
-            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"]);
+            var scheduler = AutofacContainer.Resolve<IScheduler>();
+            var logger = AutofacContainer.Resolve<ILogger>();
 
-            UserAccessStartup.Initialize(
-                Configuration["ConnectionString"],
-                new ExecutionContextAccessor(new HttpContextAccessor()),
-                _logger,
-                emailsConfiguration,
-                Configuration["Security:TextEncryptionKey"],
-                null,
-                builder);
+            QuartzStartup.Initialize(logger, scheduler);
+
+        }
+
+        private void InitializeDbContext()
+        {
+            var context = AutofacContainer.Resolve<UserAccessContext>();
+            context.Database.Migrate();
+            UserAccessContextInitializer.Initialize(context);
         }
     }
 

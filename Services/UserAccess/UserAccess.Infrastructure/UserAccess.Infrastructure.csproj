@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200628125001_AddingInboxTable.cs" />
+    <Compile Remove="Migrations\20200628125001_AddingInboxTable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac.Extras.Quartz" Version="5.2.0" />
   </ItemGroup>
 

@@ -30,7 +30,7 @@ namespace UserAccess.Infrastructure.Migrations
                     b.Property<DateTime>("OccurredOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ProcessedOn")
+                    b.Property<DateTime>("ProcessedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Type")
