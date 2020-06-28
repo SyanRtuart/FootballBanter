@@ -21,14 +21,15 @@ namespace UserAccess.Application.Users.Queries
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            const string sql = "SELECT " +
-                               "[UserPermission].[PermissionCode] AS [Code] " +
-                               "FROM [Users].[v_UserPermissions] AS [UserPermission] " +
-                               "WHERE [UserPermission].UserId = @UserId";
+            const string sql = "SELECT DISTINCT " +
+                               "UserRole.UserId, " +
+                               "RolesToPermission.PermissionCode AS [Code] " +
+                               "FROM Users.UserRoles AS UserRole INNER JOIN " +
+                               "Users.RolesToPermissions AS RolesToPermission ON UserRole.RoleCode = RolesToPermission.RoleCode " +
+                               "WHERE UserRole.UserId = @UserId";
 
             var permissions = await connection.QueryAsync<UserPermissionDto>(sql, new {request.UserId});
-
-
+            
             return permissions.AsList();
         }
     }
