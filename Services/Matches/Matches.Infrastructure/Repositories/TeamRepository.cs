@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Matches.Domain.Team;
 using Matches.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Matches.Infrastructure.Repositories
 {
@@ -18,6 +20,11 @@ namespace Matches.Infrastructure.Repositories
         public async Task AddAsync(Team team)
         {
             await _context.Teams.AddAsync(team);
+        }
+
+        public async Task<Team> GetAsync(Guid id)
+        {
+            return await _context.Teams.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

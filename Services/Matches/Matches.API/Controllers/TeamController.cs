@@ -19,7 +19,6 @@ namespace Matches.API.Controllers
             _mediator = mediator;
         }
 
-        [HasPermission("DeleteBanter")]
         [HttpGet]
         public async Task<List<TeamDto>> GetAll()
         {

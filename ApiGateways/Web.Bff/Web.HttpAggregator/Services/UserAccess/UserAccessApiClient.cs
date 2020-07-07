@@ -42,7 +42,7 @@ namespace Web.HttpAggregator.Services.UserAccess
             var tokenResponse = await _httpClient.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
                 Address = url,
-                UserName = request.Username,
+                UserName = request.Email,
                 Password = request.Password,
                 ClientId = _identity.ClientId,
                 ClientSecret = _identity.ClientSecret,

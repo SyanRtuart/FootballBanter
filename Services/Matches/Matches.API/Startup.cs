@@ -9,6 +9,7 @@ using Base.Domain.Exceptions;
 using Base.Infrastructure.Emails;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
+using Matches.Domain.Team;
 using Matches.Infrastructure.Configuration;
 using Matches.Infrastructure.Configuration.Quartz;
 using Matches.Infrastructure.Persistence;
@@ -143,8 +144,9 @@ namespace Matches.API
         private void InitializeDbContext()
         {
             var context = AutofacContainer.Resolve<MatchContext>();
+            var teamRepository = AutofacContainer.Resolve<ITeamRepository>();
             context.Database.Migrate();
-            MatchContextInitializer.Initialize(context);
+            MatchContextInitializer.Initialize(context, teamRepository);
         }
 
     }

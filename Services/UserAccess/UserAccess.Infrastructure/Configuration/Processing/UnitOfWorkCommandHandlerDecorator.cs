@@ -1,7 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using UserAccess.Application.Configuration.Commands;
 using UserAccess.Application.Contracts;
 using UserAccess.Infrastructure.Persistence;
@@ -30,12 +32,12 @@ namespace UserAccess.Infrastructure.Configuration.Processing
 
             if (command is InternalCommandBase)
             {
-                //var internalCommand = await _userAccessContext.InternalCommands.FirstOrDefaultAsync(x => x.Id == command.Id, cancellationToken: cancellationToken);
+                var internalCommand = await _userAccessContext.InternalCommands.FirstOrDefaultAsync(x => x.Id == command.Id, cancellationToken: cancellationToken);
 
-                //if (internalCommand != null)
-                //{
-                //    internalCommand.ProcessedDate = DateTime.UtcNow;
-                //}
+                if (internalCommand != null)
+                {
+                    internalCommand.ProcessedDate = DateTime.UtcNow;
+                }
             }
 
             await _unitOfWork.CommitAsync(cancellationToken);

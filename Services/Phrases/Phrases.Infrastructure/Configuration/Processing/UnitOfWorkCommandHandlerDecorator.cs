@@ -1,7 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Phrases.Application.Configuration.Commands;
 using Phrases.Application.Contracts;
 using Phrases.Infrastructure.Persistence;
@@ -30,12 +32,12 @@ namespace Phrases.Infrastructure.Configuration.Processing
 
             if (command is InternalCommandBase)
             {
-                //var internalCommand = await _phraseContext.InternalCommands.FirstOrDefaultAsync(x => x.Id == command.Id, cancellationToken: cancellationToken);
+                var internalCommand = await _phraseContext.InternalCommands.FirstOrDefaultAsync(x => x.Id == command.Id, cancellationToken: cancellationToken);
 
-                //if (internalCommand != null)
-                //{
-                //    internalCommand.ProcessedDate = DateTime.UtcNow;
-                //}
+                if (internalCommand != null)
+                {
+                    internalCommand.ProcessedDate = DateTime.UtcNow;
+                }
             }
 
             await _unitOfWork.CommitAsync(cancellationToken);

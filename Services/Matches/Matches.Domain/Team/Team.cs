@@ -22,5 +22,10 @@ namespace Matches.Domain.Team
         {
             return new Team(name);
         }
+
+        public string Name()
+        {
+            return _name;
+        }
     }
 }

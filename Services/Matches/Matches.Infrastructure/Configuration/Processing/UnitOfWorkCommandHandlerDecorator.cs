@@ -1,10 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Matches.Application.Configuration.Commands;
 using Matches.Application.Contracts;
 using Matches.Infrastructure.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Matches.Infrastructure.Configuration.Processing
 {
@@ -30,12 +32,12 @@ namespace Matches.Infrastructure.Configuration.Processing
 
             if (command is InternalCommandBase)
             {
-                //var internalCommand = await _matchContext.InternalCommands.FirstOrDefaultAsync(x => x.Id == command.Id, cancellationToken: cancellationToken);
+                var internalCommand = await _matchContext.InternalCommands.FirstOrDefaultAsync(x => x.Id == command.Id, cancellationToken: cancellationToken);
 
-                //if (internalCommand != null)
-                //{
-                //    internalCommand.ProcessedDate = DateTime.UtcNow;
-                //}
+                if (internalCommand != null)
+                {
+                    internalCommand.ProcessedDate = DateTime.UtcNow;
+                }
             }
 
             await _unitOfWork.CommitAsync(cancellationToken);
