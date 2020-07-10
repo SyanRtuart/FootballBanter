@@ -95,9 +95,9 @@ namespace UserAccess.API
             }
 
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-            
+
             InitializeQuartz();
-            
+
             InitializeDbContext();
 
             //app.UseHttpsRedirection();
