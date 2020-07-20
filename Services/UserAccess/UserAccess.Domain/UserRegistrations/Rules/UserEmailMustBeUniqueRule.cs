@@ -2,12 +2,12 @@
 
 namespace UserAccess.Domain.UserRegistrations.Rules
 {
-    public class UserLoginMustBeUniqueRule : IBusinessRule
+    public class UserEmailMustBeUniqueRule : IBusinessRule
     {
         private readonly string _login;
         private readonly IUsersCounter _usersCounter;
 
-        internal UserLoginMustBeUniqueRule(IUsersCounter usersCounter, string login)
+        internal UserEmailMustBeUniqueRule(IUsersCounter usersCounter, string login)
         {
             _usersCounter = usersCounter;
             _login = login;
@@ -18,6 +18,6 @@ namespace UserAccess.Domain.UserRegistrations.Rules
             return _usersCounter.CountUsersWithLogin(_login) > 0;
         }
 
-        public string Message => "User Login must be unique";
+        public string Message => "An account with this e-mail already exists.";
     }
 }

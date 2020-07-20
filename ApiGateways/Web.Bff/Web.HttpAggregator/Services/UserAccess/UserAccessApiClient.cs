@@ -3,9 +3,11 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Web.HttpAggregator.Config;
+using Web.HttpAggregator.Exceptions;
 using Web.HttpAggregator.Models.UserAccess;
 
 namespace Web.HttpAggregator.Services.UserAccess
@@ -32,7 +34,11 @@ namespace Web.HttpAggregator.Services.UserAccess
 
             var response = await _httpClient.PostAsync(url, content);
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                throw new BusinessRuleValidationException(responseContent);
+            }
         }
 
         public async Task<TokenResponse> LoginAsync(LoginRequest request)

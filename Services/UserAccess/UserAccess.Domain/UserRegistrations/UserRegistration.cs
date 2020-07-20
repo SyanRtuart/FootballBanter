@@ -37,7 +37,7 @@ namespace UserAccess.Domain.UserRegistrations
             string lastName,
             IUsersCounter usersCounter)
         {
-            CheckRule(new UserLoginMustBeUniqueRule(usersCounter, login));
+            CheckRule(new UserEmailMustBeUniqueRule(usersCounter, login));
 
             _login = login;
             _password = password;

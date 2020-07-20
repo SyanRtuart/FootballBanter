@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Web.HttpAggregator.Models;
 using Web.HttpAggregator.Models.UserAccess;
 using Web.HttpAggregator.Services.UserAccess;
 

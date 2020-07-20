@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Net.Http;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Web.HttpAggregator.Config;
+using Web.HttpAggregator.Exceptions;
+using Web.HttpAggregator.Models;
 using Web.HttpAggregator.Services.Match;
 using Web.HttpAggregator.Services.Phrase;
 using Web.HttpAggregator.Services.UserAccess;
@@ -31,13 +35,21 @@ namespace Web.HttpAggregator
             services.Configure<IdentityConfig>(Configuration.GetSection("IdentityConfig"));
 
             services.AddSwagger();
-            
+
+            services.AddProblemDetails(options =>
+            {
+                options.Map<BusinessRuleValidationException>((ex) => new BusinessRuleValidationExceptionProblemDetails(ex));
+                options.IncludeExceptionDetails = ctx => true;
+            });
+
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+          
 
-            services.AddControllers();
+            services.AddControllers()
+                    .AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +60,8 @@ namespace Web.HttpAggregator
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseProblemDetails();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
