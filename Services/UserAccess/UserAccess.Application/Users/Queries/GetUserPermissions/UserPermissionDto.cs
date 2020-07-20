@@ -1,4 +1,4 @@
-﻿namespace UserAccess.Application.Users.Queries
+﻿namespace UserAccess.Application.Users.Queries.GetUserPermissions
 {
     public class UserPermissionDto
     {

@@ -9,12 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Behaviours\LoggingBehavior.cs" />
-    <Compile Remove="Behaviours\TransactionBehaviour.cs" />
-    <Compile Remove="Behaviours\ValidatorBehavior.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="IdentityServer4" Version="3.0.2" />
@@ -38,10 +32,6 @@
     <ProjectReference Include="..\..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
     <ProjectReference Include="..\..\UserAccess.Application\UserAccess.Application.csproj" />
     <ProjectReference Include="..\..\UserAccess.Infrastructure\UserAccess.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Behaviours\" />
   </ItemGroup>
 
 </Project>

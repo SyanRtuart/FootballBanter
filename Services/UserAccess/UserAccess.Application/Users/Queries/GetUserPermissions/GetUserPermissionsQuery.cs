@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace UserAccess.Application.Users.Queries
+namespace UserAccess.Application.Users.Queries.GetUserPermissions
 {
     public class GetUserPermissionsQuery : IRequest<List<UserPermissionDto>>
     {

@@ -6,6 +6,7 @@ using IdentityServer4.Validation;
 using MediatR;
 using UserAccess.Application.Authentication.Authenticate;
 using UserAccess.Application.Users.Queries;
+using UserAccess.Application.Users.Queries.GetUserPermissions;
 
 namespace UserAccess.API.Configuration
 {

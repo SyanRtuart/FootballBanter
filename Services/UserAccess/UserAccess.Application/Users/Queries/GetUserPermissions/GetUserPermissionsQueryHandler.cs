@@ -5,7 +5,7 @@ using Base.Infrastructure;
 using Dapper;
 using MediatR;
 
-namespace UserAccess.Application.Users.Queries
+namespace UserAccess.Application.Users.Queries.GetUserPermissions
 {
     public class GetUserPermissionsQueryHandler : IRequestHandler<GetUserPermissionsQuery, List<UserPermissionDto>>
     {
