@@ -8,6 +8,7 @@ using Matches.Infrastructure.Configuration.DataAccess;
 using Matches.Infrastructure.Configuration.Domain;
 using Matches.Infrastructure.Configuration.Email;
 using Matches.Infrastructure.Configuration.EventsBus;
+using Matches.Infrastructure.Configuration.Integration;
 using Matches.Infrastructure.Configuration.Logging;
 using Matches.Infrastructure.Configuration.Match;
 using Matches.Infrastructure.Configuration.Mediator;
@@ -73,6 +74,8 @@ namespace Matches.Infrastructure.Configuration
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
             builder.RegisterModule(new QuartzModule());
+            builder.RegisterModule(new IntegrationModule());
+
 
             builder.RegisterInstance(executionContextAccessor);
         }

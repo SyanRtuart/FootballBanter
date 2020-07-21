@@ -9,5 +9,7 @@ namespace Matches.Domain.Team
         Task AddAsync(Team team);
 
         Task<Team> GetAsync(Guid id);
+
+        Task<int> Commit();
     }
 }

@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using Base.Api.Configuration.Authorization;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Application.Teams.Queries.GetAllTeams;
+using Matches.Infrastructure.Configuration.Integration;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Matches.API.Controllers
 {
@@ -23,12 +25,6 @@ namespace Matches.API.Controllers
         public async Task<List<TeamDto>> GetAll()
         {
             return await _mediator.Send(new GetAllTeamsQuery());
-        }
-
-        [HttpPost]
-        public async Task Post(string name)
-        {
-            await _mediator.Send(new CreateTeamCommand(name));
         }
     }
 }

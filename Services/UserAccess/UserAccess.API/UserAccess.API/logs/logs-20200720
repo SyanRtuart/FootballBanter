@@ -296,3 +296,36 @@
 {"@t":"2020-07-20T13:29:32.1865113Z","@mt":"Email sent. From: ryan_7229@hotmail.co.uk, To: ryan_7229@hotmail.co.uk111, Subject: Football Banter - Please confirm your registration, Content: This should be link to confirmation page. For now, please execute HTTP request PATCH http://localhost:5000/userRegistration/aa305094-f4e1-4065-3193-08d82cab4727/confirm.","Module":"UserAccess","Context":"Command:924bb64f-b2c2-4fb8-b9b7-fc998cc8d11a"}
 {"@t":"2020-07-20T13:29:32.9465898Z","@mt":"Command processed successful, result {Result}","Result":"aa305094-f4e1-4065-3193-08d82cab4727","Module":"UserAccess","Context":"Command:924bb64f-b2c2-4fb8-b9b7-fc998cc8d11a"}
 {"@t":"2020-07-20T13:29:45.0613079Z","@mt":"Publishing {Event}","Event":"UserAccess.IntegrationEvents.NewUserRegisteredIntegrationEvent","Module":"UserAccess","Context":"OutboxMessage:4a05494b-71af-4300-a5e9-0a293b974c37"}
+{"@t":"2020-07-20T14:52:36.8667256Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T14:52:38.3759437Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T14:52:38.4656464Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:24:03.9475857Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:24:05.7038473Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:24:05.8076813Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:25:01.1123820Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:25:02.7266732Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:25:02.7792028Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:25:59.0020782Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:26:00.5492613Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:26:00.6154829Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:26:56.5836384Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:26:58.0779367Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:26:58.1548609Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:27:40.8364031Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:27:42.3795147Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:27:42.4351768Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:31:27.1170683Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:31:28.7154769Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:31:28.7791802Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:32:23.7375302Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:32:25.4204690Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:32:25.4905572Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:35:54.8852991Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:35:56.5294475Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:35:56.5891254Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:38:37.3852108Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:38:39.0707191Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:38:39.1130301Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-20T16:40:20.6728302Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-20T16:40:22.0970316Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-20T16:40:22.2284190Z","@mt":"Quartz started.","Module":"UserAccess"}

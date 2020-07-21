@@ -11,6 +11,7 @@ using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using Matches.Domain.Team;
 using Matches.Infrastructure.Configuration;
+using Matches.Infrastructure.Configuration.Integration;
 using Matches.Infrastructure.Configuration.Quartz;
 using Matches.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;

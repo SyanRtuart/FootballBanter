@@ -26,5 +26,10 @@ namespace Matches.Infrastructure.Repositories
         {
             return await _context.Teams.SingleOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<int> Commit()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }

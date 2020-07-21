@@ -38,35 +38,12 @@ namespace Matches.Infrastructure.Persistence
 
         private async void SeedTeams()
         {
-            _teams = new List<Team>
-            {
-                Team.Create("Aberdeen"),
-                Team.Create("Celtic"),
-                Team.Create("Hamilton"),
-                Team.Create("Hearts"),
-                Team.Create("Hibernian"),
-                Team.Create("Kilmarnock"),
-                Team.Create("Livingston"),
-                Team.Create("Motherwell"),
-                Team.Create("Rangers"),
-                Team.Create("Ross County"),
-                Team.Create("St Johnstone"),
-                Team.Create("St Mirren")
-            };
-
-            _context.Teams.AddRange(_teams);
+            
         }
 
         private async void SeedMatches()
         {
-            var winningGuid = _teams.FirstOrDefault().Id;
-            var matches = new List<Match>();
-
-            foreach (var team in _teams.ToList())
-                matches.Add(Match.Create(winningGuid, team.Id, DateTime.Today.Subtract(TimeSpan.FromDays(2)),
-                    new Score("Placeholder", 2, 1)));
-
-            _context.Matches.AddRange(matches);
+        
         }
     }
 }

@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Matches.Application.Contracts;
 using Matches.Domain.Team;
-using MediatR;
 
-namespace Matches.Application.Teams.Commands.CreateTeam
+namespace Matches.Application.Teams.Commands.EditTeamGeneralAttributes
 {
-    public class CreateTeamCommand : CommandBase<Guid>
+    public class EditTeamGeneralAttributesCommand : CommandBase
     {
-        public CreateTeamCommand(string name, string description, byte[] logo, string manager, string league, string country, int formedYear, string facebook, string instagram, Stadium stadium)
+        public EditTeamGeneralAttributesCommand(Guid id, string name, string description, byte[] logo, string manager, string league, string country, int formedYear, string facebook, string instagram, Stadium stadium)
         {
+            Id = id;
             Name = name;
             Description = description;
             Logo = logo;
@@ -21,6 +25,7 @@ namespace Matches.Application.Teams.Commands.CreateTeam
             Stadium = stadium;
         }
 
+        public Guid Id { get; set; }
         public string Name { get; }
         public string Description { get; set; }
         public byte[] Logo { get; set; }

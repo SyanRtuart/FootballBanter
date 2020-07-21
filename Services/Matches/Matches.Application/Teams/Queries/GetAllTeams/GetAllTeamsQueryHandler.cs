@@ -3,11 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
+using Matches.Application.Configuration.Queries;
 using MediatR;
 
 namespace Matches.Application.Teams.Queries.GetAllTeams
 {
-    public class GetAllTeamsQueryHandler : IRequestHandler<GetAllTeamsQuery, List<TeamDto>>
+    public class GetAllTeamsQueryHandler : IQueryHandler<GetAllTeamsQuery, List<TeamDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

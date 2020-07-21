@@ -7,10 +7,37 @@ namespace Matches.Domain.Team
     {
         private string _name;
 
-        private Team(string name)
+        private string _description;
+
+        private byte[] _logo;
+
+        private string _manager;
+
+        private string _league;
+
+        private string _country;
+
+        private int _formedYear;
+
+        private string _facebook;
+
+        private string _instagram;
+
+        private Stadium _stadium;
+
+        public Team(string name, string description, byte[] logo, string manager, string league, string country, 
+            int formedYear, string facebook, string instagram, Stadium stadium)
         {
-            Id = Guid.NewGuid();
             _name = name;
+            _description = description;
+            _logo = logo;
+            _manager = manager;
+            _league = league;
+            _country = country;
+            _formedYear = formedYear;
+            _facebook = facebook;
+            _instagram = instagram;
+            _stadium = stadium;
         }
 
         public Team()
@@ -18,9 +45,29 @@ namespace Matches.Domain.Team
             // Only for ORM.
         }
 
-        public static Team Create(string name)
+        public void EditGeneralAttributes(string name, string description, byte[] logo, string manager, string league,
+            string country, int formedYear, string facebook, string instagram, Stadium stadium)
         {
-            return new Team(name);
+            _name = name;
+            _description = description;
+            _logo = logo;
+            _manager = manager;
+            _league = league;
+            _country = country;
+            _formedYear = formedYear;
+            _facebook = facebook;
+            _instagram = instagram;
+            _stadium = stadium;
+
+            //TODO: Add Domain event
+        }
+
+        public static Team Create(string name, string description, byte[] logo, string manager, string league, 
+            string country, int formedYear, string facebook, string instagram, Stadium stadium)
+        {
+            return new Team(name, description, logo, manager, league, country, formedYear, facebook, instagram, stadium);
+
+            //TODO: Add Domain event
         }
 
         public string Name()
