@@ -38,10 +38,14 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
             foreach (var teamResponse in response.Teams)
             {
                 byte[] logo = null;
-                if (!string.IsNullOrEmpty(teamResponse.strTeamLogo))
+                if (!string.IsNullOrEmpty(teamResponse.strTeamBadge))
                 {
-                    logo = await _httpClient.GetByteArrayAsync(teamResponse.strTeamLogo);
+                    logo = await _httpClient.GetByteArrayAsync(teamResponse.strTeamBadge + "/preview");
                 }
+
+                //TEMP
+                //teamResponse.strTeam = teamResponse.strTeamBadge + "/preview";
+                //TEMP
 
                 if (!TeamExistsInDatabase(out var id, teamsInDb, teamResponse.strTeam))
                 {
