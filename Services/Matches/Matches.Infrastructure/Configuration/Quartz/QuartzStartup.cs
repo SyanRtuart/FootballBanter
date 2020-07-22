@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches;
 using Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams;
 using Matches.Infrastructure.Configuration.Processing.Inbox;
 using Matches.Infrastructure.Configuration.Processing.InternalCommands;
@@ -16,7 +17,7 @@ namespace Matches.Infrastructure.Configuration.Quartz
             logger.Information("Quartz starting...");
             var everyFifteenSeconds = "0/15 * * ? * *";
             var fourAmEveryDay = "0 0 4 * * ?";
-
+            var everyHourOnTheHour = "0/1 0 0/1 ? * * *";
 
 
             LogProvider.SetCurrentLogProvider(new SerilogLogProvider(logger));
@@ -62,9 +63,18 @@ namespace Matches.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule(everyFifteenSeconds)
+                    .WithCronSchedule(everyHourOnTheHour)
                     .Build();
             scheduler.ScheduleJob(syncTeamsJob, syncTeamsTrigger, cts.Token).ConfigureAwait(true);
+
+            var syncMatchesJob = JobBuilder.Create<SyncMatchesJob>().Build();
+            var syncMatchesTrigger =
+                TriggerBuilder
+                    .Create()
+                    .StartNow()
+                    .WithCronSchedule(everyHourOnTheHour)
+                    .Build();
+            scheduler.ScheduleJob(syncMatchesJob, syncMatchesTrigger, cts.Token).ConfigureAwait(true);
 
             logger.Information("Quartz started.");
         }

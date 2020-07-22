@@ -4,14 +4,16 @@ using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Matches.Infrastructure.Migrations
 {
     [DbContext(typeof(MatchContext))]
-    partial class MatchContextModelSnapshot : ModelSnapshot
+    [Migration("20200721165136_AddedNameExternalIdSeasonToMatch")]
+    partial class AddedNameExternalIdSeasonToMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,10 +113,9 @@ namespace Matches.Infrastructure.Migrations
                         .HasColumnName("Season")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("_status")
-                        .IsRequired()
-                        .HasColumnName("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("_statusId")
+                        .HasColumnName("StatusId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("_utcDate")
                         .HasColumnName("UtcDate")

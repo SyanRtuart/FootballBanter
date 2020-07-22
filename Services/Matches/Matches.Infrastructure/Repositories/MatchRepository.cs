@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Matches.Domain.Match;
 using Matches.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Matches.Infrastructure.Repositories
 {
@@ -18,6 +19,16 @@ namespace Matches.Infrastructure.Repositories
         public async Task AddAsync(Match match)
         {
             await _context.Matches.AddAsync(match);
+        }
+
+        public async Task<Match> GetAsync(Guid id)
+        {
+            return await _context.Matches.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<int> CommitAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

@@ -44,11 +44,7 @@ namespace Matches.Infrastructure.Configuration.Mediator
             builder.Register<ServiceFactory>(ctx =>
             {
                 var c = ctx.Resolve<IComponentContext>();
-                return t => 
-                    
-                    
-                    
-                    c.Resolve(t);
+                return t => c.Resolve(t);
             }).InstancePerLifetimeScope();
         }
 

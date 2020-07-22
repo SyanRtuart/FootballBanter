@@ -4,12 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
+using Matches.Application.Configuration.Queries;
 using Matches.Application.Matches.SharedModels;
 using MediatR;
 
 namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
 {
-    public class GetRecentMatchesByTeamQueryHandler : IRequestHandler<GetRecentMatchesByTeamQuery, List<MatchDto>>
+    public class GetRecentMatchesByTeamQueryHandler : IQueryHandler<GetRecentMatchesByTeamQuery, List<MatchDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
@@ -26,7 +27,7 @@ namespace Matches.Application.Matches.Queries.GetRecentMatchesByTeam
             const string sql = @"SELECT m.id, 
                                team1.NAME AS HomeTeam, 
                                team.NAME  AS AwayTeam, 
-                                m.statusid, 
+                                m.status, 
                                 m.utcdate, 
                                 m.scorewinner, 
                                 m.scorehometeam, 

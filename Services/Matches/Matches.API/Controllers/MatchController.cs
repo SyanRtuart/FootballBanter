@@ -5,6 +5,7 @@ using Matches.Application.Matches.Commands.CreateMatch;
 using Matches.Application.Matches.Queries.GetMatchById;
 using Matches.Application.Matches.Queries.GetRecentMatchesByTeam;
 using Matches.Application.Matches.SharedModels;
+using Matches.Domain.Match;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,8 +38,10 @@ namespace Matches.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMatch([FromBody] CreateMatchRequest request)
         {
-            await _mediator.Send(new CreateMatchCommand(request.HomeTeamId, request.AwayTeamId, request.UtcDate,
-                request.Status, request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam));
+            await _mediator.Send(new CreateMatchCommand(request.Name, request.HomeTeamId, request.AwayTeamId,
+                request.UtcDate, request.Status, 
+                new Score(request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam), 
+                request.Season, request.ExternalId));
 
             return Ok();
         }

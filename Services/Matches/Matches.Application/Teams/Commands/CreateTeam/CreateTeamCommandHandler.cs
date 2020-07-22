@@ -18,7 +18,7 @@ namespace Matches.Application.Teams.Commands.CreateTeam
         public async Task<Guid> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
         {
             var team = Team.Create(request.Name, request.Description, request.Logo, request.Manager, request.League,
-                request.Country, request.FormedYear, request.Facebook, request.Instagram, request.Stadium);
+                request.Country, request.FormedYear, request.Facebook, request.Instagram, request.Stadium, request.ExternalId);
 
             await _teamRepository.AddAsync(team);
 

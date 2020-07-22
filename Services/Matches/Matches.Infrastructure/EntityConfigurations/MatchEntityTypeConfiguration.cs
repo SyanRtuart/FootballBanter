@@ -16,10 +16,14 @@ namespace Matches.Infrastructure.EntityConfigurations
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder.Property<Guid>("_homeTeamId").HasColumnName("HomeTeamId");
-            builder.Property<Guid>("_awayTeamId").HasColumnName("AwayTeamId");
-            builder.Property<Guid>("_statusId").HasColumnName("StatusId");
-            builder.Property<DateTime>("_utcDate").HasColumnName("UtcDate");
+            builder.Property<Guid>("_homeTeamId").HasColumnName("HomeTeamId").IsRequired();
+            builder.Property<Guid>("_awayTeamId").HasColumnName("AwayTeamId").IsRequired();
+            builder.Property<string>("_status").HasColumnName("Status").IsRequired();
+            builder.Property<DateTime>("_utcDate").HasColumnName("UtcDate").IsRequired();
+            builder.Property<string>("_name").HasColumnName("Name").IsRequired();
+            builder.Property<string>("_season").HasColumnName("Season").IsRequired();
+            builder.Property<string>("_externalId").HasColumnName("ExternalId").IsRequired();
+
 
             builder.OwnsOne<Score>("_score", b =>
             {

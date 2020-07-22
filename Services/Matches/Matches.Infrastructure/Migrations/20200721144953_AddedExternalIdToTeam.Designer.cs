@@ -4,14 +4,16 @@ using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Matches.Infrastructure.Migrations
 {
     [DbContext(typeof(MatchContext))]
-    partial class MatchContextModelSnapshot : ModelSnapshot
+    [Migration("20200721144953_AddedExternalIdToTeam")]
+    partial class AddedExternalIdToTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,29 +94,13 @@ namespace Matches.Infrastructure.Migrations
                         .HasColumnName("AwayTeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("_externalId")
-                        .IsRequired()
-                        .HasColumnName("ExternalId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("_homeTeamId")
                         .HasColumnName("HomeTeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("_name")
-                        .IsRequired()
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("_season")
-                        .IsRequired()
-                        .HasColumnName("Season")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("_status")
-                        .IsRequired()
-                        .HasColumnName("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("_statusId")
+                        .HasColumnName("StatusId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("_utcDate")
                         .HasColumnName("UtcDate")

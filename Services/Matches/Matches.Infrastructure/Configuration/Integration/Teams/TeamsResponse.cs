@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Matches.Infrastructure.Configuration.Integration
+namespace Matches.Infrastructure.Configuration.Integration.Teams
 {
     public class TeamsResponse
     {

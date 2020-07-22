@@ -15,10 +15,10 @@ namespace Matches.Infrastructure.Configuration.Integration
             
         }
 
-        public string GetAllTeams()
-        {
-            return
-                $"https://www.thesportsdb.com/api/v1/json/{_apiKey}/search_all_teams.php?l=scottish%20Premier%20League";
-        }
+        public string GetAllTeams(string country) => $"https://www.thesportsdb.com/api/v1/json/{_apiKey}/search_all_teams.php?s=Soccer&c={country}";
+
+        public string GetNext15Matches(string leagueId) => $"https://www.thesportsdb.com/api/v1/json/{_apiKey}/eventsnextleague.php?id={leagueId}";
+
+        public string GetLast15Matches(string leagueId) => $"https://www.thesportsdb.com/api/v1/json/{_apiKey}/eventspastleague.php?id={leagueId}";
     }
 }

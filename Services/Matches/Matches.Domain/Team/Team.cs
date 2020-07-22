@@ -1,5 +1,4 @@
-﻿using System;
-using Base.Domain.SeedWork;
+﻿using Base.Domain.SeedWork;
 
 namespace Matches.Domain.Team
 {
@@ -25,8 +24,10 @@ namespace Matches.Domain.Team
 
         private Stadium _stadium;
 
+        private string _externalId;
+
         public Team(string name, string description, byte[] logo, string manager, string league, string country, 
-            int formedYear, string facebook, string instagram, Stadium stadium)
+            int formedYear, string facebook, string instagram, Stadium stadium, string externalId)
         {
             _name = name;
             _description = description;
@@ -38,6 +39,7 @@ namespace Matches.Domain.Team
             _facebook = facebook;
             _instagram = instagram;
             _stadium = stadium;
+            _externalId = externalId;
         }
 
         public Team()
@@ -46,7 +48,7 @@ namespace Matches.Domain.Team
         }
 
         public void EditGeneralAttributes(string name, string description, byte[] logo, string manager, string league,
-            string country, int formedYear, string facebook, string instagram, Stadium stadium)
+            string country, int formedYear, string facebook, string instagram, Stadium stadium, string externalId)
         {
             _name = name;
             _description = description;
@@ -58,14 +60,15 @@ namespace Matches.Domain.Team
             _facebook = facebook;
             _instagram = instagram;
             _stadium = stadium;
+            _externalId = externalId;
 
             //TODO: Add Domain event
         }
 
         public static Team Create(string name, string description, byte[] logo, string manager, string league, 
-            string country, int formedYear, string facebook, string instagram, Stadium stadium)
+            string country, int formedYear, string facebook, string instagram, Stadium stadium, string externalId)
         {
-            return new Team(name, description, logo, manager, league, country, formedYear, facebook, instagram, stadium);
+            return new Team(name, description, logo, manager, league, country, formedYear, facebook, instagram, stadium, externalId);
 
             //TODO: Add Domain event
         }
@@ -74,5 +77,6 @@ namespace Matches.Domain.Team
         {
             return _name;
         }
+
     }
 }

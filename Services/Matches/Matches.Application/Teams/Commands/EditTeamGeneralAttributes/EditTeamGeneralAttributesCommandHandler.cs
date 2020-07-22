@@ -18,12 +18,12 @@ namespace Matches.Application.Teams.Commands.EditTeamGeneralAttributes
 
         public async Task<Unit> Handle(EditTeamGeneralAttributesCommand request, CancellationToken cancellationToken)
         {
-            var team = await _teamRepository.GetAsync(request.Id);
+            var team = await _teamRepository.GetAsync(request.TeamId);
 
             team.EditGeneralAttributes(request.Name, request.Description, request.Logo, request.Manager, request.League,
-                request.Country, request.FormedYear, request.Facebook, request.Instagram, request.Stadium);
+                request.Country, request.FormedYear, request.Facebook, request.Instagram, request.Stadium, request.ExternalId);
 
-            await _teamRepository.Commit();
+            await _teamRepository.CommitAsync();
 
             return Unit.Value;
         }

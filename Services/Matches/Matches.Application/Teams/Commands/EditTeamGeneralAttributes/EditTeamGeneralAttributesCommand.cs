@@ -10,9 +10,10 @@ namespace Matches.Application.Teams.Commands.EditTeamGeneralAttributes
 {
     public class EditTeamGeneralAttributesCommand : CommandBase
     {
-        public EditTeamGeneralAttributesCommand(Guid id, string name, string description, byte[] logo, string manager, string league, string country, int formedYear, string facebook, string instagram, Stadium stadium)
+        public EditTeamGeneralAttributesCommand(Guid teamId, string name, string description, byte[] logo, string manager, string league, 
+            string country, int formedYear, string facebook, string instagram, Stadium stadium, string externalId)
         {
-            Id = id;
+            TeamId = teamId;
             Name = name;
             Description = description;
             Logo = logo;
@@ -23,9 +24,10 @@ namespace Matches.Application.Teams.Commands.EditTeamGeneralAttributes
             Facebook = facebook;
             Instagram = instagram;
             Stadium = stadium;
+            ExternalId = externalId;
         }
 
-        public Guid Id { get; set; }
+        public Guid TeamId { get; set; }
         public string Name { get; }
         public string Description { get; set; }
         public byte[] Logo { get; set; }
@@ -36,5 +38,6 @@ namespace Matches.Application.Teams.Commands.EditTeamGeneralAttributes
         public string Facebook { get; set; }
         public string Instagram { get; set; }
         public Stadium Stadium { get; set; }
+        public string ExternalId { get; set; }
     }
 }

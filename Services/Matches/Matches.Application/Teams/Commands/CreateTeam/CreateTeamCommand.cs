@@ -7,7 +7,8 @@ namespace Matches.Application.Teams.Commands.CreateTeam
 {
     public class CreateTeamCommand : CommandBase<Guid>
     {
-        public CreateTeamCommand(string name, string description, byte[] logo, string manager, string league, string country, int formedYear, string facebook, string instagram, Stadium stadium)
+        public CreateTeamCommand(string name, string description, byte[] logo, string manager, string league, string country,
+            int formedYear, string facebook, string instagram, Stadium stadium, string externalId)
         {
             Name = name;
             Description = description;
@@ -19,6 +20,7 @@ namespace Matches.Application.Teams.Commands.CreateTeam
             Facebook = facebook;
             Instagram = instagram;
             Stadium = stadium;
+            ExternalId = externalId;
         }
 
         public string Name { get; }
@@ -31,5 +33,6 @@ namespace Matches.Application.Teams.Commands.CreateTeam
         public string Facebook { get; set; }
         public string Instagram { get; set; }
         public Stadium Stadium { get; set; }
+        public string ExternalId { get; set; }
     }
 }

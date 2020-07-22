@@ -24,6 +24,7 @@ namespace Matches.Infrastructure.EntityConfigurations
             builder.Property<int>("_formedYear").HasColumnName("FormedYear");
             builder.Property<string>("_facebook").HasColumnName("Facebook");
             builder.Property<string>("_instagram").HasColumnName("Instagram");
+            builder.Property<string>("_externalId").HasColumnName("ExternalId").IsRequired();
 
 
             builder.OwnsOne<Stadium>("_stadium", b =>
