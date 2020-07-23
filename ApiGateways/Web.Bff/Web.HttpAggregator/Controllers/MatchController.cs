@@ -38,14 +38,15 @@ namespace Web.HttpAggregator.Controllers
         [Route("getRecentMatches")]
         public async Task<List<Match>> GetRecentMatchesAsync(Guid teamId)
         {
-            var response = await _matchApiClient.GetRecentMatchesAsync(teamId);
+            var response = await _matchApiClient.GetMatchesAsync(teamId);
 
             var matches = new List<Match>();
 
             foreach (var matchData in response)
             {
-                matches.Add(new Match(matchData.Id, matchData.HomeTeamId, matchData.AwayTeamId, matchData.HomeTeam,
-                    matchData.AwayTeam, matchData.ScoreWinner, matchData.ScoreHomeTeam, matchData.ScoreAwayTeam));
+                matches.Add(new Match(matchData.Id, matchData.Name, matchData.HomeTeamId, matchData.AwayTeamId, matchData.HomeTeam,
+                    matchData.AwayTeam, matchData.UtcDate , matchData.ScoreWinner, matchData.ScoreHomeTeam, matchData.ScoreAwayTeam,
+                    matchData.Season, matchData.Status, matchData.HomeTeamLogo, matchData.AwayTeamLogo));
             }
 
             return matches;
@@ -57,8 +58,9 @@ namespace Web.HttpAggregator.Controllers
         {
             var response = await _matchApiClient.GetMatch(id);
 
-            var match = new Match(response.Id, response.HomeTeamId, response.AwayTeamId, response.HomeTeam,
-                response.AwayTeam, response.ScoreWinner, response.ScoreHomeTeam, response.ScoreAwayTeam);
+            var match = new Match(response.Id, response.Name, response.HomeTeamId, response.AwayTeamId, response.HomeTeam,
+                response.AwayTeam, response.UtcDate, response.ScoreWinner, response.ScoreHomeTeam, response.ScoreAwayTeam,
+                response.Season, response.Status, response.HomeTeamLogo, response.AwayTeamLogo);
 
             return match;
         }

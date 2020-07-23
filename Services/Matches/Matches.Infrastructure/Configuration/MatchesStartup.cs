@@ -29,8 +29,6 @@ namespace Matches.Infrastructure.Configuration
             IEmailSender emailSender,
             ContainerBuilder builder)
         {
-            //var moduleLogger = logger.ForContext("Module", "UserAccess");
-
             ConfigureCompositionRoot(connectionString,
                 executionContextAccessor,
                 logger,

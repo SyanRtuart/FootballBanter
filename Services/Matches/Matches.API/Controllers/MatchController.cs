@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Matches.Application.Matches.Commands.CreateMatch;
 using Matches.Application.Matches.Queries.GetMatchById;
-using Matches.Application.Matches.Queries.GetRecentMatchesByTeam;
+using Matches.Application.Matches.Queries.GetMatchesByTeam;
 using Matches.Application.Matches.SharedModels;
 using Matches.Domain.Match;
 using MediatR;
@@ -32,7 +32,7 @@ namespace Matches.API.Controllers
         [HttpGet]
         public async Task<List<MatchDto>> GetRecentMatchesByTeam([FromQuery] Guid teamId)
         {
-            return await _mediator.Send(new GetRecentMatchesByTeamQuery(teamId));
+            return await _mediator.Send(new GetMatchesByTeamQuery(teamId));
         }
 
         [HttpPost]

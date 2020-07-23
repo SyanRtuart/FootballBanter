@@ -73,7 +73,7 @@ namespace Matches.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule(everyHourOnTheHour)
+                    .WithCronSchedule(fourAmEveryDay)
                     .Build();
             scheduler.ScheduleJob(syncMatchesJob, syncMatchesTrigger, cts.Token).ConfigureAwait(true);
 

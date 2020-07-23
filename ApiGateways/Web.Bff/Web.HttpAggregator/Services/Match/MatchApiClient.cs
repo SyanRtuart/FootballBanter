@@ -31,9 +31,9 @@ namespace Web.HttpAggregator.Services.Match
             return JsonConvert.DeserializeObject<List<TeamData>>(content);
         }
 
-        public async Task<List<MatchData>> GetRecentMatchesAsync(Guid teamId)
+        public async Task<List<MatchData>> GetMatchesAsync(Guid teamId)
         {
-            var url = _urls.Match + UrlsConfig.MatchOperations.GetRecentMatches(teamId);
+            var url = _urls.Match + UrlsConfig.MatchOperations.GetMatches(teamId);
 
             var response = await _httpClient.GetAsync(url);
 

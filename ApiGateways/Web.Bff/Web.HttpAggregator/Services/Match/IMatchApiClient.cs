@@ -9,7 +9,7 @@ namespace Web.HttpAggregator.Services.Match
     {
         Task<List<TeamData>> GetTeamsAsync();
 
-        Task<List<MatchData>> GetRecentMatchesAsync(Guid teamId);
+        Task<List<MatchData>> GetMatchesAsync(Guid teamId);
 
         Task<MatchData> GetMatch(Guid id);
     }

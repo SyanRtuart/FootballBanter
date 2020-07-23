@@ -17,7 +17,7 @@ namespace Web.HttpAggregator.Config
                 return "team";
             }
 
-            public static string GetRecentMatches(Guid teamId)
+            public static string GetMatches(Guid teamId)
             {
                 return QueryHelpers.AddQueryString("match", nameof(teamId), teamId.ToString());
             }
