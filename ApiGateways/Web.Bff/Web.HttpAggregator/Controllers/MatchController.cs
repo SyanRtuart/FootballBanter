@@ -43,8 +43,10 @@ namespace Web.HttpAggregator.Controllers
             var matches = new List<Match>();
 
             foreach (var matchData in response)
+            {
                 matches.Add(new Match(matchData.Id, matchData.HomeTeamId, matchData.AwayTeamId, matchData.HomeTeam,
                     matchData.AwayTeam, matchData.ScoreWinner, matchData.ScoreHomeTeam, matchData.ScoreAwayTeam));
+            }
 
             return matches;
         }

@@ -1,10 +1,11 @@
 ﻿using System;
 using Matches.Application.Contracts;
 using Matches.Domain.Match;
+using MediatR;
 
 namespace Matches.Application.Matches.Commands.EditMatch.EditMatchGeneralAttributes
 {
-    public class EditMatchGeneralAttributesCommand : CommandBase
+    public class EditMatchGeneralAttributesCommand : CommandBase<Unit>
     {
         public EditMatchGeneralAttributesCommand(Guid matchId, string name, DateTime utcDate, Score score, string season, string status)
         {

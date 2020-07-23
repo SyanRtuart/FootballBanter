@@ -103,3 +103,6 @@
 {"@t":"2020-07-22T17:18:38.0116690Z","@mt":"Logger configured","Module":"API"}
 {"@t":"2020-07-22T17:18:39.2755689Z","@mt":"Quartz starting...","Module":"Phrases"}
 {"@t":"2020-07-22T17:18:39.4026719Z","@mt":"Quartz started.","Module":"Phrases"}
+{"@t":"2020-07-22T17:22:10.8037739Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-22T17:22:12.3242458Z","@mt":"Quartz starting...","Module":"Phrases"}
+{"@t":"2020-07-22T17:22:12.4147480Z","@mt":"Quartz started.","Module":"Phrases"}

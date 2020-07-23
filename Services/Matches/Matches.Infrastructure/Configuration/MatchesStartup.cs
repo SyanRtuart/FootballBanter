@@ -61,7 +61,7 @@ namespace Matches.Infrastructure.Configuration
             IEmailSender emailSender,
             ContainerBuilder builder)
         {
-            builder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Phrases")));
+            builder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Matches")));
 
             var loggerFactory = new Serilog.Extensions.Logging.SerilogLoggerFactory(logger);
             

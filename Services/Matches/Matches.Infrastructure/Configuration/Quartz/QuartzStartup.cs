@@ -18,6 +18,7 @@ namespace Matches.Infrastructure.Configuration.Quartz
             var everyFifteenSeconds = "0/15 * * ? * *";
             var fourAmEveryDay = "0 0 4 * * ?";
             var everyHourOnTheHour = "0/1 0 0/1 ? * * *";
+            var every60Seconnds = "0/59 * * ? * *";
 
 
             LogProvider.SetCurrentLogProvider(new SerilogLogProvider(logger));
@@ -72,7 +73,7 @@ namespace Matches.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule(fourAmEveryDay)
+                    .WithCronSchedule(everyHourOnTheHour)
                     .Build();
             scheduler.ScheduleJob(syncMatchesJob, syncMatchesTrigger, cts.Token).ConfigureAwait(true);
 
