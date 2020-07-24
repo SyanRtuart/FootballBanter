@@ -43,10 +43,6 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
                     logo = await _httpClient.GetByteArrayAsync(teamResponse.strTeamBadge + "/preview");
                 }
 
-                //TEMP
-                //teamResponse.strTeam = teamResponse.strTeamBadge + "/preview";
-                //TEMP
-
                 if (!TeamExistsInDatabase(out var id, teamsInDb, teamResponse.strTeam))
                 {
                     await AddTeam(teamResponse, logo);

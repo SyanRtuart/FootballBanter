@@ -5,23 +5,24 @@ namespace Matches.Domain.Match
 {
     public class Match : Entity, IAggregateRoot
     {
-        private string _name;
+        private Guid _awayTeamId;
+
+        private string _externalId;
 
         private Guid _homeTeamId;
 
-        private Guid _awayTeamId;
+        private string _name;
 
         private Score _score;
 
         private string _season;
 
-        private DateTime _utcDate;
-
-        private string _externalId;
-
         private string _status;
 
-        public Match(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season, DateTime utcDate, string externalId, string status)
+        private DateTime _utcDate;
+
+        public Match(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season, DateTime utcDate,
+            string externalId, string status)
         {
             _name = name;
             _awayTeamId = awayTeamId;
@@ -33,7 +34,6 @@ namespace Matches.Domain.Match
             _status = status;
 
             //TODO: Add Domain event
-
         }
 
         private Match()
@@ -41,10 +41,10 @@ namespace Matches.Domain.Match
             // Only for ORM.
         }
 
-        public static Match Create(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season, DateTime utcDate, string externalId, string status)
+        public static Match Create(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season,
+            DateTime utcDate, string externalId, string status)
         {
-            return new Match(name, awayTeamId, homeTeamId, score, season, utcDate, externalId, status);
-
+            return new Match(name, homeTeamId, awayTeamId, score, season, utcDate, externalId, status);
         }
 
         public void EditGeneralAttributes(string name, DateTime utcDate, Score score, string season, string status)

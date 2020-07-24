@@ -43,7 +43,8 @@ namespace Matches.Application.Matches.Queries.GetMatchesByTeam
                                INNER JOIN Match.Teams AS awayTeam
                                  ON m.AwayTeamId = awayTeam.Id
                         WHERE  ( m.HomeTeamId = @TeamId )
-                                OR ( m.AwayTeamId = @TeamId)";
+                                OR ( m.AwayTeamId = @TeamId)
+                        ORDER BY m.UtcDate DESC";
 
             var response = await connection.QueryAsync<MatchDto>(sql, new
             {
