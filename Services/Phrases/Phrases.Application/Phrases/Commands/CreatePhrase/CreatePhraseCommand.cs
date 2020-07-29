@@ -1,9 +1,10 @@
 ﻿using System;
 using MediatR;
+using Phrases.Application.Contracts;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {
-    public class CreatePhraseCommand : IRequest<Guid>
+    public class CreatePhraseCommand : CommandBase<Guid>
     {
         public CreatePhraseCommand(Guid matchId, Guid teamId, string description, bool positive)
         {

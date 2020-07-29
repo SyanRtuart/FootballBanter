@@ -1,11 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Phrases.Application.Configuration.Commands;
 using Phrases.Domain.Phrase;
 
 namespace Phrases.Application.Phrases.Commands.UpvotePhrase
 {
-    public class UpvotePhraseCommandHandler : IRequestHandler<UpvotePhraseCommand, Unit>
+    public class UpvotePhraseCommandHandler : ICommandHandler<UpvotePhraseCommand, Unit>
     {
         private readonly IPhraseRepository _phraseRepository;
 

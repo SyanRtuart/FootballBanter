@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
 using MediatR;
+using Phrases.Application.Configuration.Queries;
 
 namespace Phrases.Application.Phrases.Queries.GetPhrasesForMatch
 {
-    public class GetPhrasesForMatchQueryHandler : IRequestHandler<GetPhrasesForMatchQuery, List<PhraseDto>>
+    public class GetPhrasesForMatchQueryHandler : IQueryHandler<GetPhrasesForMatchQuery, List<PhraseDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

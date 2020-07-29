@@ -6,8 +6,10 @@ namespace Phrases.Domain.Phrase
 {
     public interface IPhraseRepository 
     {
-        Phrase Add(Phrase phrase);
+        Task AddAsync(Phrase phrase);
 
         Task<Phrase> GetAsync(Guid phraseId);
+
+        Task<int> CommitAsync();
     }
 }

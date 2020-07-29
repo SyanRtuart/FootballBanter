@@ -2,11 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Phrases.Application.Configuration.Commands;
 using Phrases.Domain.Phrase;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {
-    public class CreatePhraseCommandHandler : IRequestHandler<CreatePhraseCommand, Guid>
+    public class CreatePhraseCommandHandler : ICommandHandler<CreatePhraseCommand, Guid>
     {
         private readonly IPhraseRepository _phraseRepository;
 
@@ -19,7 +20,7 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
         {
             var phrase = Phrase.Create(request.MatchId, request.TeamId, request.Description, request.Positive);
 
-            _phraseRepository.Add(phrase);
+            await _phraseRepository.AddAsync(phrase);
 
             return phrase.Id;
         }

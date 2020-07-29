@@ -16,14 +16,19 @@ namespace Phrases.Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Phrase Add(Phrase phrase)
+        public async Task AddAsync(Phrase phrase)
         {
-            return _context.Phrases.Add(phrase).Entity;
+            await _context.Phrases.AddAsync(phrase);
         }
 
         public async Task<Phrase> GetAsync(Guid phraseId)
         {
             return await _context.Phrases.FirstOrDefaultAsync(o => o.Id == phraseId);
+        }
+
+        public async Task<int> CommitAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

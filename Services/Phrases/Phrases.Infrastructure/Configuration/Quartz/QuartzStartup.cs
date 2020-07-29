@@ -13,7 +13,7 @@ namespace Phrases.Infrastructure.Configuration.Quartz
         public static void Initialize(ILogger logger, IScheduler scheduler)
         {
             logger.Information("Quartz starting...");
-           
+
             LogProvider.SetCurrentLogProvider(new SerilogLogProvider(logger));
 
             var processOutboxJob = JobBuilder.Create<ProcessOutboxJob>().Build();

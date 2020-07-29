@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200729100158_ChangedDateDeletedAndIsDealtedToNullable.cs" />
+    <Compile Remove="Migrations\20200729100158_ChangedDateDeletedAndIsDealtedToNullable.Designer.cs" />
+    <Compile Remove="Migrations\20200729100358_ChangedDateDeletedAndIsDeletedToNullable.cs" />
+    <Compile Remove="Migrations\20200729100358_ChangedDateDeletedAndIsDeletedToNullable.Designer.cs" />
+    <Compile Remove="Migrations\20200729100613_ChangedDateDeletedAndIsDeletedToNullable.cs" />
+    <Compile Remove="Migrations\20200729100613_ChangedDateDeletedAndIsDeletedToNullable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.EventBus\Base.EventBus.csproj" />
     <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
     <ProjectReference Include="..\Phrases.Application\Phrases.Application.csproj" />

@@ -662,3 +662,6 @@
 {"@t":"2020-07-24T11:09:22.3544759Z","@mt":"Command processed successful, result {Result}","Result":"()","Module":"Matches","Context":"Command:85a1d9ed-6c0e-4804-87f0-53f63ecd5d9d"}
 {"@t":"2020-07-24T11:09:22.3556090Z","@mt":"Executing command {@Command}","Command":{"MatchId":"14f8762b-32fb-44dd-7238-08d82fc1f428","Name":"Celtic vs Kilmarnock","UtcDate":"2020-02-23T15:00:00.0000000","Score":{"Winner":"Placeholder","HomeTeam":3,"AwayTeam":1,"$type":"Score"},"Season":"2019-2020","Status":"Placeholder","Id":"f6ca6c9e-a103-4d0b-9b4b-6dea045cdc66","$type":"EditMatchGeneralAttributesCommand"},"Module":"Matches","Context":"Command:f6ca6c9e-a103-4d0b-9b4b-6dea045cdc66"}
 {"@t":"2020-07-24T11:09:22.6269352Z","@mt":"Command processed successful, result {Result}","Result":"()","Module":"Matches","Context":"Command:f6ca6c9e-a103-4d0b-9b4b-6dea045cdc66"}
+{"@t":"2020-07-24T11:09:57.2030467Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-24T11:10:00.0152517Z","@mt":"Quartz starting...","Module":"Matches"}
+{"@t":"2020-07-24T11:10:00.1731418Z","@mt":"Quartz started.","Module":"Matches"}

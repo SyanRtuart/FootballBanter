@@ -1,11 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Phrases.Application.Configuration.Commands;
 using Phrases.Domain.Phrase;
 
 namespace Phrases.Application.Phrases.Commands.DeletePhrase
 {
-    public class DeletePhraseCommandHandler : IRequestHandler<DeletePhraseCommand, Unit>
+    public class DeletePhraseCommandHandler : ICommandHandler<DeletePhraseCommand, Unit>
     {
         private readonly IPhraseRepository _phraseRepository;
 
