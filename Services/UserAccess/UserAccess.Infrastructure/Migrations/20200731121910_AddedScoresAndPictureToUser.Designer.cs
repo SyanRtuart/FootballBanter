@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.Infrastructure.Migrations
 {
     [DbContext(typeof(UserAccessContext))]
-    partial class UserAccessContextModelSnapshot : ModelSnapshot
+    [Migration("20200731121910_AddedScoresAndPictureToUser")]
+    partial class AddedScoresAndPictureToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,16 +198,12 @@ namespace UserAccess.Infrastructure.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("Banter")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnName("BanterScore")
-                                .HasColumnType("int")
-                                .HasDefaultValue(0);
+                                .HasColumnType("int");
 
                             b1.Property<int>("Comment")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnName("CommentScore")
-                                .HasColumnType("int")
-                                .HasDefaultValue(0);
+                                .HasColumnType("int");
 
                             b1.HasKey("UserId");
 

@@ -22,6 +22,12 @@ namespace UserAccess.Infrastructure.EntityConfigurations
             builder.Property<string>("_lastName").HasColumnName("LastName");
             builder.Property<string>("_name").HasColumnName("Name");
 
+            builder.OwnsOne<Scores>("_scores", b =>
+            {
+                b.Property(p => p.Banter).HasColumnName("BanterScore").HasDefaultValue(0);
+                b.Property(p => p.Comment).HasColumnName("CommentScore").HasDefaultValue(0);
+            });
+
             builder.OwnsMany<UserRole>("_roles", b =>
             {
                 b.WithOwner().HasForeignKey("UserId");
@@ -30,6 +36,8 @@ namespace UserAccess.Infrastructure.EntityConfigurations
                 b.Property<string>("Value").HasColumnName("RoleCode");
                 b.HasKey("UserId", "Value");
             });
+
+            builder.Property<byte[]>("_picture").HasColumnName("Picture");
         }
     }
 }

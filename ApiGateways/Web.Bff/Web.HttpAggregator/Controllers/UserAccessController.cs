@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Web.HttpAggregator.Models;
 using Web.HttpAggregator.Models.UserAccess;
 using Web.HttpAggregator.Services.UserAccess;
 
@@ -37,6 +35,18 @@ namespace Web.HttpAggregator.Controllers
 
             return Ok(new LoginResult(tokenResponse.AccessToken, tokenResponse.ExpiresIn,
                 tokenResponse.IssuedTokenType, tokenResponse.RefreshToken, tokenResponse.Scope));
+        }
+
+        [HttpGet]
+        [Route("user")]
+        public async Task<User> GetAccount(string email)
+        {
+            var response = await _userAccessApiClient.GetUser(email);
+
+            var user = new User(response.FirstName, response.LastName, response.Email, response.Login,
+                response.BanterScore, response.CommentScore, response.Picture);
+
+            return user;
         }
     }
 }

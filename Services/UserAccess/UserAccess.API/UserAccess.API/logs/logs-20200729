@@ -31,3 +31,6 @@
 {"@t":"2020-07-29T10:53:08.7223714Z","@mt":"Logger configured","Module":"API"}
 {"@t":"2020-07-29T10:53:11.5699877Z","@mt":"Quartz starting...","Module":"UserAccess"}
 {"@t":"2020-07-29T10:53:11.7356611Z","@mt":"Quartz started.","Module":"UserAccess"}
+{"@t":"2020-07-29T11:07:23.9641346Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-07-29T11:07:27.1466445Z","@mt":"Quartz starting...","Module":"UserAccess"}
+{"@t":"2020-07-29T11:07:27.3508137Z","@mt":"Quartz started.","Module":"UserAccess"}

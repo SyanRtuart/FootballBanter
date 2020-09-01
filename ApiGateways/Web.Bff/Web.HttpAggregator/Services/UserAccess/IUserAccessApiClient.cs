@@ -12,5 +12,7 @@ namespace Web.HttpAggregator.Services.UserAccess
         Task<TokenResponse> LoginAsync(LoginRequest request);
 
         Task LogoutAsync(string token);
+
+        Task<UserData> GetUser(string email);
     }
 }

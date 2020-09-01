@@ -52,7 +52,7 @@ namespace UserAccess.Domain.UserRegistrations
                 _registerDate));
         }
 
-        public static UserRegistration RegisterNewUser(
+        public static UserRegistration CreateNew(
             string login,
             string password,
             string email,

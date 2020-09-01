@@ -58,6 +58,8 @@ namespace Web.HttpAggregator.Config
             public static string RegisterNewUser => "userRegistration";
 
             public static string Login => "connect/token";
+
+            public static string GetUser(string email) => $"user/?email={email}";
         }
     }
 }

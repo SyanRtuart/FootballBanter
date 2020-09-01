@@ -62,5 +62,16 @@ namespace Web.HttpAggregator.Services.UserAccess
         {
             throw new NotImplementedException();
         }
+
+        public async Task<UserData> GetUser(string email)
+        {
+            var url = _urls.UserAccess + UrlsConfig.UserAccessOperations.GetUser(email);
+
+            var response = await _httpClient.GetAsync(url);
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<UserData>(content);
+        }
     }
 }
