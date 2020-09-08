@@ -39,6 +39,11 @@ namespace UserAccess.Domain.Users
             return new User(email, firstName, lastName, login, password);
         }
 
+        public void AddPicture(byte[] picture)
+        {
+            _picture = picture;
+        }
+
         private User()
         {
             // Only for EF.

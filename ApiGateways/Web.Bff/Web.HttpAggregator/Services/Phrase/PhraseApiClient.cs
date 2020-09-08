@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -15,10 +16,11 @@ namespace Web.HttpAggregator.Services.Phrase
         private readonly HttpClient _httpClient;
         private readonly UrlsConfig _urls;
 
-        public PhraseApiClient(HttpClient httpClient, IOptions<UrlsConfig> config)
+        public PhraseApiClient(HttpClient httpClient, IOptions<UrlsConfig> config, IExecutionContextAccessor executionContextAccessor)
         {
             _httpClient = httpClient;
             _urls = config.Value;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", executionContextAccessor.GetTokenAsync().Result);
         }
 
         public async Task<Guid> CreatePhrase(CreatePhraseRequest request)

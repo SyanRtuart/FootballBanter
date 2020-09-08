@@ -13,7 +13,8 @@ namespace UserAccess.Application.IdentityServer
             {
                 new ApiResource("userAccessApi", "User Access API"),
                 new ApiResource("matchesApi", "Matches API"),
-                new ApiResource("phrasesApi", "Phrases API")
+                new ApiResource("phrasesApi", "Phrases API"),
+                new ApiResource("web.httpaggregator", "HTTP Web Aggregator API")
             };
         }
 
@@ -50,6 +51,7 @@ namespace UserAccess.Application.IdentityServer
                         "userAccessApi",
                         "matchesApi",
                         "phrasesApi",
+                        "web.httpaggregator",
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     }

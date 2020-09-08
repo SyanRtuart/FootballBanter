@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,8 +51,6 @@ namespace Matches.API
 
             services.AddControllers();
 
-            //services.ConfigureIdentityServer(Configuration);
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
 
@@ -77,7 +77,8 @@ namespace Matches.API
             services
                 .ConfigureAuthentication(Configuration)
                 .AddOptions()
-                .AddSwagger(Configuration);
+                .AddSwagger(Configuration)
+                .AddCustomMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,8 +101,8 @@ namespace Matches.API
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
@@ -154,7 +155,21 @@ namespace Matches.API
 
     internal static class ServiceCollectionExtensions
     {
-       public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            services.AddMvc(config =>
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                    config.Filters.Add(new AuthorizeFilter(policy));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -187,7 +202,7 @@ namespace Matches.API
        {
            services.AddSwaggerGen(options =>
            {
-               options.SwaggerDoc("v1", new OpenApiInfo { Title = "User Access API", Version = "v1" });
+               options.SwaggerDoc("v1", new OpenApiInfo { Title = "Match API", Version = "v1" });
 
                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                {

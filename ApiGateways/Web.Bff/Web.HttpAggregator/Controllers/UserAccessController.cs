@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Web.HttpAggregator.Models.UserAccess;
 using Web.HttpAggregator.Services.UserAccess;
 
@@ -27,6 +29,7 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpPost]
         [Route("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var tokenResponse = await _userAccessApiClient.LoginAsync(request);
@@ -47,6 +50,18 @@ namespace Web.HttpAggregator.Controllers
                 response.BanterScore, response.CommentScore, response.Picture);
 
             return user;
+        }
+
+        [HttpPost]
+        [Route("uploadImage")]
+        public async Task<IActionResult> UploadImage()
+        {
+            var user = HttpContext.User;
+            var httpRequest = HttpContext.Request;
+            //Upload Image
+            var postedFile = httpRequest.Form.Files["Image"];
+
+            return Ok();
         }
     }
 }

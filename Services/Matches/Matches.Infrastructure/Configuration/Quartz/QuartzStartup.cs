@@ -76,7 +76,7 @@ namespace Matches.Infrastructure.Configuration.Quartz
                     .WithCronSchedule(fourAmEveryDay)
                     .Build();
             scheduler.ScheduleJob(syncMatchesJob, syncMatchesTrigger, cts.Token).ConfigureAwait(true);
-
+            
             logger.Information("Quartz started.");
         }
     }

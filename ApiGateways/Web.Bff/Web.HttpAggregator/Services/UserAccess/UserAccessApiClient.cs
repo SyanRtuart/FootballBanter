@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using IdentityModel.Client;
@@ -19,11 +20,12 @@ namespace Web.HttpAggregator.Services.UserAccess
         private readonly UrlsConfig _urls;
 
         public UserAccessApiClient(HttpClient httpClient, IOptions<UrlsConfig> urlConfig,
-            IOptions<IdentityConfig> identityConfig)
+            IOptions<IdentityConfig> identityConfig, IExecutionContextAccessor executionContextAccessor)
         {
             _httpClient = httpClient;
             _urls = urlConfig.Value;
             _identity = identityConfig.Value;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", executionContextAccessor.GetTokenAsync().Result);
         }
 
         public async Task RegisterNewUserAsync(RegisterNewUserRequest request)

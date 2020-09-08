@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -14,10 +15,11 @@ namespace Web.HttpAggregator.Services.Match
         private readonly HttpClient _httpClient;
         private readonly UrlsConfig _urls;
 
-        public MatchApiClient(HttpClient httpClient, IOptions<UrlsConfig> config)
+        public MatchApiClient(HttpClient httpClient, IOptions<UrlsConfig> config, IExecutionContextAccessor executionContextAccessor)
         {
             _httpClient = httpClient;
             _urls = config.Value;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", executionContextAccessor.GetTokenAsync().Result);
         }
 
         public async Task<List<TeamData>> GetTeamsAsync()
