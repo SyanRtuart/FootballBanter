@@ -44,6 +44,7 @@ namespace UserAccess.Infrastructure.Processing.InternalCommands
             const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
                                      "(@Id, @EnqueueDate, @Type, @Data)";
 
+
             await connection.ExecuteAsync(sqlInsert, new
             {
                 command.Id,

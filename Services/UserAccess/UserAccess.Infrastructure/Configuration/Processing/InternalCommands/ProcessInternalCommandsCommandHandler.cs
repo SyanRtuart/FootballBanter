@@ -9,6 +9,7 @@ using Dapper;
 using MediatR;
 using Newtonsoft.Json;
 using UserAccess.Application.Configuration.Commands;
+using UserAccess.Application.Contracts;
 
 namespace UserAccess.Infrastructure.Configuration.Processing.InternalCommands
 {

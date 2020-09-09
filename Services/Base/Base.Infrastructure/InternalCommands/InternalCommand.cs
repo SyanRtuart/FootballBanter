@@ -10,6 +10,8 @@ namespace Base.Infrastructure.InternalCommands
     {
         public Guid Id { get; set; }
 
+        public DateTime EnqueueDate { get; set; }
+
         public string Type { get; set; }
 
         public string Data { get; set; }
