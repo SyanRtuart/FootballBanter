@@ -6,15 +6,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using UserAccess.Application.Configuration.Commands;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Application.Users.Commands.AddPicture
 {
     public class AddPictureCommandHandler : ICommandHandler<AddPictureCommand>
     {
+        private readonly IUserRepository _userRepository;
 
-        public Task<Unit> Handle(AddPictureCommand request, CancellationToken cancellationToken)
+        public AddPictureCommandHandler(IUserRepository userRepository)
         {
-            throw new NotImplementedException();
+            _userRepository = userRepository;
+        }
+
+        public async Task<Unit> Handle(AddPictureCommand request, CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.GetAsync(request.UserId);
+
+            user.AddPicture(request.Picture);
+
+            return Unit.Value;
         }
     }
 }

@@ -9,5 +9,7 @@ namespace Web.HttpAggregator.Services
     public interface IExecutionContextAccessor
     {
         Task<string> GetTokenAsync();
+
+        Guid UserId { get; }
     }
 }

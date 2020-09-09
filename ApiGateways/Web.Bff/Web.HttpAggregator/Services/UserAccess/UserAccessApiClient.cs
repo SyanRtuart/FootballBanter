@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -74,6 +75,23 @@ namespace Web.HttpAggregator.Services.UserAccess
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<UserData>(content);
+        }
+
+        public async Task UploadPicture(UploadPictureRequest request)
+        {
+            var url = _urls.UserAccess + UrlsConfig.UserAccessOperations.UploadPicture(request.UserId);
+
+            var formData = new MultipartFormDataContent();
+
+            await using (var ms = new MemoryStream())
+            {
+                await request.Picture .CopyToAsync(ms);
+                formData.Add(new StreamContent(new MemoryStream(ms.ToArray())), "Image", request.Picture.FileName);
+            }
+
+            var response = await _httpClient.PostAsync(url, formData);
+
+            response.EnsureSuccessStatusCode();
         }
     }
 }

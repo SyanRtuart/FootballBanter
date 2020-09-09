@@ -78,7 +78,7 @@ namespace Base.Infrastructure.DomainEventsDispatching
                 _outbox.Add(outboxMessage);
             }
         }
-        private class AllPropertiesContractResolver : DefaultContractResolver
+        public class AllPropertiesContractResolver : DefaultContractResolver
         {
             protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
             {

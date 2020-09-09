@@ -14,5 +14,7 @@ namespace Web.HttpAggregator.Services.UserAccess
         Task LogoutAsync(string token);
 
         Task<UserData> GetUser(string email);
+
+        Task UploadPicture(UploadPictureRequest request);
     }
 }

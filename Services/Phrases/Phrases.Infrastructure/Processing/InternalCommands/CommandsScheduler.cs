@@ -1,5 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Base.Infrastructure;
+using Base.Infrastructure.DomainEventsDispatching;
+using Dapper;
+using Newtonsoft.Json;
 using Phrases.Application.Configuration.Commands;
 using Phrases.Application.Contracts;
 
@@ -18,38 +22,38 @@ namespace Phrases.Infrastructure.Processing.InternalCommands
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            //const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
-            //                         "(@Id, @EnqueueDate, @Type, @Data)";
+            const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
+                                     "(@Id, @EnqueueDate, @Type, @Data)";
 
-            //await connection.ExecuteAsync(sqlInsert, new
-            //{
-            //    command.Id,
-            //    EnqueueDate = DateTime.UtcNow,
-            //    Type = command.GetType().FullName,
-            //    Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
-            //    {
-            //        ContractResolver = new AllPropertiesContractResolver()
-            //    })
-            //});
+            await connection.ExecuteAsync(sqlInsert, new
+            {
+                command.Id,
+                EnqueueDate = DateTime.UtcNow,
+                Type = command.GetType().FullName,
+                Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
+                {
+                    ContractResolver = new DomainEventsDispatcher.AllPropertiesContractResolver()
+                })
+            });
         }
 
         public async Task EnqueueAsync<T>(ICommand<T> command)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            //const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
-            //                         "(@Id, @EnqueueDate, @Type, @Data)";
+            const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
+                                     "(@Id, @EnqueueDate, @Type, @Data)";
 
-            //await connection.ExecuteAsync(sqlInsert, new
-            //{
-            //    command.Id,
-            //    EnqueueDate = DateTime.UtcNow,
-            //    Type = command.GetType().FullName,
-            //    Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
-            //    {
-            //        ContractResolver = new AllPropertiesContractResolver()
-            //    })
-            //});
+            await connection.ExecuteAsync(sqlInsert, new
+            {
+                command.Id,
+                EnqueueDate = DateTime.UtcNow,
+                Type = command.GetType().FullName,
+                Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
+                {
+                    ContractResolver = new DomainEventsDispatcher.AllPropertiesContractResolver()
+                })
+            });
         }
     }
 }

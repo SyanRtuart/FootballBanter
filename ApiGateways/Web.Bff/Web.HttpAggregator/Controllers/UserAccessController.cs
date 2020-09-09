@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using Web.HttpAggregator.Models.UserAccess;
+using Web.HttpAggregator.Services;
 using Web.HttpAggregator.Services.UserAccess;
 
 namespace Web.HttpAggregator.Controllers
@@ -12,12 +15,15 @@ namespace Web.HttpAggregator.Controllers
     public class UserAccessController : ControllerBase
     {
         private readonly IUserAccessApiClient _userAccessApiClient;
+        private readonly IExecutionContextAccessor _executionContextAccessor;
 
-        public UserAccessController(IUserAccessApiClient userAccessApiClient)
+        public UserAccessController(IUserAccessApiClient userAccessApiClient, IExecutionContextAccessor executionContextAccessor)
         {
             _userAccessApiClient = userAccessApiClient;
+            _executionContextAccessor = executionContextAccessor;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register(RegisterNewUserRequest request)
@@ -27,9 +33,9 @@ namespace Web.HttpAggregator.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
-        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var tokenResponse = await _userAccessApiClient.LoginAsync(request);
@@ -53,13 +59,22 @@ namespace Web.HttpAggregator.Controllers
         }
 
         [HttpPost]
-        [Route("uploadImage")]
+        [Route("uploadPicture")]
         public async Task<IActionResult> UploadImage()
         {
-            var user = HttpContext.User;
             var httpRequest = HttpContext.Request;
-            //Upload Image
+
             var postedFile = httpRequest.Form.Files["Image"];
+
+            //byte[] pictureAsBytes;
+            //await using (var ms = new MemoryStream())
+            //{
+            //    postedFile.CopyTo(ms);
+            //    pictureAsBytes = ms.ToArray();
+            //}
+
+            await _userAccessApiClient.UploadPicture(new UploadPictureRequest(_executionContextAccessor.UserId,
+                postedFile));
 
             return Ok();
         }

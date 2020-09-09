@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserAccess.Application.Contracts;
+using UserAccess.Application.Users.Commands.AddPicture;
 using UserAccess.Application.Users.Queries.GetUserByEmail;
 
 namespace UserAccess.API.Controllers
@@ -24,16 +27,23 @@ namespace UserAccess.API.Controllers
         [HttpGet]
         public async Task<UserDto> Get(string email)
         {
-           return await _userAccessModule.ExecuteQueryAsync(new GetUserByEmailQuery(email));
+            return await _userAccessModule.ExecuteQueryAsync(new GetUserByEmailQuery(email));
         }
 
         [HttpPost]
         [Route("{id}/picture")]
-        public async Task<IActionResult> AddPicture()
+        public async Task<IActionResult> AddPicture(Guid id, [FromForm(Name = "image")] IFormFile file)
         {
-            var httpRequest = HttpContext.Request;
-            //Upload Image
-            var postedFile = httpRequest.Form.Files["Image"];
+            byte[] picture;
+
+            await using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                picture = ms.ToArray();
+
+            }
+
+            await _userAccessModule.ExecuteCommandAsync(new AddPictureCommand(id, picture));
 
             return Ok();
         }

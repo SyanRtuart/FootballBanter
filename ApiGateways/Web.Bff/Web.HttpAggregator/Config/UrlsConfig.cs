@@ -60,6 +60,8 @@ namespace Web.HttpAggregator.Config
             public static string Login => "connect/token";
 
             public static string GetUser(string email) => $"user/?email={email}";
+
+            public static string UploadPicture(Guid userId) => $"user/{userId}/picture";
         }
     }
 }

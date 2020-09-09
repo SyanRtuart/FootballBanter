@@ -2,6 +2,7 @@
 using Base.Domain.SeedWork;
 using UserAccess.Domain.UserRegistrations.Events;
 using UserAccess.Domain.UserRegistrations.Rules;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Domain.UserRegistrations
 {
@@ -63,6 +64,7 @@ namespace UserAccess.Domain.UserRegistrations
             return new UserRegistration(login, password, email, firstName, lastName, usersCounter);
         }
 
+
         public void Confirm()
         {
             CheckRule(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
@@ -72,6 +74,13 @@ namespace UserAccess.Domain.UserRegistrations
             _confirmedDate = DateTime.UtcNow;
 
             AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id));
+        }
+
+        public User CreateUser()
+        {
+            this.CheckRule(new UserCannotBeCreatedWhenRegistrationIsNotConfirmedRule(_status));
+
+            return User.CreateFromUserRegistration(this._email, this._firstName, this._lastName, this._login, this._password);
         }
     }
 }

@@ -25,6 +25,11 @@ namespace UserAccess.Domain.Users
 
         private byte[] _picture;
 
+        internal static User CreateFromUserRegistration(string email, string firstName, string lastName, string login, string password)
+        {
+            return new User(email, firstName, lastName, login, password);
+        }
+
         private User(string email, string firstName, string lastName, string login, string password)
         {
             _email = email;

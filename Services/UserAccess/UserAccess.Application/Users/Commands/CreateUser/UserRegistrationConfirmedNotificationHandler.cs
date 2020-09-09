@@ -18,7 +18,7 @@ namespace UserAccess.Application.Users.Commands.CreateUser
 
         public Task Handle(UserRegistrationConfirmedNotification notification, CancellationToken cancellationToken)
         {
-            //_commandsScheduler.EnqueueAsync(new CreateUserCommand(Guid.NewGuid(), notification.DomainEvent.UserRegistrationId));
+            _commandsScheduler.EnqueueAsync(new CreateUserCommand(Guid.NewGuid(), notification.DomainEvent.UserRegistrationId));
 
             return Task.CompletedTask;
         }
