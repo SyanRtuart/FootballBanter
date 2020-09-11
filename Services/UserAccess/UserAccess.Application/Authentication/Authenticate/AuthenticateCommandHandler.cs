@@ -6,10 +6,11 @@ using Base.Application.Permissions;
 using Base.Infrastructure;
 using Dapper;
 using MediatR;
+using UserAccess.Application.Configuration.Commands;
 
 namespace UserAccess.Application.Authentication.Authenticate
 {
-    public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, AuthenticationResult>
+    public class AuthenticateCommandHandler : ICommandHandler<AuthenticateCommand, AuthenticationResult>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

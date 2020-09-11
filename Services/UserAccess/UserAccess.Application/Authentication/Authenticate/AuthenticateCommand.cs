@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using UserAccess.Application.Contracts;
 
 namespace UserAccess.Application.Authentication.Authenticate
 {
-    public class AuthenticateCommand : IRequest<AuthenticationResult>
+    public class AuthenticateCommand : CommandBase<AuthenticationResult>
     {
         public AuthenticateCommand(string login, string password)
         {

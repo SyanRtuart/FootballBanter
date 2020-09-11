@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
+using Matches.Application.Configuration.Queries;
 using Matches.Application.Matches.SharedModels;
 using MediatR;
 
 namespace Matches.Application.Matches.Queries.GetMatchById
 {
-    public class GetMatchByIdQueryHandler : IRequestHandler<GetMatchByIdQuery, MatchDto>
+    public class GetMatchByIdQueryHandler : IQueryHandler<GetMatchByIdQuery, MatchDto>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

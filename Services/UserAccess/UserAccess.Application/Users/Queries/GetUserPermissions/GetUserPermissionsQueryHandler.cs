@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
 using MediatR;
+using UserAccess.Application.Configuration.Queries;
 
 namespace UserAccess.Application.Users.Queries.GetUserPermissions
 {
-    public class GetUserPermissionsQueryHandler : IRequestHandler<GetUserPermissionsQuery, List<UserPermissionDto>>
+    public class GetUserPermissionsQueryHandler : IQueryHandler<GetUserPermissionsQuery, List<UserPermissionDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

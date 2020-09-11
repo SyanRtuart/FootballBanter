@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using MediatR;
+using UserAccess.Application.Contracts;
 
 namespace UserAccess.Application.Users.Queries.GetUserPermissions
 {
-    public class GetUserPermissionsQuery : IRequest<List<UserPermissionDto>>
+    public class GetUserPermissionsQuery : QueryBase<List<UserPermissionDto>>
     {
         public GetUserPermissionsQuery(Guid userId)
         {
