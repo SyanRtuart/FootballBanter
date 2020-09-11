@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Base.Api.Configuration.Authorization;
+using Matches.Application.Contracts;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Application.Teams.Queries.GetAllTeams;
 using Matches.Infrastructure.Configuration.Integration;
@@ -16,17 +17,18 @@ namespace Matches.API.Controllers
     [Route("[controller]")]
     public class TeamController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMatchModule _matchModule;
 
-        public TeamController(IMediator mediator)
+        public TeamController(IMatchModule matchModule)
         {
-            _mediator = mediator;
+            _matchModule = matchModule;
         }
+
 
         [HttpGet]
         public async Task<List<TeamDto>> GetAll()
         {
-            return await _mediator.Send(new GetAllTeamsQuery());
+            return await _matchModule.ExecuteQueryAsync(new GetAllTeamsQuery());
         }
     }
 }

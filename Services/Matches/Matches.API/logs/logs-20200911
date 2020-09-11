@@ -1,3 +1,6 @@
 {"@t":"2020-09-11T11:00:30.8279486Z","@mt":"Logger configured","Module":"API"}
 {"@t":"2020-09-11T11:00:32.7476744Z","@mt":"Quartz starting...","Module":"Matches"}
 {"@t":"2020-09-11T11:00:32.8743482Z","@mt":"Quartz started.","Module":"Matches"}
+{"@t":"2020-09-11T11:17:46.3733910Z","@mt":"Logger configured","Module":"API"}
+{"@t":"2020-09-11T11:17:48.0886625Z","@mt":"Quartz starting...","Module":"Matches"}
+{"@t":"2020-09-11T11:17:48.2117239Z","@mt":"Quartz started.","Module":"Matches"}

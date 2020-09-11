@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Phrases.Application.Contracts;
 using Phrases.Application.Phrases.Commands.CreatePhrase;
 using Phrases.Application.Phrases.Commands.DeletePhrase;
 using Phrases.Application.Phrases.Commands.DownvotePhrase;
@@ -15,17 +16,17 @@ namespace Phrases.API.Controllers
     [Route("[controller]")]
     public class PhraseController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IPhrasesModule _phrasesModule;
 
-        public PhraseController(IMediator mediator)
+        public PhraseController(IPhrasesModule phrasesModule)
         {
-            _mediator = mediator;
+            _phrasesModule = phrasesModule;
         }
 
         [HttpPost]
         public async Task<Guid> CreatePhraseAsync(CreatePhraseRequest request)
         {
-            var id = await _mediator.Send(new CreatePhraseCommand(request.MatchId, request.TeamId, request.Description,
+            var id = await _phrasesModule.ExecuteCommandAsync(new CreatePhraseCommand(request.MatchId, request.TeamId, request.Description,
                 request.Positive));
 
             return id;
@@ -34,13 +35,13 @@ namespace Phrases.API.Controllers
         [HttpGet]
         public async Task<List<PhraseDto>> GetPhrasesForMatchAsync(Guid matchId)
         {
-            return await _mediator.Send(new GetPhrasesForMatchQuery(matchId));
+            return await _phrasesModule.ExecuteQueryAsync(new GetPhrasesForMatchQuery(matchId));
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeletePhraseAsync(Guid phraseId)
         {
-            await _mediator.Send(new DeletePhraseCommand(phraseId));
+            await _phrasesModule.ExecuteCommandAsync(new DeletePhraseCommand(phraseId));
 
             return Ok();
         }
@@ -49,7 +50,7 @@ namespace Phrases.API.Controllers
         [Route("{phraseId:int}/upvote")]
         public async Task<IActionResult> UpvotePhraseAsync(Guid phraseId)
         {
-            await _mediator.Send(new UpvotePhraseCommand(phraseId));
+            await _phrasesModule.ExecuteCommandAsync(new UpvotePhraseCommand(phraseId));
 
             return Ok();
         }
@@ -58,7 +59,7 @@ namespace Phrases.API.Controllers
         [Route("{phraseId:int}/downvote")]
         public async Task<IActionResult> DownvotePhraseAsync(Guid phraseId)
         {
-            await _mediator.Send(new DownvotePhraseCommand(phraseId));
+            await _phrasesModule.ExecuteCommandAsync(new DownvotePhraseCommand(phraseId));
 
             return Ok();
         }

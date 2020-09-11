@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Matches.Application.Contracts;
 using Matches.Application.Matches.Commands.CreateMatch;
 using Matches.Application.Matches.Queries.GetMatchById;
 using Matches.Application.Matches.Queries.GetMatchesByTeam;
@@ -15,30 +16,30 @@ namespace Matches.API.Controllers
     [Route("[controller]")]
     public class MatchController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IMatchModule _matchModule;
 
-        public MatchController(IMediator mediator)
+        public MatchController(IMatchModule matchModule)
         {
-            _mediator = mediator;
+            _matchModule = matchModule;
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<MatchDto> GetMatchById(Guid id)
         {
-            return await _mediator.Send(new GetMatchByIdQuery(id));
+            return await _matchModule.ExecuteQueryAsync(new GetMatchByIdQuery(id));
         }
 
         [HttpGet]
         public async Task<List<MatchDto>> GetRecentMatchesByTeam([FromQuery] Guid teamId)
         {
-            return await _mediator.Send(new GetMatchesByTeamQuery(teamId));
+            return await _matchModule.ExecuteQueryAsync(new GetMatchesByTeamQuery(teamId));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateMatch([FromBody] CreateMatchRequest request)
         {
-            await _mediator.Send(new CreateMatchCommand(request.Name, request.HomeTeamId, request.AwayTeamId,
+            await _matchModule.ExecuteCommandAsync(new CreateMatchCommand(request.Name, request.HomeTeamId, request.AwayTeamId,
                 request.UtcDate, request.Status, 
                 new Score(request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam), 
                 request.Season, request.ExternalId));
