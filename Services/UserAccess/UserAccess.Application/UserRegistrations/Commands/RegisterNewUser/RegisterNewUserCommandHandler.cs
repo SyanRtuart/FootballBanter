@@ -28,7 +28,7 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
         {
             var password = PasswordManager.HashPassword(request.Password);
 
-            var registration = UserRegistration.CreateNew(
+            var registration = UserRegistration.RegisterNewUser(
                 request.Login,
                 password,
                 request.Email,

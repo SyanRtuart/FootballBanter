@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Base.Domain.SeedWork;
+using UserAccess.Domain.UserRegistrations.Events;
 
 namespace UserAccess.Domain.Users
 {
@@ -25,28 +27,26 @@ namespace UserAccess.Domain.Users
 
         private byte[] _picture;
 
-        internal static User CreateFromUserRegistration(string email, string firstName, string lastName, string login, string password)
+        public void AddPicture(byte[] picture)
         {
-            return new User(email, firstName, lastName, login, password);
+            _picture = picture;
         }
 
-        private User(string email, string firstName, string lastName, string login, string password)
+        internal static User CreateFromUserRegistration(Guid id, string email, string firstName, string lastName, string login, string password)
         {
+            return new User(id, email, firstName, lastName, login, password);
+        }
+
+        private User(Guid id, string email, string firstName, string lastName, string login, string password)
+        {
+            Id = id;
             _email = email;
             _firstName = firstName;
             _lastName = lastName;
             _login = login;
             _password = password;
-        }
 
-        public static User CreateNew(string email, string firstName, string lastName, string login, string password)
-        {
-            return new User(email, firstName, lastName, login, password);
-        }
-
-        public void AddPicture(byte[] picture)
-        {
-            _picture = picture;
+            AddDomainEvent(new UserCreatedDomainEvent(Id));
         }
 
         private User()

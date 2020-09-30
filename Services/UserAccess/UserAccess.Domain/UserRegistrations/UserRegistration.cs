@@ -40,6 +40,7 @@ namespace UserAccess.Domain.UserRegistrations
         {
             CheckRule(new UserEmailMustBeUniqueRule(usersCounter, login));
 
+            Id = Guid.NewGuid();
             _login = login;
             _password = password;
             _email = email;
@@ -53,7 +54,7 @@ namespace UserAccess.Domain.UserRegistrations
                 _registerDate));
         }
 
-        public static UserRegistration CreateNew(
+        public static UserRegistration RegisterNewUser(
             string login,
             string password,
             string email,
@@ -78,9 +79,18 @@ namespace UserAccess.Domain.UserRegistrations
 
         public User CreateUser()
         {
-            this.CheckRule(new UserCannotBeCreatedWhenRegistrationIsNotConfirmedRule(_status));
+            CheckRule(new UserCannotBeCreatedWhenRegistrationIsNotConfirmedRule(_status));
 
-            return User.CreateFromUserRegistration(this._email, this._firstName, this._lastName, this._login, this._password);
+            return User.CreateFromUserRegistration(Id, _email, _firstName, _lastName, _login, _password);
+        }
+
+        public void Expire()
+        {
+            CheckRule(new UserRegistrationCannotBeExpiredMoreThanOnceRule(_status));
+
+            _status = UserRegistrationStatus.Expired;
+
+            AddDomainEvent(new UserRegistrationExpiredDomainEvent(Id));
         }
     }
 }
