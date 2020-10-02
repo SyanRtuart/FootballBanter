@@ -78,7 +78,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
                 team.strManager, team.strLeague, team.strCountry, int.Parse(team.intFormedYear),
                 team.strFacebook,
                 team.strInstagram,
-                new Stadium(team.strStadium, team.strStadiumDescription, team.strStadiumLocation),
+                Stadium.CreateNew(team.strStadium, team.strStadiumDescription, team.strStadiumLocation), 
                 team.idTeam);
 
            await _commandExecutor.Execute(command);
@@ -90,7 +90,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
                 team.strManager, team.strLeague, team.strCountry, int.Parse(team.intFormedYear),
                 team.strFacebook,
                 team.strInstagram,
-                new Stadium(team.strStadium, team.strStadiumDescription, team.strStadiumLocation),
+                Stadium.CreateNew(team.strStadium, team.strStadiumDescription, team.strStadiumLocation), 
                 team.idTeam);
 
             await _commandExecutor.Execute(command);

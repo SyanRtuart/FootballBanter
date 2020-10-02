@@ -89,7 +89,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
         {
             var date = TryParseDate(match.dateEvent, match.strTime);
 
-            var score = new Score("Placeholder", TryParseInt(match.intHomeScore), TryParseInt(match.intAwayScore));
+            var score = Score.CreateNew("Placeholder", TryParseInt(match.intHomeScore), TryParseInt(match.intAwayScore));
 
             var command = new CreateMatchCommand(match.strEvent, homeTeam.Id, awayTeam.Id, date.GetValueOrDefault(), "Placeholder",
                 score, match.strSeason,
@@ -101,7 +101,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
         private async Task EditMatch(MatchResponse match, Guid existingMatchId)
         {
             var date = TryParseDate(match.dateEvent, match.strTime);
-            var score = new Score("Placeholder", TryParseInt(match.intHomeScore), TryParseInt(match.intAwayScore));
+            var score = Score.CreateNew("Placeholder", TryParseInt(match.intHomeScore), TryParseInt(match.intAwayScore));
 
             var command = new EditMatchGeneralAttributesCommand(existingMatchId, match.strEvent, date.GetValueOrDefault(), 
                score, match.strSeason, "Placeholder");

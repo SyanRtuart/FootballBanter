@@ -30,6 +30,8 @@ namespace UserAccess.Domain.Users
         public void AddPicture(byte[] picture)
         {
             _picture = picture;
+
+            //TODO Add domain event
         }
 
         internal static User CreateFromUserRegistration(Guid id, string email, string firstName, string lastName, string login, string password)

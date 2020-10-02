@@ -41,7 +41,7 @@ namespace Matches.API.Controllers
         {
             await _matchModule.ExecuteCommandAsync(new CreateMatchCommand(request.Name, request.HomeTeamId, request.AwayTeamId,
                 request.UtcDate, request.Status, 
-                new Score(request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam), 
+                Score.CreateNew(request.ScoreWinner, request.ScoreHomeTeam, request.ScoreAwayTeam), 
                 request.Season, request.ExternalId));
 
             return Ok();

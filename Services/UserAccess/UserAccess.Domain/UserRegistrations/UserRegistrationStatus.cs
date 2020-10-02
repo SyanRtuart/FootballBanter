@@ -4,7 +4,7 @@ namespace UserAccess.Domain.UserRegistrations
 {
     public class UserRegistrationStatus : ValueObject
     {
-        public UserRegistrationStatus(string value)
+        private UserRegistrationStatus(string value)
         {
             Value = value;
         }
