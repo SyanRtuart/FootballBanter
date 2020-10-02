@@ -35,11 +35,7 @@ namespace UserAccess.IntegrationTests.SeedWork
 
         protected IEmailSender EmailSender;
 
-        protected ContainerBuilder Builder;
-
-        protected ICommandExecutor CommandExecutor;
-
-        protected IQueryExecutor QueryExecutor;
+        private ContainerBuilder _builder;
 
         [SetUp]
         public async Task BeforeEachTest()
@@ -61,7 +57,7 @@ namespace UserAccess.IntegrationTests.SeedWork
 
             Logger = Substitute.For<ILogger>();
             EmailSender = Substitute.For<IEmailSender>();
-            Builder = new ContainerBuilder();
+            _builder = new ContainerBuilder();
 
             UserAccessStartup.Initialize(
                 ConnectionString,
@@ -70,14 +66,12 @@ namespace UserAccess.IntegrationTests.SeedWork
                 new EmailsConfiguration("from@email.com"),
                 "key",
                 EmailSender,
-                Builder);
+                _builder);
 
-            var container = Builder.Build();
+            var container = _builder.Build();
             var mediator = container.Resolve<IMediator>();
 
-            CommandExecutor = new CommandExecutor(mediator);
-            QueryExecutor = new QueryExecutor(mediator);
-            UserAccessModule = new UserAccessModule(CommandExecutor, QueryExecutor);
+            UserAccessModule = new UserAccessModule(new CommandExecutor(mediator), new QueryExecutor(mediator));
         }
 
         private static async Task ClearDatabase(IDbConnection connection)
