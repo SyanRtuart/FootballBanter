@@ -45,15 +45,15 @@ namespace UserAccess.Infrastructure.Persistence
         }
     }
 
-    public class MatchContextDesignFactory : IDesignTimeDbContextFactory<UserAccessContext>
-    {
-        public UserAccessContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<UserAccessContext>()
-                .UseSqlServer(
-                    "Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            return new UserAccessContext(optionsBuilder.Options, new NullLoggerFactory());
-        }
+    //public class MatchContextDesignFactory : IDesignTimeDbContextFactory<UserAccessContext>
+    //{
+    //    public UserAccessContext CreateDbContext(string[] args)
+    //    {
+    //        var optionsBuilder = new DbContextOptionsBuilder<UserAccessContext>()
+    //            .UseSqlServer(
+    //                "Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+    //        return new UserAccessContext(optionsBuilder.Options, new NullLoggerFactory());
+    //    }
        
-    }
+    //}
 }

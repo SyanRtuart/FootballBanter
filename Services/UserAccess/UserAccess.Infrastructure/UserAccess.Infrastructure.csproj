@@ -10,6 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.EventBus\Base.EventBus.csproj" />
     <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
     <ProjectReference Include="..\UserAccess.Application\UserAccess.Application.csproj" />
