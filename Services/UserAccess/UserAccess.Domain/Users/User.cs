@@ -48,6 +48,11 @@ namespace UserAccess.Domain.Users
             _login = login;
             _password = password;
 
+            _roles = new List<UserRole>
+            {
+                UserRole.Member
+            };
+
             AddDomainEvent(new UserCreatedDomainEvent(Id));
         }
 

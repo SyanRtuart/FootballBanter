@@ -1,5 +1,6 @@
 ﻿using System;
 using Base.Domain.SeedWork;
+using Matches.Domain.Match.Events;
 
 namespace Matches.Domain.Match
 {
@@ -24,6 +25,7 @@ namespace Matches.Domain.Match
         public Match(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season, DateTime utcDate,
             string externalId, string status)
         {
+            Id = Guid.NewGuid();
             _name = name;
             _awayTeamId = awayTeamId;
             _homeTeamId = homeTeamId;
@@ -33,7 +35,7 @@ namespace Matches.Domain.Match
             _externalId = externalId;
             _status = status;
 
-            //TODO: Add Domain event
+            AddDomainEvent(new MatchCreatedDomainEvent(Id));
         }
 
         private Match()
@@ -41,7 +43,7 @@ namespace Matches.Domain.Match
             // Only for ORM.
         }
 
-        public static Match Create(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season,
+        public static Match CreateNew(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season,
             DateTime utcDate, string externalId, string status)
         {
             return new Match(name, homeTeamId, awayTeamId, score, season, utcDate, externalId, status);
@@ -55,7 +57,7 @@ namespace Matches.Domain.Match
             _season = season;
             _status = status;
 
-            //TODO: Add Domain event
+            AddDomainEvent(new MatchGeneralAttributesEditedDomainEvent(name, utcDate, score, season, status));
         }
     }
 }

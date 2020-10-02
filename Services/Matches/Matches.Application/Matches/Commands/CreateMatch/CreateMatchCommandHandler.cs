@@ -17,7 +17,7 @@ namespace Matches.Application.Matches.Commands.CreateMatch
 
         public async Task<Guid> Handle(CreateMatchCommand request, CancellationToken cancellationToken)
         {
-            var match = Match.Create(request.Name, request.HomeTeamId, request.AwayTeamId,
+            var match = Match.CreateNew(request.Name, request.HomeTeamId, request.AwayTeamId,
                 request.Score, request.Season,
                 request.UtcDate, request.ExternalId, request.Status);
 
