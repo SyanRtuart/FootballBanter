@@ -21,7 +21,7 @@ namespace Phrases.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule("0/15 * * ? * *")
+                    .WithSchedule(SimpleScheduleBuilder.RepeatSecondlyForever(15))
                     .Build();
 
             scheduler
@@ -36,7 +36,7 @@ namespace Phrases.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule("0/15 * * ? * *")
+                    .WithSchedule(SimpleScheduleBuilder.RepeatSecondlyForever(15))
                     .Build();
 
             scheduler.ScheduleJob(processInboxJob, processInboxTrigger, cts.Token).ConfigureAwait(true);
@@ -46,7 +46,7 @@ namespace Phrases.Infrastructure.Configuration.Quartz
                  TriggerBuilder
                      .Create()
                      .StartNow()
-                     .WithCronSchedule("0/15 * * ? * *")
+                     .WithSchedule(SimpleScheduleBuilder.RepeatSecondlyForever(15))
                      .Build();
              scheduler.ScheduleJob(processInternalCommandsJob, triggerCommandsProcessing, cts.Token).ConfigureAwait(true);
 

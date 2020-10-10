@@ -15,11 +15,6 @@ namespace Matches.Infrastructure.Configuration.Quartz
         public static void Initialize(ILogger logger, IScheduler scheduler)
         {
             logger.Information("Quartz starting...");
-            var everyFifteenSeconds = "0/15 * * ? * *";
-            var fourAmEveryDay = "0 0 4 * * ?";
-            var everyHourOnTheHour = "0/1 0 0/1 ? * * *";
-            var every60Seconnds = "0/59 * * ? * *";
-
 
             LogProvider.SetCurrentLogProvider(new SerilogLogProvider(logger));
 
@@ -28,13 +23,13 @@ namespace Matches.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule(everyFifteenSeconds)
+                    .WithSchedule(SimpleScheduleBuilder.RepeatSecondlyForever(15))
                     .Build();
 
             scheduler
                 .ScheduleJob(processOutboxJob, trigger)
                 .GetAwaiter().GetResult();
-            
+
             var cts = new CancellationTokenSource();
             scheduler.ScheduleJob(processOutboxJob, trigger, cts.Token).ConfigureAwait(true);
 
@@ -43,19 +38,20 @@ namespace Matches.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule(everyFifteenSeconds)
+                    .WithSchedule(SimpleScheduleBuilder.RepeatSecondlyForever(15))
                     .Build();
 
             scheduler.ScheduleJob(processInboxJob, processInboxTrigger, cts.Token).ConfigureAwait(true);
 
-            var processInternalCommandsJob = JobBuilder.Create<ProcessInternalCommandsJob>().Build(); 
-             var triggerCommandsProcessing =
-                 TriggerBuilder
-                     .Create()
-                     .StartNow()
-                     .WithCronSchedule(everyFifteenSeconds)
-                     .Build();
-             scheduler.ScheduleJob(processInternalCommandsJob, triggerCommandsProcessing, cts.Token).ConfigureAwait(true);
+            var processInternalCommandsJob = JobBuilder.Create<ProcessInternalCommandsJob>().Build();
+            var triggerCommandsProcessing =
+                TriggerBuilder
+                    .Create()
+                    .StartNow()
+                    .WithSchedule(SimpleScheduleBuilder.RepeatSecondlyForever(15))
+                    .Build();
+            scheduler.ScheduleJob(processInternalCommandsJob, triggerCommandsProcessing, cts.Token)
+                .ConfigureAwait(true);
 
             scheduler.Start(cts.Token).ConfigureAwait(true);
 
@@ -64,7 +60,7 @@ namespace Matches.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule(fourAmEveryDay)
+                    .WithSchedule(SimpleScheduleBuilder.RepeatHourlyForever(1))
                     .Build();
             scheduler.ScheduleJob(syncTeamsJob, syncTeamsTrigger, cts.Token).ConfigureAwait(true);
 
@@ -73,10 +69,10 @@ namespace Matches.Infrastructure.Configuration.Quartz
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule(fourAmEveryDay)
+                    .WithSchedule(SimpleScheduleBuilder.RepeatHourlyForever(1))
                     .Build();
             scheduler.ScheduleJob(syncMatchesJob, syncMatchesTrigger, cts.Token).ConfigureAwait(true);
-            
+
             logger.Information("Quartz started.");
         }
     }
