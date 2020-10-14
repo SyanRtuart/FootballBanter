@@ -18,8 +18,8 @@ namespace Phrases.Application.Phrases.Commands.UpvotePhrase
         public async Task<Unit> Handle(UpvotePhraseCommand request, CancellationToken cancellationToken)
         {
             var phrase = await _phraseRepository.GetAsync(request.PhraseId);
-
-            phrase.Upvote();
+            
+            phrase.Upvote(request.VotedByUserId);
 
             return Unit.Value;
         }

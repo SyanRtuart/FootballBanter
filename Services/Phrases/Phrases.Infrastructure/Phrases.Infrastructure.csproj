@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20200729100358_ChangedDateDeletedAndIsDeletedToNullable.Designer.cs" />
     <Compile Remove="Migrations\20200729100613_ChangedDateDeletedAndIsDeletedToNullable.cs" />
     <Compile Remove="Migrations\20200729100613_ChangedDateDeletedAndIsDeletedToNullable.Designer.cs" />
+    <Compile Remove="Migrations\20201013201758_AddedCreatedAndDeletedByToPhraseAndRemovedIsDeleted.cs" />
+    <Compile Remove="Migrations\20201013201758_AddedCreatedAndDeletedByToPhraseAndRemovedIsDeleted.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -19,7 +19,7 @@ namespace Phrases.Application.Phrases.Commands.DeletePhrase
         {
             var phrase = await _phraseRepository.GetAsync(request.PhraseId);
 
-            phrase.Delete();
+            phrase.Delete(request.DeletedByUserId);
 
             return Unit.Value;
         }

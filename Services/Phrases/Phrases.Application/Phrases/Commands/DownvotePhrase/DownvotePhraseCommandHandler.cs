@@ -19,7 +19,7 @@ namespace Phrases.Application.Phrases.Commands.DownvotePhrase
         {
             var phrase = await _phraseRepository.GetAsync(request.PhraseId);
 
-            phrase.Downvote();
+            phrase.Downvote(request.VotedByUserId);
 
             return Unit.Value;
         }

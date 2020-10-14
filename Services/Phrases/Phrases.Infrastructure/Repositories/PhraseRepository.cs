@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Base.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using Phrases.Domain.Phrase;
+using Phrases.Domain.Phrases;
 using Phrases.Infrastructure.Persistence;
 
 namespace Phrases.Infrastructure.Repositories

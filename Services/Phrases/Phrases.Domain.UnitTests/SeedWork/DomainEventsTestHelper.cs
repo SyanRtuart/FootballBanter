@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Base.Domain;
 using Base.Domain.SeedWork;
 
-namespace Matches.Domain.UnitTests.SeedWork
+namespace Phrases.Domain.UnitTests.SeedWork
 {
     public class DomainEventsTestHelper
     {
@@ -50,7 +47,6 @@ namespace Matches.Domain.UnitTests.SeedWork
 
             return domainEvents;
         }
-
         public static void ClearAllDomainEvents(Entity aggregate)
         {
             aggregate.ClearDomainEvents();

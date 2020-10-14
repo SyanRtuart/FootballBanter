@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Phrases.Infrastructure.Persistence;
 
 namespace Phrases.Infrastructure.Migrations
 {
     [DbContext(typeof(PhraseContext))]
-    partial class PhraseContextModelSnapshot : ModelSnapshot
+    [Migration("20201013193320_added PhraseVoteHistory")]
+    partial class addedPhraseVoteHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,10 +93,6 @@ namespace Phrases.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("_createdByUserId")
-                        .HasColumnName("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("_dateCreated")
                         .HasColumnName("DateCreated")
                         .HasColumnType("datetime2");
@@ -103,14 +101,14 @@ namespace Phrases.Infrastructure.Migrations
                         .HasColumnName("DateDeleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("_deletedByUserId")
-                        .HasColumnName("DeletedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("_description")
                         .IsRequired()
                         .HasColumnName("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnName("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("_matchId")
                         .HasColumnName("MatchId")

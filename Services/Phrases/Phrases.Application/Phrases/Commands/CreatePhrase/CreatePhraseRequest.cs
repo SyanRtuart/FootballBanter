@@ -8,6 +8,8 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
 
         public Guid MatchId { get; set; }
 
+        public Guid CreatedByUserId { get; set; }
+
         public string Description { get; set; }
 
         public bool Positive { get; set; }

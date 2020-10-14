@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Phrases.Infrastructure.Persistence;
 
 namespace Phrases.Infrastructure.Migrations
 {
     [DbContext(typeof(PhraseContext))]
-    partial class PhraseContextModelSnapshot : ModelSnapshot
+    [Migration("20201013201942_AddedCreatedAndDeletedByToPhraseAndRemovedIsDeleted")]
+    partial class AddedCreatedAndDeletedByToPhraseAndRemovedIsDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

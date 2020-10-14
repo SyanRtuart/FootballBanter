@@ -26,7 +26,8 @@ namespace Phrases.API.Controllers
         [HttpPost]
         public async Task<Guid> CreatePhraseAsync(CreatePhraseRequest request)
         {
-            var id = await _phrasesModule.ExecuteCommandAsync(new CreatePhraseCommand(request.MatchId, request.TeamId, request.Description,
+            var id = await _phrasesModule.ExecuteCommandAsync(new CreatePhraseCommand(request.MatchId, request.TeamId,
+                request.CreatedByUserId, request.Description,
                 request.Positive));
 
             return id;
@@ -39,27 +40,27 @@ namespace Phrases.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeletePhraseAsync(Guid phraseId)
+        public async Task<IActionResult> DeletePhraseAsync(Guid phraseId, Guid userId)
         {
-            await _phrasesModule.ExecuteCommandAsync(new DeletePhraseCommand(phraseId));
+            await _phrasesModule.ExecuteCommandAsync(new DeletePhraseCommand(phraseId, userId));
 
             return Ok();
         }
 
         [HttpPut]
         [Route("{phraseId:int}/upvote")]
-        public async Task<IActionResult> UpvotePhraseAsync(Guid phraseId)
+        public async Task<IActionResult> UpvotePhraseAsync(Guid phraseId, Guid userId)
         {
-            await _phrasesModule.ExecuteCommandAsync(new UpvotePhraseCommand(phraseId));
+            await _phrasesModule.ExecuteCommandAsync(new UpvotePhraseCommand(phraseId, userId));
 
             return Ok();
         }
 
         [HttpPut]
         [Route("{phraseId:int}/downvote")]
-        public async Task<IActionResult> DownvotePhraseAsync(Guid phraseId)
+        public async Task<IActionResult> DownvotePhraseAsync(Guid phraseId, Guid userId)
         {
-            await _phrasesModule.ExecuteCommandAsync(new DownvotePhraseCommand(phraseId));
+            await _phrasesModule.ExecuteCommandAsync(new DownvotePhraseCommand(phraseId, userId ));
 
             return Ok();
         }

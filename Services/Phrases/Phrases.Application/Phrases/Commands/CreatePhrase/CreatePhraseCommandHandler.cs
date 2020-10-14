@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Phrases.Application.Configuration.Commands;
 using Phrases.Domain.Phrase;
+using Phrases.Domain.Phrases;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {
@@ -18,7 +18,8 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
 
         public async Task<Guid> Handle(CreatePhraseCommand request, CancellationToken cancellationToken)
         {
-            var phrase = Phrase.Create(request.MatchId, request.TeamId, request.Description, request.Positive);
+            var phrase = Phrase.Create(request.MatchId, request.TeamId, request.CreatedByUserId,
+                request.Description, request.Positive);
 
             await _phraseRepository.AddAsync(phrase);
 
