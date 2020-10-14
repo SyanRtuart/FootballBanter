@@ -15,7 +15,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Phrases.Domain.Phrase;
-using Phrases.Domain.Phrases;
 
 namespace Phrases.Infrastructure.Persistence
 {

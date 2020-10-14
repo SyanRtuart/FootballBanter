@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Phrases.Application.Configuration.Commands;
 using Phrases.Domain.Phrase;
-using Phrases.Domain.Phrases;
 
 namespace Phrases.Application.Phrases.Commands.CreatePhrase
 {
