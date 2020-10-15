@@ -1,7 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
 using Phrases.Domain.Phrase.Events;
-using Phrases.Domain.UnitTests.SeedWork;
 
 namespace Phrases.Domain.UnitTests.Phrases
 {
@@ -25,8 +24,13 @@ namespace Phrases.Domain.UnitTests.Phrases
             var phrase = Phrase.Phrase.Create(Guid.NewGuid(), Guid.NewGuid(),
                 Guid.NewGuid(), "description", true);
 
+            var userId = Guid.NewGuid();
 
+            phrase.Delete(userId);
+
+            var phraseDeletedDomainEvent = AssertPublishedDomainEvent<PhraseDeletedDomainEvent>(phrase);
+            Assert.That(phraseDeletedDomainEvent.PhraseId, Is.EqualTo(phrase.Id));
+            Assert.That(phraseDeletedDomainEvent.DeletedByUserId, Is.EqualTo(userId));
         }
-
     }
 }

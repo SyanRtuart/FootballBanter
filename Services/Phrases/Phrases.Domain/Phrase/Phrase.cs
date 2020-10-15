@@ -10,7 +10,7 @@ namespace Phrases.Domain.Phrase
     {
         private DateTime _dateCreated;
 
-        private DateTime _dateDeleted;
+        private DateTime? _dateDeleted;
 
         private string _description;
 
@@ -26,7 +26,7 @@ namespace Phrases.Domain.Phrase
 
         private Guid _createdByUserId;
 
-        private Guid _deletedByUserId;
+        private Guid? _deletedByUserId;
 
         private Phrase(Guid matchId, Guid teamId, Guid createdByUserId, string description, bool positive)
         {
@@ -54,13 +54,14 @@ namespace Phrases.Domain.Phrase
 
         public void Delete(Guid deletedByUserId)
         {
-            if (_deletedByUserId == Guid.Empty)
+            if (_deletedByUserId == null)
             {
                 _dateDeleted = DateTime.UtcNow;
                 _deletedByUserId = deletedByUserId;
+
+                AddDomainEvent(new PhraseDeletedDomainEvent(Id, deletedByUserId, _dateDeleted.Value));
             }
 
-            AddDomainEvent(new PhraseDeletedDomainEvent(Id, deletedByUserId, _dateDeleted));
         }
 
         public void Upvote(Guid userId)

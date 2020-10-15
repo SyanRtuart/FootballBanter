@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\Base\Base.Domain\Base.Domain.csproj" />
     <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
     <ProjectReference Include="..\Phrases.Domain\Phrases.Domain.csproj" />
+    <ProjectReference Include="..\Phrases.IntegrationEvents\Phrases.IntegrationEvents.csproj" />
   </ItemGroup>
 
 </Project>

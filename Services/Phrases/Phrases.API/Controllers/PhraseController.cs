@@ -48,7 +48,7 @@ namespace Phrases.API.Controllers
         }
 
         [HttpPut]
-        [Route("{phraseId:int}/upvote")]
+        [Route("{phraseId:guid}/upvote")]
         public async Task<IActionResult> UpvotePhraseAsync(Guid phraseId, Guid userId)
         {
             await _phrasesModule.ExecuteCommandAsync(new UpvotePhraseCommand(phraseId, userId));
@@ -57,7 +57,7 @@ namespace Phrases.API.Controllers
         }
 
         [HttpPut]
-        [Route("{phraseId:int}/downvote")]
+        [Route("{phraseId:guid}/downvote")]
         public async Task<IActionResult> DownvotePhraseAsync(Guid phraseId, Guid userId)
         {
             await _phrasesModule.ExecuteCommandAsync(new DownvotePhraseCommand(phraseId, userId ));

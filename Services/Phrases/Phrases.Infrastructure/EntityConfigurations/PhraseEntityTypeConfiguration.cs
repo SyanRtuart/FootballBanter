@@ -28,9 +28,9 @@ namespace Phrases.Infrastructure.EntityConfigurations
 
             builder.Property<DateTime>("_dateCreated").HasColumnName("DateCreated").IsRequired();
 
-            builder.Property<Guid>("_deletedByUserId").HasColumnName("DeletedByUserId");
+            builder.Property<Guid?>("_deletedByUserId").HasColumnName("DeletedByUserId");
 
-            builder.Property<DateTime>("_dateDeleted").HasColumnName("DateDeleted");
+            builder.Property<DateTime?>("_dateDeleted").HasColumnName("DateDeleted");
 
             builder.Property<int>("_score").HasColumnName("Score").IsRequired();
 

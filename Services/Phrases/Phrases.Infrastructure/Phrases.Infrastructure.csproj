@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20200729100613_ChangedDateDeletedAndIsDeletedToNullable.Designer.cs" />
     <Compile Remove="Migrations\20201013201758_AddedCreatedAndDeletedByToPhraseAndRemovedIsDeleted.cs" />
     <Compile Remove="Migrations\20201013201758_AddedCreatedAndDeletedByToPhraseAndRemovedIsDeleted.Designer.cs" />
+    <Compile Remove="Migrations\20201015114114_AddingMissingIdProperty.cs" />
+    <Compile Remove="Migrations\20201015114114_AddingMissingIdProperty.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

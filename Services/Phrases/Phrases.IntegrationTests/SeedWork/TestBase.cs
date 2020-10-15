@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
 using Base.Application.Emails;
 using Base.Infrastructure.Emails;
 using Dapper;
 using MediatR;
-using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
+using Phrases.Application.Contracts;
+using Phrases.Domain.Phrase;
+using Phrases.Infrastructure;
+using Phrases.Infrastructure.Configuration;
+using Phrases.Infrastructure.Configuration.Processing;
 using Serilog;
-using Serilog.Extensions.Logging;
-using UserAccess.Application.Contracts;
-using UserAccess.Infrastructure;
-using UserAccess.Infrastructure.Configuration;
-using UserAccess.Infrastructure.Configuration.Processing;
-using UserAccess.Infrastructure.Persistence;
 
-namespace UserAccess.IntegrationTests.SeedWork
+namespace Phrases.IntegrationTests.SeedWork
 {
     public class TestBase
     {
@@ -31,7 +25,7 @@ namespace UserAccess.IntegrationTests.SeedWork
 
         protected ILogger Logger;
 
-        protected IUserAccessModule UserAccessModule;
+        protected IPhrasesModule PhraseModule;
 
         protected IEmailSender EmailSender;
 
@@ -59,7 +53,7 @@ namespace UserAccess.IntegrationTests.SeedWork
             EmailSender = Substitute.For<IEmailSender>();
             _builder = new ContainerBuilder();
 
-            UserAccessStartup.Initialize(
+            PhrasesStartup.Initialize(
                 ConnectionString,
                 new ExecutionContextMock(Guid.NewGuid()),
                 Logger,
@@ -71,19 +65,16 @@ namespace UserAccess.IntegrationTests.SeedWork
             var container = _builder.Build();
             var mediator = container.Resolve<IMediator>();
 
-            UserAccessModule = new UserAccessModule(new CommandExecutor(mediator), new QueryExecutor(mediator));
+            PhraseModule = new PhrasesModule(new CommandExecutor(mediator), new QueryExecutor(mediator));
         }
 
         private static async Task ClearDatabase(IDbConnection connection)
         {
-            const string sql = "DELETE FROM [users].[InboxMessages] " +
-                               "DELETE FROM [users].[InternalCommands] " +
-                               "DELETE FROM [users].[OutboxMessages] " +
-                               "DELETE FROM [users].[UserRegistrations] " +
-                               "DELETE FROM [users].[Users] " +
-                               "DELETE FROM [users].[RolesToPermissions] " +
-                               "DELETE FROM [users].[UserRoles] " +
-                               "DELETE FROM [users].[Permissions] ";
+            const string sql = "DELETE FROM [Phrase].[InboxMessages] " +
+                               "DELETE FROM [Phrase].[InternalCommands] " +
+                               "DELETE FROM [Phrase].[OutboxMessages] " +
+                               "DELETE FROM [Phrase].[Phrases] " +
+                               "DELETE FROM [Phrase].[PhraseVoteHistory] ";
 
             await connection.ExecuteScalarAsync(sql);
         }

@@ -4,13 +4,14 @@ using Phrases.Domain.Phrase.Events;
 
 namespace Phrases.Domain.Phrase
 {
-    public class PhraseVoteHistory : Entity, IAggregateRoot
+    public class PhraseVoteHistory : Entity
     {
         private PhraseVoteHistory(Guid phraseId, Guid userId, int score)
         {
-            Id = Guid.NewGuid();
+            //Id = Guid.NewGuid();
             PhraseId = phraseId;
             UserId = userId;
+            _utcDateVoted = DateTime.UtcNow;
             _score = score;
 
             AddDomainEvent(new PhraseVoteHistoryCreatedDomainEvent(Id, phraseId, userId, score));

@@ -2,8 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Application.BuildingBlocks;
+using Microsoft.EntityFrameworkCore;
 using Phrases.Application.Configuration.Commands;
 using Phrases.Application.Contracts;
+using Phrases.Domain.Phrase;
 using Serilog;
 using Serilog.Context;
 using Serilog.Core;
