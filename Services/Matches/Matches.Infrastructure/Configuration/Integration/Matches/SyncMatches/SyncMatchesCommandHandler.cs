@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Matches.Application.Configuration.Commands;
 using Matches.Application.Matches.Commands.CreateMatch;
-using Matches.Application.Matches.Commands.EditMatch.EditMatchGeneralAttributes;
+using Matches.Application.Matches.Commands.EditMatchGeneralAttributes;
 using Matches.Application.Matches.Queries.GetAllMatches;
 using Matches.Application.Matches.SharedModels;
 using Matches.Application.Teams.Queries.GetAllTeams;

@@ -6,11 +6,11 @@ namespace Matches.Domain.Match
 {
     public class Match : Entity, IAggregateRoot
     {
-        private Guid _awayTeamId;
+        private readonly Guid _awayTeamId;
 
-        private string _externalId;
+        private readonly string _externalId;
 
-        private Guid _homeTeamId;
+        private readonly Guid _homeTeamId;
 
         private string _name;
 
@@ -35,7 +35,7 @@ namespace Matches.Domain.Match
             _externalId = externalId;
             _status = status;
 
-            AddDomainEvent(new MatchCreatedDomainEvent(Id));
+            AddDomainEvent(new MatchCreatedDomainEvent(Id, _homeTeamId, _awayTeamId, _externalId, _name, _score, _season, _status, _utcDate));
         }
 
         private Match()
@@ -57,7 +57,7 @@ namespace Matches.Domain.Match
             _season = season;
             _status = status;
 
-            AddDomainEvent(new MatchGeneralAttributesEditedDomainEvent(name, utcDate, score, season, status));
+            AddDomainEvent(new MatchGeneralAttributesEditedDomainEvent(Id, name, utcDate, score, season, status));
         }
     }
 }

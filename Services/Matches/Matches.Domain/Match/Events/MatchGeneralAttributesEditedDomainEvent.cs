@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Base.Domain;
 
 namespace Matches.Domain.Match.Events
 {
     public class MatchGeneralAttributesEditedDomainEvent : DomainEventBase
     {
-        public MatchGeneralAttributesEditedDomainEvent(string newName, DateTime newUtcDate, Score newScore, string newSeason, string newStatus)
+        public MatchGeneralAttributesEditedDomainEvent(Guid matchId, string newName, DateTime newUtcDate, Score newScore, string newSeason, string newStatus)
         {
+            MatchId = matchId;
             NewName = newName;
             NewUtcDate = newUtcDate;
             NewScore = newScore;
@@ -18,6 +15,7 @@ namespace Matches.Domain.Match.Events
             NewStatus = newStatus;
         }
 
+        public Guid MatchId { get; set; }
         public string NewName { get; set; }
         public DateTime NewUtcDate { get; set; }
         public Score NewScore { get; set; }

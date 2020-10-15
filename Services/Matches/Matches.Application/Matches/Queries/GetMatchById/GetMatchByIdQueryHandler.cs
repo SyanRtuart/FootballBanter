@@ -35,12 +35,13 @@ namespace Matches.Application.Matches.Queries.GetMatchById
                                m.HomeTeamId,
                                m.Season,
                                m.Name,
+                               m.ExternalId,
                                homeTeam.Logo AS HomeTeamLogo,
                                awayTeam.Logo AS AwayTeamLogo
                         FROM   Match.Matches AS m
-                               INNER JOIN Match.Teams AS homeTeam
+                               LEFT OUTER JOIN Match.Teams AS homeTeam
                                  ON m.HomeTeamId = homeTeam.Id
-                               INNER JOIN Match.Teams AS awayTeam
+                               LEFT OUTER JOIN Match.Teams AS awayTeam
                                  ON m.AwayTeamId = awayTeam.Id
                         WHERE  ( m.Id = @Id )";
 

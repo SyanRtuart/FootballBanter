@@ -3,7 +3,7 @@ using Matches.Application.Contracts;
 using Matches.Domain.Match;
 using MediatR;
 
-namespace Matches.Application.Matches.Commands.EditMatch.EditMatchGeneralAttributes
+namespace Matches.Application.Matches.Commands.EditMatchGeneralAttributes
 {
     public class EditMatchGeneralAttributesCommand : CommandBase<Unit>
     {

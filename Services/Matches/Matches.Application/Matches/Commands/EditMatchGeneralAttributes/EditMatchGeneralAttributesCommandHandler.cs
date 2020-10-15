@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Matches.Application.Configuration.Commands;
 using Matches.Domain.Match;
 using MediatR;
 
-namespace Matches.Application.Matches.Commands.EditMatch.EditMatchGeneralAttributes
+namespace Matches.Application.Matches.Commands.EditMatchGeneralAttributes
 {
     public class EditMatchGeneralAttributesCommandHandler : ICommandHandler<EditMatchGeneralAttributesCommand, Unit>
     {
