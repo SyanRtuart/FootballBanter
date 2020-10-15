@@ -41,11 +41,11 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
             var email = new EmailMessage(request.Email,
                 "Football Banter - Please confirm your registration",
                 "This should be link to confirmation page. For now, please execute HTTP request " +
-                $"PATCH http://localhost:5000/userRegistration/{registration.Id}/confirm");
+                $"PATCH http://localhost:5000/userRegistration/{registration.Id.Value}/confirm");
 
             await _emailSender.SendEmail(email);
 
-            return registration.Id;
+            return registration.Id.Value;
         }
     }
 }

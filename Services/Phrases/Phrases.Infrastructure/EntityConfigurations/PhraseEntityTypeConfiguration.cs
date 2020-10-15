@@ -1,7 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Phrases.Domain.Match;
 using Phrases.Domain.Phrase;
+using Phrases.Domain.Team;
+using Phrases.Domain.User;
 using Phrases.Infrastructure.Persistence;
 
 namespace Phrases.Infrastructure.EntityConfigurations
@@ -16,11 +19,11 @@ namespace Phrases.Infrastructure.EntityConfigurations
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder.Property<Guid>("_matchId").HasColumnName("MatchId").IsRequired();
+            builder.Property<MatchId>("_matchId").HasColumnName("MatchId").IsRequired();
 
-            builder.Property<Guid>("_teamId").HasColumnName("TeamId").IsRequired();
+            builder.Property<TeamId>("_teamId").HasColumnName("TeamId").IsRequired();
 
-            builder.Property<Guid>("_createdByUserId").HasColumnName("CreatedByUserId").IsRequired();
+            builder.Property<UserId>("_createdByUserId").HasColumnName("CreatedByUserId").IsRequired();
 
             builder.Property<string>("_description").HasColumnName("Description").IsRequired();
 
@@ -28,7 +31,7 @@ namespace Phrases.Infrastructure.EntityConfigurations
 
             builder.Property<DateTime>("_dateCreated").HasColumnName("DateCreated").IsRequired();
 
-            builder.Property<Guid?>("_deletedByUserId").HasColumnName("DeletedByUserId");
+            builder.Property<UserId?>("_deletedByUserId").HasColumnName("DeletedByUserId");
 
             builder.Property<DateTime?>("_dateDeleted").HasColumnName("DateDeleted");
 
@@ -39,7 +42,7 @@ namespace Phrases.Infrastructure.EntityConfigurations
                 y.WithOwner().HasForeignKey("PhraseId");
                 y.ToTable("PhraseVoteHistory", PhraseContext.DEFAULT_SCHEMA);
                 y.HasKey(o => o.Id);
-                y.Property<Guid>("UserId");
+                y.Property<UserId>("UserId");
                 y.Property<int>("_score").HasColumnName("Score");
                 y.Property<DateTime>("_utcDateVoted").HasColumnName("DateVoted");
                 y.Property<DateTime>("_utcDateDeleted").HasColumnName("DateDeleted");

@@ -8,7 +8,7 @@ namespace Phrases.Domain.Phrase
     {
         Task AddAsync(Phrase phrase);
 
-        Task<Phrase> GetAsync(Guid phraseId);
+        Task<Phrase> GetAsync(PhraseId phraseId);
 
         Task<int> CommitAsync();
     }

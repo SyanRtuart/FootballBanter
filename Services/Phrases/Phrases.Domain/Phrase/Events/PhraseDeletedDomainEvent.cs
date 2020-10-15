@@ -1,20 +1,21 @@
 ﻿using System;
 using Base.Domain;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.Phrase.Events
 {
     public class PhraseDeletedDomainEvent : DomainEventBase
     {
-        public PhraseDeletedDomainEvent(Guid phraseId, Guid deletedByUserId, DateTime utcDateDeleted)
+        public PhraseDeletedDomainEvent(PhraseId phraseId, UserId deletedByUserId, DateTime utcDateDeleted)
         {
             PhraseId = phraseId;
             DeletedByUserId = deletedByUserId;
             UtcDateDeleted = utcDateDeleted;
         }
 
-        public Guid PhraseId { get; set; }
+        public PhraseId PhraseId { get; set; }
 
-        public Guid DeletedByUserId { get; set; }
+        public UserId DeletedByUserId { get; set; }
 
         public DateTime UtcDateDeleted { get; set; }
     }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Matches.Domain.Match;
 using Matches.Domain.Match.Events;
+using Matches.Domain.Team;
 using Matches.Domain.UnitTests.SeedWork;
 using NUnit.Framework;
 
@@ -14,8 +15,8 @@ namespace Matches.Domain.UnitTests.Matches
         public void NewMatchCreation_IsSuccessful()
         {
             var match = Match.Match.CreateNew("name",
-                Guid.NewGuid(),
-                Guid.NewGuid(),
+                new TeamId(Guid.NewGuid()), 
+                new TeamId(Guid.NewGuid()), 
                 Score.CreateNew("winner", 1, 1),
                 "season",
                 DateTime.Now,
@@ -30,8 +31,8 @@ namespace Matches.Domain.UnitTests.Matches
         public void EditGeneralAttributes_IsSuccessful()
         {
             var match = Match.Match.CreateNew("name",
-                Guid.NewGuid(),
-                Guid.NewGuid(),
+                new TeamId(Guid.NewGuid()),
+                new TeamId(Guid.NewGuid()),
                 Score.CreateNew("winner", 1, 1),
                 "season",
                 DateTime.Now,

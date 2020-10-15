@@ -23,7 +23,7 @@ namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
         {
             await _commandsScheduler.EnqueueAsync(new SendUserRegistrationConfirmationEmailCommand(
                 Guid.NewGuid(),
-                notification.DomainEvent.UserRegistrationId,
+                notification.DomainEvent.UserRegistrationId.Value,
                 notification.DomainEvent.Email));
         }
     }

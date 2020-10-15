@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Phrases.Application.Configuration.Commands;
 using Phrases.Domain.Phrase;
+using Phrases.Domain.User;
 
 namespace Phrases.Application.Phrases.Commands.UpvotePhrase
 {
@@ -17,9 +18,9 @@ namespace Phrases.Application.Phrases.Commands.UpvotePhrase
 
         public async Task<Unit> Handle(UpvotePhraseCommand request, CancellationToken cancellationToken)
         {
-            var phrase = await _phraseRepository.GetAsync(request.PhraseId);
+            var phrase = await _phraseRepository.GetAsync(new PhraseId(request.PhraseId));
             
-            phrase.Upvote(request.VotedByUserId);
+            phrase.Upvote(new UserId(request.VotedByUserId));
 
             return Unit.Value;
         }

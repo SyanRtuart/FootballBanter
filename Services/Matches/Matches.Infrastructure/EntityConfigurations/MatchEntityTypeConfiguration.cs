@@ -1,5 +1,6 @@
 ﻿using System;
 using Matches.Domain.Match;
+using Matches.Domain.Team;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,12 +13,12 @@ namespace Matches.Infrastructure.EntityConfigurations
         {
             builder.ToTable("Matches", MatchContext.DEFAULT_SCHEMA);
 
-            builder.HasKey(o => o.Id);
+            builder.HasKey(x => x.Id);
 
             builder.Ignore(b => b.DomainEvents);
 
-            builder.Property<Guid>("_homeTeamId").HasColumnName("HomeTeamId").IsRequired();
-            builder.Property<Guid>("_awayTeamId").HasColumnName("AwayTeamId").IsRequired();
+            builder.Property<TeamId>("_homeTeamId").HasColumnName("HomeTeamId").IsRequired();
+            builder.Property<TeamId>("_awayTeamId").HasColumnName("AwayTeamId").IsRequired();
             builder.Property<string>("_status").HasColumnName("Status").IsRequired();
             builder.Property<DateTime>("_utcDate").HasColumnName("UtcDate").IsRequired();
             builder.Property<string>("_name").HasColumnName("Name").IsRequired();

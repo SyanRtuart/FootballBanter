@@ -6,6 +6,8 @@ namespace Matches.Domain.Team
 {
     public class Team : Entity, IAggregateRoot
     {
+        public TeamId Id { get; }
+
         private string _country;
 
         private string _description;
@@ -31,7 +33,7 @@ namespace Matches.Domain.Team
         private Team(string name, string description, byte[] logo, string manager, string league, string country,
             int formedYear, string facebook, string instagram, Stadium stadium, string externalId)
         {
-            Id = Guid.NewGuid();
+            Id = new TeamId(Guid.NewGuid());
             _name = name;
             _description = description;
             _logo = logo;

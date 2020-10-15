@@ -1,11 +1,12 @@
 ﻿using System;
 using Base.Domain;
+using Matches.Domain.Team;
 
 namespace Matches.Domain.Match.Events
 {
     public class MatchCreatedDomainEvent : DomainEventBase
     {
-        public MatchCreatedDomainEvent(Guid matchId, Guid homeTeamId, Guid awayTeamId, string externalId,
+        public MatchCreatedDomainEvent(MatchId matchId, TeamId homeTeamId, TeamId awayTeamId, string externalId,
             string name, Score score, string season, string status, DateTime utcDate)
         {
             MatchId = matchId;
@@ -19,11 +20,11 @@ namespace Matches.Domain.Match.Events
             UtcDate = utcDate;
         }
 
-        public Guid MatchId { get; set; }
+        public MatchId MatchId { get; set; }
 
-        public Guid HomeTeamId { get; set; }
+        public TeamId HomeTeamId { get; set; }
 
-        public Guid AwayTeamId { get; set; }
+        public TeamId AwayTeamId { get; set; }
 
         public string ExternalId { get; set; }
 

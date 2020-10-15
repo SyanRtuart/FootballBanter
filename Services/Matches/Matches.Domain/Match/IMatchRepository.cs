@@ -8,7 +8,7 @@ namespace Matches.Domain.Match
     {
         Task AddAsync(Match match);
 
-        Task<Match> GetAsync(Guid id);
+        Task<Match> GetAsync(MatchId id);
 
         Task<int> CommitAsync();
     }

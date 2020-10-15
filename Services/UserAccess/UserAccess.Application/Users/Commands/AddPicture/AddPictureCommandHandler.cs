@@ -21,7 +21,7 @@ namespace UserAccess.Application.Users.Commands.AddPicture
 
         public async Task<Unit> Handle(AddPictureCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetAsync(request.UserId);
+            var user = await _userRepository.GetAsync(new UserId(request.UserId));
 
             user.AddPicture(request.Picture);
 

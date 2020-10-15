@@ -1,36 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using Base.Domain.SeedWork;
+using Phrases.Domain.Match;
 using Phrases.Domain.Phrase.Events;
 using Phrases.Domain.Phrase.Rules;
+using Phrases.Domain.Team;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.Phrase
 {
     public class Phrase : Entity, IAggregateRoot
     {
+        public PhraseId Id { get; }
+
         private DateTime _dateCreated;
 
         private DateTime? _dateDeleted;
 
         private string _description;
 
-        private Guid _matchId;
+        private MatchId _matchId;
 
         private bool _positive;
 
         private int _score;
 
-        private Guid _teamId;
+        private TeamId _teamId;
 
         private List<PhraseVoteHistory> _phraseVoteHistory;
 
-        private Guid _createdByUserId;
+        private UserId _createdByUserId;
 
-        private Guid? _deletedByUserId;
+        private UserId? _deletedByUserId;
 
-        private Phrase(Guid matchId, Guid teamId, Guid createdByUserId, string description, bool positive)
+        private Phrase(MatchId matchId, TeamId teamId, UserId createdByUserId, string description, bool positive)
         {
-            Id = Guid.NewGuid();
+            Id = new PhraseId(Guid.NewGuid());
             _matchId = matchId;
             _teamId = teamId;
             _createdByUserId = createdByUserId;
@@ -43,7 +48,7 @@ namespace Phrases.Domain.Phrase
             AddDomainEvent(new PhraseCreatedDomainEvent(Id, matchId, teamId, createdByUserId, description, positive, _dateCreated));
         }
 
-        public static Phrase Create(Guid matchId, Guid teamId, Guid createdByUserId, string description, bool positive)
+        public static Phrase Create(MatchId matchId, TeamId teamId, UserId createdByUserId, string description, bool positive)
         {
             var phrase = new Phrase(matchId, teamId, createdByUserId, description, positive);
 
@@ -52,7 +57,7 @@ namespace Phrases.Domain.Phrase
             return phrase;
         }
 
-        public void Delete(Guid deletedByUserId)
+        public void Delete(UserId deletedByUserId)
         {
             if (_deletedByUserId == null)
             {
@@ -64,7 +69,7 @@ namespace Phrases.Domain.Phrase
 
         }
 
-        public void Upvote(Guid userId)
+        public void Upvote(UserId userId)
         {
             CheckRule(new UserCannotUpvoteTwiceRule(userId, _phraseVoteHistory));
 
@@ -73,7 +78,7 @@ namespace Phrases.Domain.Phrase
             _phraseVoteHistory.Add(PhraseVoteHistory.CreateNew(Id, userId, 1));
         }
 
-        public void Downvote(Guid userId)
+        public void Downvote(UserId userId)
         {
             CheckRule(new UserCannotDownvoteTwiceRule(userId, _phraseVoteHistory));
 

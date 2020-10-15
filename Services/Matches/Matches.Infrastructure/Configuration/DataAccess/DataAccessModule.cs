@@ -2,6 +2,7 @@
 using Base.Infrastructure;
 using Matches.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 
 namespace Matches.Infrastructure.Configuration.DataAccess
@@ -29,6 +30,9 @@ namespace Matches.Infrastructure.Configuration.DataAccess
                 {
                     var dbContextOptionsBuilder = new DbContextOptionsBuilder<MatchContext>();
                     dbContextOptionsBuilder.UseSqlServer(_databaseConnectionString);
+
+                    dbContextOptionsBuilder
+                        .ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
 
                     return new MatchContext(dbContextOptionsBuilder.Options, _loggerFactory);
                 })

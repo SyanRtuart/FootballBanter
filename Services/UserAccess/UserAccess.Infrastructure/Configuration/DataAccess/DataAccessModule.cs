@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Base.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 using UserAccess.Infrastructure.Persistence;
 
@@ -29,6 +30,9 @@ namespace UserAccess.Infrastructure.Configuration.DataAccess
                 {
                     var dbContextOptionsBuilder = new DbContextOptionsBuilder<UserAccessContext>();
                     dbContextOptionsBuilder.UseSqlServer(_databaseConnectionString);
+
+                    dbContextOptionsBuilder
+                        .ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
 
                     return new UserAccessContext(dbContextOptionsBuilder.Options, _loggerFactory);
                 })

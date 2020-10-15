@@ -7,6 +7,6 @@ namespace UserAccess.Domain.UserRegistrations
     {
         Task AddAsync(UserRegistration userRegistration);
 
-        Task<UserRegistration> GetByIdAsync(Guid userRegistrationId);
+        Task<UserRegistration> GetByIdAsync(UserRegistrationId userRegistrationId);
     }
 }

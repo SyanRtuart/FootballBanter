@@ -1,6 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
+using Phrases.Domain.Match;
 using Phrases.Domain.Phrase.Events;
+using Phrases.Domain.Team;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.UnitTests.Phrases
 {
@@ -10,8 +13,8 @@ namespace Phrases.Domain.UnitTests.Phrases
         [Test]
         public void CreatePhrase_WhenAllConditionsAllow_IsSuccessful()
         {
-            var phrase = Phrase.Phrase.Create(Guid.NewGuid(), Guid.NewGuid(),
-                Guid.NewGuid(), "description", true);
+            var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
+                new UserId(Guid.NewGuid()), "description", true);
 
 
             var phraseCreatedDomainEvent = AssertPublishedDomainEvent<PhraseCreatedDomainEvent>(phrase);
@@ -21,10 +24,10 @@ namespace Phrases.Domain.UnitTests.Phrases
         [Test]
         public void DeletePhrase_WhenAllConditionsAllow_IsSuccessful()
         {
-            var phrase = Phrase.Phrase.Create(Guid.NewGuid(), Guid.NewGuid(),
-                Guid.NewGuid(), "description", true);
+            var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
+                new UserId(Guid.NewGuid()), "description", true);
 
-            var userId = Guid.NewGuid();
+            var userId = new UserId(Guid.NewGuid());
 
             phrase.Delete(userId);
 

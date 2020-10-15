@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Base.Domain.SeedWork;
+using UserAccess.Domain.UserRegistrations;
 using UserAccess.Domain.UserRegistrations.Events;
 
 namespace UserAccess.Domain.Users
 {
     public class User : Entity, IAggregateRoot
     {
+        public UserId Id { get; }
+
         private string _email;
 
         private string _firstName;
@@ -34,14 +37,14 @@ namespace UserAccess.Domain.Users
             //TODO Add domain event
         }
 
-        internal static User CreateFromUserRegistration(Guid id, string email, string firstName, string lastName, string login, string password)
+        internal static User CreateFromUserRegistration(UserRegistrationId userRegistrationId, string email, string firstName, string lastName, string login, string password)
         {
-            return new User(id, email, firstName, lastName, login, password);
+            return new User(userRegistrationId, email, firstName, lastName, login, password);
         }
 
-        private User(Guid id, string email, string firstName, string lastName, string login, string password)
+        private User(UserRegistrationId userRegistrationId, string email, string firstName, string lastName, string login, string password)
         {
-            Id = id;
+            Id = new UserId(userRegistrationId.Value);
             _email = email;
             _firstName = firstName;
             _lastName = lastName;

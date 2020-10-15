@@ -18,7 +18,7 @@ namespace UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistrat
         public async Task<Unit> Handle(ConfirmUserRegistrationCommand request, CancellationToken cancellationToken)
         {
             var userRegistration =
-                await _userRegistrationRepository.GetByIdAsync(request.UserRegistrationId);
+                await _userRegistrationRepository.GetByIdAsync(new UserRegistrationId(request.UserRegistrationId));
 
             userRegistration.Confirm();
 

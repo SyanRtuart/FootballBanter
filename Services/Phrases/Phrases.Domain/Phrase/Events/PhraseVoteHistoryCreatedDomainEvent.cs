@@ -1,11 +1,12 @@
 ﻿using System;
 using Base.Domain;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.Phrase.Events
 {
     public class PhraseVoteHistoryCreatedDomainEvent : DomainEventBase
     {
-        public PhraseVoteHistoryCreatedDomainEvent(Guid phraseVoteHistoryId, Guid phraseId, Guid userId, int score)
+        public PhraseVoteHistoryCreatedDomainEvent(PhraseVoteHistoryId phraseVoteHistoryId, PhraseId phraseId, UserId userId, int score)
         {
             PhraseVoteHistoryId = phraseVoteHistoryId;
             PhraseId = phraseId;
@@ -13,9 +14,9 @@ namespace Phrases.Domain.Phrase.Events
             Score = score;
         }
 
-        public Guid PhraseVoteHistoryId { get; set; }
-        public Guid PhraseId { get; set; }
-        public Guid UserId { get; set; }
+        public PhraseVoteHistoryId PhraseVoteHistoryId { get; set; }
+        public PhraseId PhraseId { get; set; }
+        public UserId UserId { get; set; }
         public int Score { get; set; }
     }
 }

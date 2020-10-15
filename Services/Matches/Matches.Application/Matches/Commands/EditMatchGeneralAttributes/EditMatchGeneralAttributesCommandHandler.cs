@@ -17,7 +17,7 @@ namespace Matches.Application.Matches.Commands.EditMatchGeneralAttributes
 
         public async Task<Unit> Handle(EditMatchGeneralAttributesCommand request, CancellationToken cancellationToken)
         {
-            var match = await _matchRepository.GetAsync(request.MatchId);
+            var match = await _matchRepository.GetAsync(new MatchId(request.MatchId));
 
             match.EditGeneralAttributes(request.Name, request.UtcDate, request.Score, request.Season, request.Status);
 

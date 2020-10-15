@@ -1,8 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
+using Phrases.Domain.Match;
 using Phrases.Domain.Phrase.Events;
 using Phrases.Domain.Phrase.Rules;
+using Phrases.Domain.Team;
 using Phrases.Domain.UnitTests.SeedWork;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.UnitTests.Phrases
 {
@@ -19,7 +22,7 @@ namespace Phrases.Domain.UnitTests.Phrases
                 CreatedByUserId = Guid.NewGuid(),
                 Description = "description",
             });
-            var userId = Guid.NewGuid();
+            var userId = new UserId(Guid.NewGuid());
 
             phraseTestData.Phrase.Upvote(userId);
 
@@ -33,13 +36,13 @@ namespace Phrases.Domain.UnitTests.Phrases
         public void Upvote_WhenUserUpvoteTwice_IsNotPossible()
         {
             // Arrange
-            var userId = Guid.NewGuid();
+            var userId = new UserId(Guid.NewGuid());
 
             // Assert
             AssertBrokenRule<UserCannotUpvoteTwiceRule>(() =>
             {
                 // Act
-                var phrase = Phrase.Phrase.Create(Guid.NewGuid(), Guid.NewGuid(),
+                var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
                     userId, "description", true);
 
                 phrase.Upvote(userId);
@@ -57,7 +60,7 @@ namespace Phrases.Domain.UnitTests.Phrases
                 Description = "description",
             });
 
-            var userId = Guid.NewGuid();
+            var userId = new UserId(Guid.NewGuid());
 
             phraseTestData.Phrase.Downvote(userId);
 
@@ -71,13 +74,13 @@ namespace Phrases.Domain.UnitTests.Phrases
         public void Downvote_WhenUserDownvoteTwice_IsNotPossible()
         {
             // Arrange
-            var userId = Guid.NewGuid();
+            var userId = new UserId(Guid.NewGuid());
 
             // Assert
             AssertBrokenRule<UserCannotDownvoteTwiceRule>(() =>
             {
                 // Act
-                var phrase = Phrase.Phrase.Create(Guid.NewGuid(), Guid.NewGuid(),
+                var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()), 
                     userId, "description", true);
 
                 phrase.Downvote(userId);

@@ -22,7 +22,7 @@ namespace Matches.Application.Teams.Commands.CreateTeam
 
             await _teamRepository.AddAsync(team);
 
-            return team.Id;
+            return team.Id.Value;
         }
     }
 }

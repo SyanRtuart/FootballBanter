@@ -8,6 +8,8 @@ namespace UserAccess.Domain.UserRegistrations
 {
     public class UserRegistration : Entity, IAggregateRoot
     {
+        public UserRegistrationId Id { get; }
+
         private DateTime? _confirmedDate;
 
         private readonly string _email;
@@ -15,6 +17,7 @@ namespace UserAccess.Domain.UserRegistrations
         private readonly string _firstName;
 
         private readonly string _lastName;
+
         private readonly string _login;
 
         private readonly string _name;
@@ -40,7 +43,7 @@ namespace UserAccess.Domain.UserRegistrations
         {
             CheckRule(new UserEmailMustBeUniqueRule(usersCounter, login));
 
-            Id = Guid.NewGuid();
+            Id = new UserRegistrationId(Guid.NewGuid());
             _login = login;
             _password = password;
             _email = email;

@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Base.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 using Phrases.Infrastructure.Persistence;
 
@@ -29,6 +30,9 @@ namespace Phrases.Infrastructure.Configuration.DataAccess
                 {
                     var dbContextOptionsBuilder = new DbContextOptionsBuilder<PhraseContext>();
                     dbContextOptionsBuilder.UseSqlServer(_databaseConnectionString);
+
+                    dbContextOptionsBuilder
+                        .ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
 
                     return new PhraseContext(dbContextOptionsBuilder.Options, _loggerFactory);
                 })

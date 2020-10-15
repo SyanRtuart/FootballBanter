@@ -8,6 +8,7 @@ using UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration;
 using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 using UserAccess.Application.Users.Commands.CreateUser;
 using UserAccess.Application.Users.Queries.GetUser;
+using UserAccess.Domain.UserRegistrations;
 using UserAccess.IntegrationTests.SeedWork;
 using UserAccess.IntegrationTests.UserRegistrations;
 
@@ -30,7 +31,7 @@ namespace UserAccess.IntegrationTests.Users
 
             var userId = await UserAccessModule.ExecuteCommandAsync(new CreateUserCommand(
                 Guid.NewGuid(),
-                userRegistrationId));
+                new UserRegistrationId(userRegistrationId)));
 
             var user = await UserAccessModule.ExecuteQueryAsync(new GetUserQuery(userId));
 

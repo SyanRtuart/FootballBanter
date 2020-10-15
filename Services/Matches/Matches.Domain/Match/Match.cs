@@ -1,16 +1,19 @@
 ﻿using System;
 using Base.Domain.SeedWork;
 using Matches.Domain.Match.Events;
+using Matches.Domain.Team;
 
 namespace Matches.Domain.Match
 {
     public class Match : Entity, IAggregateRoot
     {
-        private readonly Guid _awayTeamId;
+        public MatchId Id { get; set; }
+
+        private readonly TeamId _awayTeamId;
 
         private readonly string _externalId;
 
-        private readonly Guid _homeTeamId;
+        private readonly TeamId _homeTeamId;
 
         private string _name;
 
@@ -22,10 +25,10 @@ namespace Matches.Domain.Match
 
         private DateTime _utcDate;
 
-        public Match(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season, DateTime utcDate,
+        public Match(string name, TeamId homeTeamId, TeamId awayTeamId, Score score, string season, DateTime utcDate,
             string externalId, string status)
         {
-            Id = Guid.NewGuid();
+            Id = new MatchId(Guid.NewGuid());
             _name = name;
             _awayTeamId = awayTeamId;
             _homeTeamId = homeTeamId;
@@ -43,7 +46,7 @@ namespace Matches.Domain.Match
             // Only for ORM.
         }
 
-        public static Match CreateNew(string name, Guid homeTeamId, Guid awayTeamId, Score score, string season,
+        public static Match CreateNew(string name, TeamId homeTeamId, TeamId awayTeamId, Score score, string season,
             DateTime utcDate, string externalId, string status)
         {
             return new Match(name, homeTeamId, awayTeamId, score, season, utcDate, externalId, status);

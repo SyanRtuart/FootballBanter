@@ -5,11 +5,11 @@ namespace Matches.Domain.Team.Events
 {
     public class TeamCreatedDomainEvent : DomainEventBase
     {
-        public TeamCreatedDomainEvent(Guid teamId)
+        public TeamCreatedDomainEvent(TeamId teamId)
         {
             TeamId = teamId;
         }
 
-        public Guid TeamId { get; set; }
+        public TeamId TeamId { get; set; }
     }
 }

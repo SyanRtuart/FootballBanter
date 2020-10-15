@@ -21,7 +21,7 @@ namespace Matches.Infrastructure.Repositories
             await _context.Matches.AddAsync(match);
         }
 
-        public async Task<Match> GetAsync(Guid id)
+        public async Task<Match> GetAsync(MatchId id)
         {
             return await _context.Matches.SingleOrDefaultAsync(x => x.Id == id);
         }

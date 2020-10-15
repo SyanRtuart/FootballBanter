@@ -20,7 +20,7 @@ namespace UserAccess.Infrastructure.Repositories
             await _context.AddAsync(userRegistration);
         }
 
-        public async Task<UserRegistration> GetByIdAsync(Guid userRegistrationId)
+        public async Task<UserRegistration> GetByIdAsync(UserRegistrationId userRegistrationId)
         {
             return await _context.UserRegistrations.FirstOrDefaultAsync(x => x.Id == userRegistrationId);
         }

@@ -1,15 +1,16 @@
 ﻿using System;
 using Base.Domain;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Domain.UserRegistrations.Events
 {
     public class UserRegistrationConfirmedDomainEvent : DomainEventBase
     {
-        public UserRegistrationConfirmedDomainEvent(Guid userRegistrationId)
+        public UserRegistrationConfirmedDomainEvent(UserRegistrationId userRegistrationId)
         {
             UserRegistrationId = userRegistrationId;
         }
 
-        public Guid UserRegistrationId { get; }
+        public UserRegistrationId UserRegistrationId { get; }
     }
 }

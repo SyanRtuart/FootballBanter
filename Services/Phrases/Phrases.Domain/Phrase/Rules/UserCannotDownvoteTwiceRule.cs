@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Base.Domain.SeedWork;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.Phrase.Rules
 {
     public class UserCannotDownvoteTwiceRule : IBusinessRule
     {
         private readonly List<PhraseVoteHistory> _phraseVoteHistory;
-        private readonly Guid _userId;
+        private readonly UserId _userId;
 
-        internal UserCannotDownvoteTwiceRule(Guid userId, List<PhraseVoteHistory> phraseVoteHistory)
+        internal UserCannotDownvoteTwiceRule(UserId userId, List<PhraseVoteHistory> phraseVoteHistory)
         {
             _userId = userId;
             _phraseVoteHistory = phraseVoteHistory;

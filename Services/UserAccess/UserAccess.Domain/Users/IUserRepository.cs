@@ -8,7 +8,7 @@ namespace UserAccess.Domain.Users
 {
     public interface IUserRepository
     {
-        Task<User> GetAsync(Guid userId);
+        Task<User> GetAsync(UserId userId);
 
         Task AddAsync(User user);
     }

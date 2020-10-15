@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Base.Domain;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+namespace Base.Infrastructure
+{
+    public class TypedIdValueConverter<TTypedIdValue> : ValueConverter<TTypedIdValue, Guid>
+        where TTypedIdValue : TypedIdValueBase
+    {
+        public TypedIdValueConverter(ConverterMappingHints mappingHints = null)
+            : base(id => id.Value, value => Create(value), mappingHints)
+        {
+        }
+
+        private static TTypedIdValue Create(Guid id) => Activator.CreateInstance(typeof(TTypedIdValue), id) as TTypedIdValue;
+    }
+}

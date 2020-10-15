@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UserAccess.Domain.Users;
 using UserAccess.Infrastructure.Persistence;
@@ -18,7 +14,7 @@ namespace UserAccess.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<User> GetAsync(Guid userId)
+        public async Task<User> GetAsync(UserId userId)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
         }

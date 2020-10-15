@@ -30,7 +30,7 @@ namespace UserAccess.IntegrationTests.UserRegistrations
 
             var userRegistrationConfirmedNotification = await GetLastOutboxMessage<UserRegistrationConfirmedNotification>();
 
-            Assert.That(userRegistrationConfirmedNotification.DomainEvent.UserRegistrationId, Is.EqualTo(registrationId));
+            Assert.That(userRegistrationConfirmedNotification.DomainEvent.UserRegistrationId.Value, Is.EqualTo(registrationId));
         }
     }
 }

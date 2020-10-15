@@ -83,7 +83,7 @@ namespace Matches.IntegrationTests.Teams
             Assert.That(team.Description, Is.EqualTo(EditTeamSampleData.NewDescription));
             Assert.That(team.Logo, Is.EqualTo(EditTeamSampleData.NewLogo));
             Assert.That(team.Manager, Is.EqualTo(EditTeamSampleData.NewManager));
-            Assert.That(team.League, Is.EqualTo(EditTeamSampleData.NewName));
+            Assert.That(team.League, Is.EqualTo(EditTeamSampleData.NewLeague));
             Assert.That(team.Country, Is.EqualTo(EditTeamSampleData.NewCountry));
             Assert.That(team.FormedYear, Is.EqualTo(EditTeamSampleData.NewFormedYear));
             Assert.That(team.Facebook, Is.EqualTo(EditTeamSampleData.NewFacebook));

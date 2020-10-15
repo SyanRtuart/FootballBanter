@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Base.Domain;
+﻿using Base.Domain;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Domain.UserRegistrations.Events
 {
     public class UserCreatedDomainEvent : DomainEventBase
     {
-        public UserCreatedDomainEvent(Guid userId)
+        public UserCreatedDomainEvent(UserId userId)
         {
             UserId = userId;
         }
 
-        public Guid UserId { get; set; }
+        public UserId UserId { get; set; }
     }
 }

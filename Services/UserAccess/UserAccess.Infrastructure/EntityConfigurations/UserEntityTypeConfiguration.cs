@@ -32,7 +32,7 @@ namespace UserAccess.Infrastructure.EntityConfigurations
             {
                 b.WithOwner().HasForeignKey("UserId");
                 b.ToTable("UserRoles", UserAccessContext.DEFAULT_SCHEMA);
-                b.Property<Guid>("UserId");
+                b.Property<UserId>("UserId");
                 b.Property<string>("Value").HasColumnName("RoleCode");
                 b.HasKey("UserId", "Value");
             });

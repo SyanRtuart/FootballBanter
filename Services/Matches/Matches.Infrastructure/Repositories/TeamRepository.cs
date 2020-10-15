@@ -22,7 +22,7 @@ namespace Matches.Infrastructure.Repositories
             await _context.Teams.AddAsync(team);
         }
 
-        public async Task<Team> GetAsync(Guid id)
+        public async Task<Team> GetAsync(TeamId id)
         {
             return await _context.Teams.SingleOrDefaultAsync(x => x.Id == id);
         }

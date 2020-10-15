@@ -23,10 +23,10 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
         public Task Handle(PhraseCreatedNotification notification, CancellationToken cancellationToken)
         {
             _eventsBus.Publish(new PhraseCreatedIntegrationEvent(notification.Id, notification.DomainEvent.OccurredOn,
-                notification.DomainEvent.PhraseId,
-                notification.DomainEvent.MatchId,
-                notification.DomainEvent.TeamId,
-                notification.DomainEvent.CreatedByUserId,
+                notification.DomainEvent.PhraseId.Value,
+                notification.DomainEvent.MatchId.Value,
+                notification.DomainEvent.TeamId.Value,
+                notification.DomainEvent.CreatedByUserId.Value,
                 notification.DomainEvent.Description,
                 notification.DomainEvent.Positive,
                 notification.DomainEvent.UtcDateCreated));

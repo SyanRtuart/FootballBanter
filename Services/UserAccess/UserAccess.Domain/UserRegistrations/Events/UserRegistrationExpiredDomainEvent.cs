@@ -9,11 +9,11 @@ namespace UserAccess.Domain.UserRegistrations.Events
 {
     public class UserRegistrationExpiredDomainEvent : DomainEventBase
     {
-        public UserRegistrationExpiredDomainEvent(Guid userRegistrationId)
+        public UserRegistrationExpiredDomainEvent(UserRegistrationId userRegistrationId)
         {
             UserRegistrationId = userRegistrationId;
         }
 
-        public Guid UserRegistrationId { get; set; }
+        public UserRegistrationId UserRegistrationId { get; set; }
     }
 }

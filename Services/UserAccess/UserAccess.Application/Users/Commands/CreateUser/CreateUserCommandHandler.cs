@@ -29,7 +29,7 @@ namespace UserAccess.Application.Users.Commands.CreateUser
 
             await _userRepository.AddAsync(user);
 
-            return user.Id;
+            return user.Id.Value;
         }
     }
 }

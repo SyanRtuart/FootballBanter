@@ -1,14 +1,17 @@
 ﻿using System;
 using Base.Domain.SeedWork;
 using Phrases.Domain.Phrase.Events;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.Phrase
 {
     public class PhraseVoteHistory : Entity
     {
-        private PhraseVoteHistory(Guid phraseId, Guid userId, int score)
+        public PhraseVoteHistoryId Id { get;}
+
+        private PhraseVoteHistory(PhraseId phraseId, UserId userId, int score)
         {
-            //Id = Guid.NewGuid();
+            Id = new PhraseVoteHistoryId(Guid.NewGuid());
             PhraseId = phraseId;
             UserId = userId;
             _utcDateVoted = DateTime.UtcNow;
@@ -22,9 +25,9 @@ namespace Phrases.Domain.Phrase
             // Only for ORM
         }
 
-        internal Guid PhraseId { get; }
+        internal PhraseId PhraseId { get; }
 
-        internal Guid UserId { get; }
+        internal UserId UserId { get; }
 
         private int _score { get; }
 
@@ -32,17 +35,17 @@ namespace Phrases.Domain.Phrase
 
         private DateTime _utcDateDeleted { get; }
 
-        internal static PhraseVoteHistory CreateNew(Guid phraseId, Guid userId, int score)
+        internal static PhraseVoteHistory CreateNew(PhraseId phraseId, UserId userId, int score)
         {
             return new PhraseVoteHistory(phraseId, userId, score);
         }
 
-        internal bool HasAlreadyUpvoted(Guid userId)
+        internal bool HasAlreadyUpvoted(UserId userId)
         {
             return UserId == userId && _score == 1;
         }
 
-        internal bool HasAlreadyDownvoted(Guid userId)
+        internal bool HasAlreadyDownvoted(UserId userId)
         {
             return UserId == userId && _score == -1;
         }

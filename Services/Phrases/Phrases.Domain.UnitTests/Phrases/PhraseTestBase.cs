@@ -1,5 +1,8 @@
 ﻿using System;
+using Phrases.Domain.Match;
+using Phrases.Domain.Team;
 using Phrases.Domain.UnitTests.SeedWork;
+using Phrases.Domain.User;
 
 namespace Phrases.Domain.UnitTests.Phrases
 {
@@ -25,8 +28,8 @@ namespace Phrases.Domain.UnitTests.Phrases
 
         protected PhraseTestData CreatePhraseTestData(PhraseTestDataOptions options)
         {
-            var phrase = Phrase.Phrase.Create(options.MatchId, options.TeamId,
-                options.CreatedByUserId, options.Description, true);
+            var phrase = Phrase.Phrase.Create(new MatchId(options.MatchId), new TeamId(options.TeamId), 
+                new UserId(options.CreatedByUserId), options.Description, true);
 
             DomainEventsTestHelper.ClearAllDomainEvents(phrase);
 

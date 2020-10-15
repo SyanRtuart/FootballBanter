@@ -37,9 +37,9 @@ namespace Phrases.IntegrationTests.Phrases
 
             var newUserRegisteredNotification = await GetLastOutboxMessage<PhraseCreatedNotification>();
 
-            Assert.That(newUserRegisteredNotification.DomainEvent.MatchId, Is.EqualTo(PhraseSampleData.MatchId));
-            Assert.That(newUserRegisteredNotification.DomainEvent.TeamId, Is.EqualTo(PhraseSampleData.TeamId));
-            Assert.That(newUserRegisteredNotification.DomainEvent.CreatedByUserId, Is.EqualTo(PhraseSampleData.CreatedByUserId));
+            Assert.That(newUserRegisteredNotification.DomainEvent.MatchId.Value, Is.EqualTo(PhraseSampleData.MatchId));
+            Assert.That(newUserRegisteredNotification.DomainEvent.TeamId.Value, Is.EqualTo(PhraseSampleData.TeamId));
+            Assert.That(newUserRegisteredNotification.DomainEvent.CreatedByUserId.Value, Is.EqualTo(PhraseSampleData.CreatedByUserId));
             Assert.That(newUserRegisteredNotification.DomainEvent.Description, Is.EqualTo(PhraseSampleData.Description));
             Assert.That(newUserRegisteredNotification.DomainEvent.Positive, Is.EqualTo(PhraseSampleData.Positive));
         }

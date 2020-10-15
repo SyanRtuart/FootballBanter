@@ -1,12 +1,13 @@
 ﻿using System;
 using Base.Domain;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Domain.UserRegistrations.Events
 {
     public class NewUserRegisteredDomainEvent : DomainEventBase
     {
         public NewUserRegisteredDomainEvent(
-            Guid userRegistrationId,
+            UserRegistrationId userRegistrationId,
             string login, string email, string firstName, string lastName, string name, DateTime registerDate)
         {
             UserRegistrationId = userRegistrationId;
@@ -18,7 +19,7 @@ namespace UserAccess.Domain.UserRegistrations.Events
             RegisterDate = registerDate;
         }
 
-        public Guid UserRegistrationId { get; }
+        public UserRegistrationId UserRegistrationId { get; }
 
         public string Login { get; }
 
