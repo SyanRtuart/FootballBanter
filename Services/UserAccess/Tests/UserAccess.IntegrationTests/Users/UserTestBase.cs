@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration;
 using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
 using UserAccess.Application.Users.Commands.CreateUser;
@@ -14,11 +13,9 @@ using UserAccess.IntegrationTests.UserRegistrations;
 
 namespace UserAccess.IntegrationTests.Users
 {
-    [TestFixture]
-    public class CreateUserTests : TestBase
+    public class UserTestBase : TestBase
     {
-        [Test]
-        public async Task CreateUser_Test()
+        protected async Task<Guid> CreateUserTestData()
         {
             var userRegistrationId = await UserAccessModule.ExecuteCommandAsync(new RegisterNewUserCommand(
                 UserRegistrationSampleData.Login,
@@ -33,9 +30,9 @@ namespace UserAccess.IntegrationTests.Users
                 Guid.NewGuid(),
                 new UserRegistrationId(userRegistrationId)));
 
-            var user = await UserAccessModule.ExecuteQueryAsync(new GetUserQuery(userId));
 
-            Assert.That(user.Login, Is.EqualTo(UserRegistrationSampleData.Login));
+
+            return userId;
         }
     }
 }

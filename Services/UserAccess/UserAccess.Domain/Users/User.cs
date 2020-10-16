@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Base.Domain.SeedWork;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Domain.UserRegistrations.Events;
+using UserAccess.Domain.Users.Events;
 
 namespace UserAccess.Domain.Users
 {
@@ -57,6 +58,15 @@ namespace UserAccess.Domain.Users
             };
 
             AddDomainEvent(new UserCreatedDomainEvent(Id));
+        }
+
+        public void EditGeneralAttributes(string firstName, string lastName, byte[] picture)
+        {
+            _firstName = firstName;
+            _lastName = lastName;
+            _picture = picture;
+
+            AddDomainEvent(new UserGeneralAttributesEditedDomainEvent(firstName, lastName, picture));
         }
 
         private User()

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserAccess.Application.Contracts;
 using UserAccess.Application.Users.Commands.AddPicture;
+using UserAccess.Application.Users.Commands.EditUserGeneralAttributes;
 using UserAccess.Application.Users.Queries.GetUserByEmail;
 
 namespace UserAccess.API.Controllers
@@ -44,6 +45,19 @@ namespace UserAccess.API.Controllers
             }
 
             await _userAccessModule.ExecuteCommandAsync(new AddPictureCommand(id, picture));
+
+            return Ok();
+        }
+
+        [HttpPut("{userId")]
+        public async Task<IActionResult> EditUserGeneralAttributes([FromRoute] Guid userId,
+            [FromBody] EditUserGeneralAttributesCommand request)
+        {
+            await _userAccessModule.ExecuteCommandAsync(new EditUserGeneralAttributesCommand(
+                userId,
+                request.FirstName,
+                request.LastName,
+                request.Picture));
 
             return Ok();
         }

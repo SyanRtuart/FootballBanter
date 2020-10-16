@@ -11,5 +11,8 @@ namespace UserAccess.Domain.Users
         Task<User> GetAsync(UserId userId);
 
         Task AddAsync(User user);
+
+        Task<int> Commit();
+
     }
 }

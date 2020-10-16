@@ -9,6 +9,7 @@ using UserAccess.Domain.UnitTests.SeedWork;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Domain.UserRegistrations.Events;
 using UserAccess.Domain.UserRegistrations.Rules;
+using UserAccess.Domain.Users.Events;
 
 namespace UserAccess.Domain.UnitTests.UserRegistrations
 {

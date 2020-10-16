@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Base.Domain;
@@ -33,5 +35,6 @@ namespace UserAccess.Domain.UnitTests.SeedWork
                 Assert.That(businessRuleValidationException.BrokenRule, Is.TypeOf<TRule>(), message);
             }
         }
+        
     }
 }

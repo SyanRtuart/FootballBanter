@@ -1,7 +1,6 @@
 ﻿using Base.Domain;
-using UserAccess.Domain.Users;
 
-namespace UserAccess.Domain.UserRegistrations.Events
+namespace UserAccess.Domain.Users.Events
 {
     public class UserCreatedDomainEvent : DomainEventBase
     {

@@ -23,5 +23,10 @@ namespace UserAccess.Infrastructure.Repositories
         {
             await _context.Users.AddAsync(user);
         }
+
+        public async Task<int> Commit()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }
