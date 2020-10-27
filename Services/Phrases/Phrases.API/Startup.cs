@@ -8,9 +8,7 @@ using Base.Api.Configuration.Authorization;
 using Base.Api.Configuration.Validation;
 using Base.Application.BuildingBlocks;
 using Base.Domain.Exceptions;
-using Base.Infrastructure;
 using Base.Infrastructure.Emails;
-using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using MediatR;
@@ -18,24 +16,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Phrases.API.Behaviours;
-using Phrases.Application.Phrases.Commands.CreatePhrase;
-using Phrases.Domain.Phrase;
 using Phrases.Infrastructure.Configuration;
 using Phrases.Infrastructure.Configuration.Quartz;
 using Phrases.Infrastructure.Persistence;
-using Phrases.Infrastructure.Repositories;
 using Quartz;
 using Serilog;
-using Serilog.Events;
 using Serilog.Formatting.Compact;
-using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Phrases.API
 {

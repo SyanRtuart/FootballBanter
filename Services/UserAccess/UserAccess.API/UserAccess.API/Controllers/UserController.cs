@@ -49,7 +49,7 @@ namespace UserAccess.API.Controllers
             return Ok();
         }
 
-        [HttpPut("{userId")]
+        [HttpPut("{userId}")]
         public async Task<IActionResult> EditUserGeneralAttributes([FromRoute] Guid userId,
             [FromBody] EditUserGeneralAttributesCommand request)
         {

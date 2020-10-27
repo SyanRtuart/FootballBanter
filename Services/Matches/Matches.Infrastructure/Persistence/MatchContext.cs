@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Domain.SeedWork;
+using Base.Infrastructure;
 using Base.Infrastructure.Extensions;
 using Base.Infrastructure.Inbox;
 using Base.Infrastructure.InternalCommands;
@@ -14,6 +15,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -56,6 +58,9 @@ namespace Matches.Infrastructure.Persistence
             var optionsBuilder = new DbContextOptionsBuilder<MatchContext>()
                 .UseSqlServer(
                     "Data Source=database-1.cqlahoaopgco.eu-west-1.rds.amazonaws.com,1433;User ID=admin;Password=hamish123;database=FootballBanter;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
+            optionsBuilder.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
+
             return new MatchContext(optionsBuilder.Options, new NullLoggerFactory());
         }
     }
