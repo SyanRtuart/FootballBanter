@@ -12,6 +12,7 @@ using IdentityServer4.AccessTokenValidation;
 using Matches.Domain.Team;
 using Matches.Infrastructure.Configuration;
 using Matches.Infrastructure.Configuration.Integration;
+using Matches.Infrastructure.Configuration.Match;
 using Matches.Infrastructure.Configuration.Quartz;
 using Matches.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
@@ -72,8 +73,6 @@ namespace Matches.API
             services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
             services.AddHttpContextAccessor();
 
-            services.Configure<AuthMessageSenderOptions>(Configuration);
-
             services
                 .ConfigureAuthentication(Configuration)
                 .AddOptions()
@@ -88,11 +87,12 @@ namespace Matches.API
 
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
-            //InitializeDbContext();
 
             //app.UseHttpsRedirection();
 
             InitializeModule(AutofacContainer);
+
+            InitializeDbContext();
 
             app.UseProblemDetails();
 
@@ -107,9 +107,14 @@ namespace Matches.API
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
+        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.RegisterModule(new MatchAutofacModule());
+        }
+
         private void InitializeModule(ILifetimeScope autofacContainer)
         {
-            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"]);
+            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"], Configuration["EmailsConfiguration:SendGridUser"], Configuration["EmailsConfiguration:SendGridKey"]);
 
             var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
@@ -139,14 +144,14 @@ namespace Matches.API
 
             _loggerForApi.Information("Logger configured");
         }
-
-        //private void InitializeDbContext()
-        //{
-        //    var context = AutofacContainer.Resolve<MatchContext>();
-        //    var teamRepository = AutofacContainer.Resolve<ITeamRepository>();
-        //    context.Database.Migrate();
-        //    MatchContextInitializer.Initialize(context, teamRepository);
-        //}
+   
+        private void InitializeDbContext()
+        {
+            var context = MatchesCompositionRoot.BeginLifetimeScope().Resolve<MatchContext>();
+            var teamRepository = MatchesCompositionRoot.BeginLifetimeScope().Resolve<ITeamRepository>();
+            context.Database.Migrate();
+            MatchContextInitializer.Initialize(context, teamRepository);
+        }
 
     }
 

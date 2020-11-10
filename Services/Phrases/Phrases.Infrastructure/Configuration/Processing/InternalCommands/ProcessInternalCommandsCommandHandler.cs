@@ -13,13 +13,11 @@ namespace Phrases.Infrastructure.Configuration.Processing.InternalCommands
     internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-        private readonly IPhrasesModule _phrasesModule;
 
         public ProcessInternalCommandsCommandHandler(
-            ISqlConnectionFactory sqlConnectionFactory, IPhrasesModule phrasesModule)
+            ISqlConnectionFactory sqlConnectionFactory)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
-            _phrasesModule = phrasesModule;
         }
 
         public async Task<Unit> Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
@@ -40,7 +38,7 @@ namespace Phrases.Infrastructure.Configuration.Processing.InternalCommands
                 Type type = Assemblies.Application.GetType(internalCommand.Type);
                 dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type);
 
-                await _phrasesModule.ExecuteCommandAsync(commandToProcess);
+                await CommandsExecutor.Execute(commandToProcess);
             }
 
             return Unit.Value;

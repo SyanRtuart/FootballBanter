@@ -11,13 +11,11 @@ namespace Base.Infrastructure.Emails
     {
         private readonly EmailsConfiguration _emailsConfiguration;
         private readonly ILogger _logger;
-        private readonly AuthMessageSenderOptions _options;
 
-        public EmailSender(ILogger logger, IOptions<AuthMessageSenderOptions> optionsAccessor,
+        public EmailSender(ILogger logger,
             EmailsConfiguration configuration)
         {
             _logger = logger;
-            _options = optionsAccessor.Value;
             _emailsConfiguration = configuration;
         }
 
@@ -29,7 +27,7 @@ namespace Base.Infrastructure.Emails
                 message.To,
                 message.Subject,
                 message.Content);
-            return Execute(_options.SendGridKey, message.To, message.Subject, message.Content);
+            return Execute(_emailsConfiguration.SendGridKey, message.To, message.Subject, message.Content);
         }
 
         public Task Execute(string apiKey, string to, string subject, string content)
@@ -37,7 +35,7 @@ namespace Base.Infrastructure.Emails
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage
             {
-                From = new EmailAddress(_emailsConfiguration.FromEmail, _options.SendGridUser),
+                From = new EmailAddress(_emailsConfiguration.FromEmail, _emailsConfiguration.SendGridUser),
                 Subject = subject,
                 PlainTextContent = content,
                 HtmlContent = content

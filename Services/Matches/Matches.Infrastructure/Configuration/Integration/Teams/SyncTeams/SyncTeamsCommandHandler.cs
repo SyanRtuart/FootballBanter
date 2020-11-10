@@ -18,18 +18,16 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
     {
         private readonly IIntegrationService _integrationService;
         private readonly HttpClient _httpClient;
-        private readonly IMatchModule _matchModule;
 
-        public SyncTeamsCommandHandler(IIntegrationService integrationService, HttpClient httpClient, IMatchModule matchModule)
+        public SyncTeamsCommandHandler(IIntegrationService integrationService, HttpClient httpClient)
         {
             _integrationService = integrationService;
             _httpClient = httpClient;
-            _matchModule = matchModule;
         }
 
         public async Task<Unit> Handle(SyncTeamsCommand request, CancellationToken cancellationToken)
         {
-            var teamsInDb = await _matchModule.ExecuteQueryAsync(new GetAllTeamsQuery());
+            var teamsInDb = await QueryExecutor.Execute(new GetAllTeamsQuery());
 
             var response = await _integrationService.GetTeams("Scotland");
 
@@ -79,7 +77,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
                 Stadium.CreateNew(team.strStadium, team.strStadiumDescription, team.strStadiumLocation), 
                 team.idTeam);
 
-           await _matchModule.ExecuteCommandAsync(command);
+           await CommandsExecutor.Execute(command);
         }
 
         private async Task EditTeam(Guid id, TeamResponse team, byte[] logo)
@@ -91,7 +89,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
                 Stadium.CreateNew(team.strStadium, team.strStadiumDescription, team.strStadiumLocation), 
                 team.idTeam);
 
-            await _matchModule.ExecuteCommandAsync(command);
+            await CommandsExecutor.Execute(command);
         }
     }
     

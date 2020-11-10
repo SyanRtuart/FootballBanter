@@ -54,7 +54,7 @@ namespace Phrases.IntegrationTests.SeedWork
                 ConnectionString,
                 new ExecutionContextMock(Guid.NewGuid()),
                 Logger,
-                new EmailsConfiguration("from@email.com"),
+                new EmailsConfiguration("from@email.com", "sendGridUser", "sendGridKey"),
                 "key",
                 null,
                 null);

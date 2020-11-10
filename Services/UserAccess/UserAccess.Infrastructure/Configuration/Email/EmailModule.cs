@@ -7,25 +7,18 @@ namespace UserAccess.Infrastructure.Configuration.Email
     internal class EmailModule : Module
     {
         private readonly EmailsConfiguration _configuration;
-        private readonly IEmailSender _emailSender;
 
-        public EmailModule(
-            EmailsConfiguration configuration,
-            IEmailSender emailSender)
+        public EmailModule(EmailsConfiguration configuration)
         {
             _configuration = configuration;
-            _emailSender = emailSender;
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-            if (_emailSender != null)
-                builder.RegisterInstance(_emailSender);
-            else
-                builder.RegisterType<EmailSender>()
-                    .As<IEmailSender>()
-                    .WithParameter("configuration", _configuration)
-                    .InstancePerLifetimeScope();
+            builder.RegisterType<EmailSender>()
+                .As<IEmailSender>()
+                .WithParameter("configuration", _configuration)
+                .InstancePerLifetimeScope();
         }
     }
 }

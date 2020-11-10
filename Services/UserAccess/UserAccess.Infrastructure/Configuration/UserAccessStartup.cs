@@ -63,17 +63,17 @@ namespace UserAccess.Infrastructure.Configuration
 
             var loggerFactory = new SerilogLoggerFactory(logger);
 
-            builder.RegisterModule(new UserAccessAutofacModule());
+            //builder.RegisterModule(new UserAccessAutofacModule());
             builder.RegisterModule(new DataAccessModule(connectionString, loggerFactory));
             builder.RegisterModule(new DomainModule());
             builder.RegisterModule(new ProcessingModule());
             builder.RegisterModule(new EventsBusModule());
             builder.RegisterModule(new MediatorModule());
             builder.RegisterModule(new OutboxModule());
-            builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
+            builder.RegisterModule(new EmailModule(emailsConfiguration));
             builder.RegisterModule(new QuartzModule());
 
-            builder.RegisterInstance(executionContextAccessor);
+        
 
             //TODO: Add Integration Events Events
 

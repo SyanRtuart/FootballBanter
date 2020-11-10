@@ -22,20 +22,18 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
         private List<TeamDto> _teamsInDb;
         private List<MatchDto> _matchesInDb;
         private readonly string _splLeagueId = "4330"; //TODO: Expand Leagues
-        private readonly IMatchModule _matchModule;
 
-        public SyncMatchesCommandHandler(IIntegrationService integrationService, IMatchModule matchModule)
+        public SyncMatchesCommandHandler(IIntegrationService integrationService)
         {
             _integrationService = integrationService;
-            _matchModule = matchModule;
         }
 
         public async Task<Unit> Handle(SyncMatchesCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                _teamsInDb = await _matchModule.ExecuteQueryAsync(new GetAllTeamsQuery());
-                _matchesInDb = await _matchModule.ExecuteQueryAsync(new GetAllMatchesQuery());
+                _teamsInDb = await QueryExecutor.Execute(new GetAllTeamsQuery());
+                _matchesInDb = await QueryExecutor.Execute(new GetAllMatchesQuery());
 
                 var next15Matches = await _integrationService.GetNext15Matches(_splLeagueId);
                 var last15Matches = await _integrationService.GetLast15Matches(_splLeagueId);
@@ -93,7 +91,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
                 score, match.strSeason,
                 match.idEvent);
 
-            await _matchModule.ExecuteCommandAsync(command);
+            await CommandsExecutor.Execute(command);
         }
 
         private async Task EditMatch(MatchResponse match, Guid existingMatchId)
@@ -104,7 +102,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
             var command = new EditMatchGeneralAttributesCommand(existingMatchId, match.strEvent, date.GetValueOrDefault(), 
                score, match.strSeason, "Placeholder");
 
-            await _matchModule.ExecuteCommandAsync(command);
+            await CommandsExecutor.Execute(command);
         }
 
         public static int? TryParseInt(string text)

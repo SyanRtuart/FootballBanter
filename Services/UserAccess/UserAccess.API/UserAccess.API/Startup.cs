@@ -34,6 +34,7 @@ using UserAccess.API.Configuration;
 using UserAccess.Application.IdentityServer;
 using UserAccess.Infrastructure.Configuration;
 using UserAccess.Infrastructure.Configuration.Quartz;
+using UserAccess.Infrastructure.Configuration.UserAccess;
 using UserAccess.Infrastructure.Persistence;
 
 namespace UserAccess.API
@@ -80,8 +81,6 @@ namespace UserAccess.API
             services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
             services.AddHttpContextAccessor();
 
-            services.Configure<AuthMessageSenderOptions>(Configuration);
-
             services
                 .AddOptions()
                 .AddSwagger(Configuration)
@@ -118,10 +117,14 @@ namespace UserAccess.API
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
+        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.RegisterModule(new UserAccessAutofacModule());
+        }
 
         private void InitializeModule(ILifetimeScope autofacContainer)
         {
-            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"]);
+            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"], Configuration["EmailsConfiguration:SendGridUser"], Configuration["EmailsConfiguration:SendGridKey"]);
 
             var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
@@ -166,9 +169,11 @@ namespace UserAccess.API
             _loggerForApi.Information("Logger configured");
         }
 
+
+
         private void InitializeDbContext()
         {
-            var context = AutofacContainer.Resolve<UserAccessContext>();
+            var context = UserAccessCompositionRoot.BeginLifetimeScope().Resolve<UserAccessContext>();
             context.Database.Migrate();
             UserAccessContextInitializer.Initialize(context);
         }

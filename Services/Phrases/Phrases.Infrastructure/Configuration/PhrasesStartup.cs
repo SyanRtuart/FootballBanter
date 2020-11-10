@@ -65,7 +65,6 @@ namespace Phrases.Infrastructure.Configuration
 
             var loggerFactory = new Serilog.Extensions.Logging.SerilogLoggerFactory(logger);
 
-            builder.RegisterModule(new PhrasesAutofacModule());
             builder.RegisterModule(new DataAccessModule(connectionString, loggerFactory));
             builder.RegisterModule(new DomainModule());
             builder.RegisterModule(new ProcessingModule());

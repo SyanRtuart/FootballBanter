@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Phrases.Infrastructure.Configuration;
+using Phrases.Infrastructure.Configuration.Phrases;
 using Phrases.Infrastructure.Configuration.Quartz;
 using Phrases.Infrastructure.Persistence;
 using Quartz;
@@ -74,8 +75,6 @@ namespace Phrases.API
             services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
             services.AddHttpContextAccessor();
 
-            services.Configure<AuthMessageSenderOptions>(Configuration);
-
             services
                 .ConfigureAuthentication(Configuration)
                 .AddOptions()
@@ -89,11 +88,11 @@ namespace Phrases.API
 
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
-            //InitializeDbContext();
-
             //app.UseHttpsRedirection();
 
             InitializeModule(AutofacContainer);
+
+            InitializeDbContext();
 
             app.UseProblemDetails();
 
@@ -106,11 +105,17 @@ namespace Phrases.API
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+           
+        }
+
+        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.RegisterModule(new PhrasesAutofacModule());
         }
 
         private void InitializeModule(ILifetimeScope autofacContainer)
         {
-            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"]);
+            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"], Configuration["EmailsConfiguration:SendGridUser"], Configuration["EmailsConfiguration:SendGridKey"]);
 
             var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
@@ -144,7 +149,7 @@ namespace Phrases.API
 
         private void InitializeDbContext()
         {
-            var context = AutofacContainer.Resolve<PhraseContext>();
+            var context = PhrasesCompositionRoot.BeginLifetimeScope().Resolve<PhraseContext>();
             context.Database.Migrate();
             PhraseContextInitalizer.Initialize(context);
         }

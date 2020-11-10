@@ -6,6 +6,7 @@ namespace Matches.Infrastructure.Configuration.Processing.Outbox
 {
     internal class OutboxModule : Module
     {
+
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<OutboxAccessor>()

@@ -32,17 +32,16 @@ namespace Matches.Infrastructure.Configuration
             IEventsBus eventsBus,
             bool runQuartz = true)
         {
-
             var moduleLogger = logger.ForContext("Module", "Matches");
 
-            ConfigureCompositionRoot(connectionString, executionContextAccessor, moduleLogger, emailsConfiguration, eventsBus, emailSender, runQuartz);
+            ConfigureCompositionRoot(connectionString, executionContextAccessor, moduleLogger, emailsConfiguration, eventsBus, emailSender);
 
             if (runQuartz)
             {
                   QuartzStartup.Initialize(moduleLogger);
             }
 
-            //ToDo Initialize event bus here
+            EventsBusStartup.Initialize(moduleLogger);
         }
 
         private static void ConfigureCompositionRoot(
@@ -51,8 +50,7 @@ namespace Matches.Infrastructure.Configuration
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
             IEventsBus eventsBus,
-            IEmailSender emailSender, 
-            bool runQuartz = true)
+            IEmailSender emailSender)
         {
             var builder = new ContainerBuilder();
 
@@ -60,11 +58,11 @@ namespace Matches.Infrastructure.Configuration
 
             var loggerFactory = new SerilogLoggerFactory(logger);
             
-            builder.RegisterModule(new MatchAutofacModule());
+         
             builder.RegisterModule(new DataAccessModule(connectionString, loggerFactory));
             builder.RegisterModule(new DomainModule());
             builder.RegisterModule(new ProcessingModule());
-            builder.RegisterModule(new EventsBusModule());
+            builder.RegisterModule(new EventsBusModule(eventsBus));
             builder.RegisterModule(new MediatorModule());
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
