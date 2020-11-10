@@ -6,19 +6,20 @@ using Dapper;
 using MediatR;
 using Newtonsoft.Json;
 using Phrases.Application.Configuration.Commands;
+using Phrases.Application.Contracts;
 
 namespace Phrases.Infrastructure.Configuration.Processing.InternalCommands
 {
     internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-        private readonly ICommandExecutor _commandExecutor;
+        private readonly IPhrasesModule _phrasesModule;
 
         public ProcessInternalCommandsCommandHandler(
-            ISqlConnectionFactory sqlConnectionFactory, ICommandExecutor commandExecutor)
+            ISqlConnectionFactory sqlConnectionFactory, IPhrasesModule phrasesModule)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
-            _commandExecutor = commandExecutor;
+            _phrasesModule = phrasesModule;
         }
 
         public async Task<Unit> Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
@@ -39,7 +40,7 @@ namespace Phrases.Infrastructure.Configuration.Processing.InternalCommands
                 Type type = Assemblies.Application.GetType(internalCommand.Type);
                 dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type);
 
-                await _commandExecutor.Execute(commandToProcess);
+                await _phrasesModule.ExecuteCommandAsync(commandToProcess);
             }
 
             return Unit.Value;

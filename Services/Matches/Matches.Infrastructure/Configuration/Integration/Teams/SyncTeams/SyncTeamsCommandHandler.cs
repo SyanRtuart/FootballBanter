@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Matches.Application.Configuration.Commands;
+using Matches.Application.Contracts;
 using Matches.Application.Teams.Commands.CreateTeam;
 using Matches.Application.Teams.Commands.EditTeamGeneralAttributes;
 using Matches.Application.Teams.Queries.GetAllTeams;
@@ -15,23 +16,20 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
 {
     public class SyncTeamsCommandHandler : ICommandHandler<SyncTeamsCommand>
     {
-        private readonly ICommandExecutor _commandExecutor;
         private readonly IIntegrationService _integrationService;
         private readonly HttpClient _httpClient;
-        private readonly IQueryExecutor _queryExecutor;
+        private readonly IMatchModule _matchModule;
 
-        public SyncTeamsCommandHandler(IIntegrationService integrationService, ICommandExecutor commandExecutor, 
-            HttpClient httpClient, IQueryExecutor queryExecutor)
+        public SyncTeamsCommandHandler(IIntegrationService integrationService, HttpClient httpClient, IMatchModule matchModule)
         {
             _integrationService = integrationService;
-            _commandExecutor = commandExecutor;
             _httpClient = httpClient;
-            _queryExecutor = queryExecutor;
+            _matchModule = matchModule;
         }
 
         public async Task<Unit> Handle(SyncTeamsCommand request, CancellationToken cancellationToken)
         {
-            var teamsInDb = await _queryExecutor.ExecuteQueryAsync(new GetAllTeamsQuery());
+            var teamsInDb = await _matchModule.ExecuteQueryAsync(new GetAllTeamsQuery());
 
             var response = await _integrationService.GetTeams("Scotland");
 
@@ -81,7 +79,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
                 Stadium.CreateNew(team.strStadium, team.strStadiumDescription, team.strStadiumLocation), 
                 team.idTeam);
 
-           await _commandExecutor.Execute(command);
+           await _matchModule.ExecuteCommandAsync(command);
         }
 
         private async Task EditTeam(Guid id, TeamResponse team, byte[] logo)
@@ -93,7 +91,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
                 Stadium.CreateNew(team.strStadium, team.strStadiumDescription, team.strStadiumLocation), 
                 team.idTeam);
 
-            await _commandExecutor.Execute(command);
+            await _matchModule.ExecuteCommandAsync(command);
         }
     }
     

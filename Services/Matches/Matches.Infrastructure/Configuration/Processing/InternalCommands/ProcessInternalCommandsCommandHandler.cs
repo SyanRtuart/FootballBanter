@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Base.Infrastructure;
 using Dapper;
 using Matches.Application.Configuration.Commands;
+using Matches.Application.Contracts;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -12,13 +13,12 @@ namespace Matches.Infrastructure.Configuration.Processing.InternalCommands
     internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-        private readonly ICommandExecutor _commandExecutor;
-
+        private readonly IMatchModule _matchModule;
         public ProcessInternalCommandsCommandHandler(
-            ISqlConnectionFactory sqlConnectionFactory, ICommandExecutor commandExecutor)
+            ISqlConnectionFactory sqlConnectionFactory, IMatchModule matchModule)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
-            _commandExecutor = commandExecutor;
+            _matchModule = matchModule;
         }
 
         public async Task<Unit> Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
@@ -39,7 +39,7 @@ namespace Matches.Infrastructure.Configuration.Processing.InternalCommands
                 Type type = Assemblies.Application.GetType(internalCommand.Type);
                 dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type);
 
-                await _commandExecutor.Execute(commandToProcess);
+                await _matchModule.ExecuteCommandAsync(commandToProcess);
             }
 
             return Unit.Value;

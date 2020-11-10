@@ -4,6 +4,7 @@ using Autofac.Extras.Quartz;
 using Base.Application.BuildingBlocks;
 using Base.Application.Emails;
 using Base.Infrastructure.Emails;
+using Base.Infrastructure.EventBus;
 using Serilog;
 using Serilog.Extensions.Logging;
 using UserAccess.Infrastructure.Configuration.DataAccess;
@@ -21,35 +22,29 @@ namespace UserAccess.Infrastructure.Configuration
 {
     public class UserAccessStartup
     {
+        private static IContainer _container;
+
         public static void Initialize(string connectionString,
             IExecutionContextAccessor executionContextAccessor,
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
             string textEncryptionKey,
             IEmailSender emailSender,
-            ContainerBuilder builder)
+            IEventsBus eventsBus,
+            bool runQuartz = true
+            )
         {
-            //var moduleLogger = logger.ForContext("Module", "UserAccess");
+            var moduleLogger = logger.ForContext("Module", "UserAccess");
 
-            ConfigureCompositionRoot(connectionString,
-                executionContextAccessor,
-                logger,
-                emailsConfiguration,
-                textEncryptionKey,
-                emailSender,
-                builder);
+            ConfigureCompositionRoot(connectionString, executionContextAccessor, moduleLogger, emailsConfiguration, eventsBus, emailSender, runQuartz);
 
-            var schedulerConfiguration = new NameValueCollection
+
+            if (runQuartz)
             {
-                {"quartz.scheduler.instanceName", "UserAccess"}
-            };
+                QuartzStartup.Initialize(moduleLogger);
+            }
 
-            builder.RegisterModule(new QuartzAutofacFactoryModule
-            {
-                ConfigurationProvider = c => schedulerConfiguration
-            });
-
-            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(ProcessOutboxJob).Assembly));
+            //ToDo Initialize event bus here
         }
 
         private static void ConfigureCompositionRoot(
@@ -57,10 +52,13 @@ namespace UserAccess.Infrastructure.Configuration
             IExecutionContextAccessor executionContextAccessor,
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
-            string textEncryptionKey,
+            IEventsBus eventsBus,
             IEmailSender emailSender,
-            ContainerBuilder builder)
+            bool runQuartz = true)
         {
+            var builder = new ContainerBuilder();
+
+
             builder.RegisterModule(new LoggingModule(logger.ForContext("Module", "UserAccess")));
 
             var loggerFactory = new SerilogLoggerFactory(logger);
@@ -76,6 +74,14 @@ namespace UserAccess.Infrastructure.Configuration
             builder.RegisterModule(new QuartzModule());
 
             builder.RegisterInstance(executionContextAccessor);
+
+            //TODO: Add Integration Events Events
+
+            builder.RegisterInstance(executionContextAccessor);
+
+            _container = builder.Build();
+
+            UserAccessCompositionRoot.SetContainer(_container);
         }
     }
 }

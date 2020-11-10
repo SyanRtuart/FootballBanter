@@ -16,13 +16,13 @@ namespace UserAccess.Infrastructure.Configuration.Processing.InternalCommands
     internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-        private readonly ICommandExecutor _commandExecutor;
+        private readonly IUserAccessModule _userAccessModule;
 
         public ProcessInternalCommandsCommandHandler(
-            ISqlConnectionFactory sqlConnectionFactory, ICommandExecutor commandExecutor)
+            ISqlConnectionFactory sqlConnectionFactory, IUserAccessModule userAccessModule)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
-            _commandExecutor = commandExecutor;
+            _userAccessModule = userAccessModule;
         }
 
         public async Task<Unit> Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
@@ -43,7 +43,7 @@ namespace UserAccess.Infrastructure.Configuration.Processing.InternalCommands
                 Type type = Assemblies.Application.GetType(internalCommand.Type);
                 dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type);
 
-                await _commandExecutor.Execute(commandToProcess);
+                await _userAccessModule.ExecuteCommandAsync(commandToProcess);
             }
 
             return Unit.Value;

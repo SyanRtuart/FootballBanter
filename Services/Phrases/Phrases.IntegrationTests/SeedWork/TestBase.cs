@@ -29,8 +29,6 @@ namespace Phrases.IntegrationTests.SeedWork
 
         protected IEmailSender EmailSender;
 
-        private ContainerBuilder _builder;
-
         [SetUp]
         public async Task BeforeEachTest()
         {
@@ -51,7 +49,6 @@ namespace Phrases.IntegrationTests.SeedWork
 
             Logger = Substitute.For<ILogger>();
             EmailSender = Substitute.For<IEmailSender>();
-            _builder = new ContainerBuilder();
 
             PhrasesStartup.Initialize(
                 ConnectionString,
@@ -59,13 +56,10 @@ namespace Phrases.IntegrationTests.SeedWork
                 Logger,
                 new EmailsConfiguration("from@email.com"),
                 "key",
-                EmailSender,
-                _builder);
+                null,
+                null);
 
-            var container = _builder.Build();
-            var mediator = container.Resolve<IMediator>();
-
-            PhraseModule = new PhrasesModule(new CommandExecutor(mediator), new QueryExecutor(mediator));
+            PhraseModule = new PhrasesModule();
         }
 
         private static async Task ClearDatabase(IDbConnection connection)

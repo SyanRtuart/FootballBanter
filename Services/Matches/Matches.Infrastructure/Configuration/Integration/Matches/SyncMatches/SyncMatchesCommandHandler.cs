@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Matches.Application.Configuration.Commands;
+using Matches.Application.Contracts;
 using Matches.Application.Matches.Commands.CreateMatch;
 using Matches.Application.Matches.Commands.EditMatchGeneralAttributes;
 using Matches.Application.Matches.Queries.GetAllMatches;
@@ -17,27 +18,24 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
 {
     public class SyncMatchesCommandHandler : ICommandHandler<SyncMatchesCommand>
     {
-        private readonly ICommandExecutor _commandExecutor;
         private readonly IIntegrationService _integrationService;
-        private readonly IQueryExecutor _queryExecutor;
         private List<TeamDto> _teamsInDb;
         private List<MatchDto> _matchesInDb;
         private readonly string _splLeagueId = "4330"; //TODO: Expand Leagues
+        private readonly IMatchModule _matchModule;
 
-        public SyncMatchesCommandHandler(IIntegrationService integrationService, IQueryExecutor queryExecutor,
-            ICommandExecutor commandExecutor)
+        public SyncMatchesCommandHandler(IIntegrationService integrationService, IMatchModule matchModule)
         {
             _integrationService = integrationService;
-            _queryExecutor = queryExecutor;
-            _commandExecutor = commandExecutor;
+            _matchModule = matchModule;
         }
 
         public async Task<Unit> Handle(SyncMatchesCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                _teamsInDb = await _queryExecutor.ExecuteQueryAsync(new GetAllTeamsQuery());
-                _matchesInDb = await _queryExecutor.ExecuteQueryAsync(new GetAllMatchesQuery());
+                _teamsInDb = await _matchModule.ExecuteQueryAsync(new GetAllTeamsQuery());
+                _matchesInDb = await _matchModule.ExecuteQueryAsync(new GetAllMatchesQuery());
 
                 var next15Matches = await _integrationService.GetNext15Matches(_splLeagueId);
                 var last15Matches = await _integrationService.GetLast15Matches(_splLeagueId);
@@ -95,7 +93,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
                 score, match.strSeason,
                 match.idEvent);
 
-            await _commandExecutor.Execute(command);
+            await _matchModule.ExecuteCommandAsync(command);
         }
 
         private async Task EditMatch(MatchResponse match, Guid existingMatchId)
@@ -106,7 +104,7 @@ namespace Matches.Infrastructure.Configuration.Integration.Matches.SyncMatches
             var command = new EditMatchGeneralAttributesCommand(existingMatchId, match.strEvent, date.GetValueOrDefault(), 
                score, match.strSeason, "Placeholder");
 
-            await _commandExecutor.Execute(command);
+            await _matchModule.ExecuteCommandAsync(command);
         }
 
         public static int? TryParseInt(string text)

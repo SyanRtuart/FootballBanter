@@ -28,7 +28,6 @@ namespace Matches.IntegrationTests.SeedWork
 
         protected IEmailSender EmailSender;
 
-        private ContainerBuilder _builder;
 
         [SetUp]
         public async Task BeforeEachTest()
@@ -50,7 +49,6 @@ namespace Matches.IntegrationTests.SeedWork
 
             Logger = Substitute.For<ILogger>();
             EmailSender = Substitute.For<IEmailSender>();
-            _builder = new ContainerBuilder();
 
             MatchesStartup.Initialize(
                 ConnectionString,
@@ -59,12 +57,10 @@ namespace Matches.IntegrationTests.SeedWork
                 new EmailsConfiguration("from@email.com"),
                 "key",
                 EmailSender,
-                _builder);
+                null);
 
-            var container = _builder.Build();
-            var mediator = container.Resolve<IMediator>();
 
-            MatchModule = new MatchModule(new CommandExecutor(mediator), new QueryExecutor(mediator));
+            MatchModule = new MatchModule();
         }
 
         private static async Task ClearDatabase(IDbConnection connection)

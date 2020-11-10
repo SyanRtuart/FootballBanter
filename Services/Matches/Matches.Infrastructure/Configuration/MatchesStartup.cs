@@ -1,9 +1,8 @@
-﻿using System.Collections.Specialized;
-using Autofac;
-using Autofac.Extras.Quartz;
+﻿using Autofac;
 using Base.Application.BuildingBlocks;
 using Base.Application.Emails;
 using Base.Infrastructure.Emails;
+using Base.Infrastructure.EventBus;
 using Matches.Infrastructure.Configuration.DataAccess;
 using Matches.Infrastructure.Configuration.Domain;
 using Matches.Infrastructure.Configuration.Email;
@@ -16,38 +15,34 @@ using Matches.Infrastructure.Configuration.Processing;
 using Matches.Infrastructure.Configuration.Processing.Outbox;
 using Matches.Infrastructure.Configuration.Quartz;
 using Serilog;
+using Serilog.Extensions.Logging;
 
 namespace Matches.Infrastructure.Configuration
 {
     public class MatchesStartup
     {
+        private static IContainer _container;
+
         public static void Initialize(string connectionString,
             IExecutionContextAccessor executionContextAccessor,
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
             string textEncryptionKey,
             IEmailSender emailSender,
-            ContainerBuilder builder)
+            IEventsBus eventsBus,
+            bool runQuartz = true)
         {
-            ConfigureCompositionRoot(connectionString,
-                executionContextAccessor,
-                logger,
-                emailsConfiguration,
-                textEncryptionKey,
-                emailSender,
-                builder);
 
-            var schedulerConfiguration = new NameValueCollection
+            var moduleLogger = logger.ForContext("Module", "Matches");
+
+            ConfigureCompositionRoot(connectionString, executionContextAccessor, moduleLogger, emailsConfiguration, eventsBus, emailSender, runQuartz);
+
+            if (runQuartz)
             {
-                {"quartz.scheduler.instanceName", "Matches"}
-            };
+                  QuartzStartup.Initialize(moduleLogger);
+            }
 
-            builder.RegisterModule(new QuartzAutofacFactoryModule
-            {
-                ConfigurationProvider = c => schedulerConfiguration
-            });
-
-            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(ProcessOutboxJob).Assembly));
+            //ToDo Initialize event bus here
         }
 
         private static void ConfigureCompositionRoot(
@@ -55,13 +50,15 @@ namespace Matches.Infrastructure.Configuration
             IExecutionContextAccessor executionContextAccessor,
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
-            string textEncryptionKey,
-            IEmailSender emailSender,
-            ContainerBuilder builder)
+            IEventsBus eventsBus,
+            IEmailSender emailSender, 
+            bool runQuartz = true)
         {
+            var builder = new ContainerBuilder();
+
             builder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Matches")));
 
-            var loggerFactory = new Serilog.Extensions.Logging.SerilogLoggerFactory(logger);
+            var loggerFactory = new SerilogLoggerFactory(logger);
             
             builder.RegisterModule(new MatchAutofacModule());
             builder.RegisterModule(new DataAccessModule(connectionString, loggerFactory));
@@ -73,9 +70,14 @@ namespace Matches.Infrastructure.Configuration
             builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
             builder.RegisterModule(new QuartzModule());
             builder.RegisterModule(new IntegrationModule());
-
+            //TODO: Add Integration Events Events
 
             builder.RegisterInstance(executionContextAccessor);
+
+            _container = builder.Build();
+
+            MatchesCompositionRoot.SetContainer(_container);
+
         }
     }
 }

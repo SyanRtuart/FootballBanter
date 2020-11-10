@@ -99,11 +99,11 @@ namespace UserAccess.API
 
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
-            InitializeQuartz();
-
-            InitializeDbContext();
+            //InitializeDbContext();
 
             //app.UseHttpsRedirection();
+
+            InitializeModule(AutofacContainer);
 
             app.UseRouting();
             app.UseProblemDetails();
@@ -118,19 +118,23 @@ namespace UserAccess.API
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
-        
-        public void ConfigureContainer(ContainerBuilder builder)
+
+        private void InitializeModule(ILifetimeScope autofacContainer)
         {
             var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"]);
 
+            var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
+            var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
+
             UserAccessStartup.Initialize(
                 Configuration["ConnectionString"],
-                new ExecutionContextAccessor(new HttpContextAccessor()),
+                executionContextAccessor,
                 _logger,
                 emailsConfiguration,
                 Configuration["Security:TextEncryptionKey"],
                 null,
-                builder);
+                null
+            );
         }
 
         private void AddLogging(IServiceCollection services)
@@ -160,15 +164,6 @@ namespace UserAccess.API
             _loggerForApi = _logger.ForContext("Module", "API");
 
             _loggerForApi.Information("Logger configured");
-        }
-
-        private void InitializeQuartz()
-        {
-            var scheduler = AutofacContainer.Resolve<IScheduler>();
-            var logger = AutofacContainer.Resolve<ILogger>();
-
-            QuartzStartup.Initialize(logger, scheduler);
-
         }
 
         private void InitializeDbContext()

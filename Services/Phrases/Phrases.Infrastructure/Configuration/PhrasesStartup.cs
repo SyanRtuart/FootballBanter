@@ -4,6 +4,7 @@ using Autofac.Extras.Quartz;
 using Base.Application.BuildingBlocks;
 using Base.Application.Emails;
 using Base.Infrastructure.Emails;
+using Base.Infrastructure.EventBus;
 using Phrases.Infrastructure.Configuration.DataAccess;
 using Phrases.Infrastructure.Configuration.Domain;
 using Phrases.Infrastructure.Configuration.Email;
@@ -20,35 +21,32 @@ namespace Phrases.Infrastructure.Configuration
 {
     public class PhrasesStartup
     {
+        private static IContainer _container;
+
         public static void Initialize(string connectionString,
             IExecutionContextAccessor executionContextAccessor,
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
             string textEncryptionKey,
+            IEventsBus eventsBus,
             IEmailSender emailSender,
-            ContainerBuilder builder)
+            bool runQuartz = true)
         {
-            //var moduleLogger = logger.ForContext("Module", "UserAccess");
+            var moduleLogger = logger.ForContext("Module", "Matches");
 
             ConfigureCompositionRoot(connectionString,
                 executionContextAccessor,
                 logger,
                 emailsConfiguration,
                 textEncryptionKey,
+                eventsBus,
                 emailSender,
-                builder);
+                runQuartz);
 
-            var schedulerConfiguration = new NameValueCollection
+            if (runQuartz)
             {
-                {"quartz.scheduler.instanceName", "Phrases"}
-            };
-
-            builder.RegisterModule(new QuartzAutofacFactoryModule
-            {
-                ConfigurationProvider = c => schedulerConfiguration
-            });
-
-            builder.RegisterModule(new QuartzAutofacJobsModule(typeof(ProcessOutboxJob).Assembly));
+                QuartzStartup.Initialize(moduleLogger);
+            }
         }
 
         private static void ConfigureCompositionRoot(
@@ -57,13 +55,16 @@ namespace Phrases.Infrastructure.Configuration
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
             string textEncryptionKey,
+            IEventsBus eventsBus,
             IEmailSender emailSender,
-            ContainerBuilder builder)
+            bool runQuartz = true)
         {
+            var builder = new ContainerBuilder();
+
             builder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Phrases")));
 
             var loggerFactory = new Serilog.Extensions.Logging.SerilogLoggerFactory(logger);
-            
+
             builder.RegisterModule(new PhrasesAutofacModule());
             builder.RegisterModule(new DataAccessModule(connectionString, loggerFactory));
             builder.RegisterModule(new DomainModule());
@@ -74,7 +75,13 @@ namespace Phrases.Infrastructure.Configuration
             builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
             builder.RegisterModule(new QuartzModule());
 
+            //TODO: Add Integration Events Events
+
             builder.RegisterInstance(executionContextAccessor);
+
+            _container = builder.Build();
+
+            PhrasesCompositionRoot.SetContainer(_container);
         }
     }
 }

@@ -1,26 +1,28 @@
 ﻿using System.Threading.Tasks;
+using Autofac;
 using MediatR;
 using Phrases.Application.Contracts;
 
 namespace Phrases.Infrastructure.Configuration.Processing
 {
-    public class CommandExecutor : ICommandExecutor
+    internal static class CommandsExecutor
     {
-        private readonly IMediator _mediator;
-
-        public CommandExecutor(IMediator mediator)
+        internal static async Task Execute(ICommand command)
         {
-            _mediator = mediator;
+            using (var scope = PhrasesCompositionRoot.BeginLifetimeScope())
+            {
+                var mediator = scope.Resolve<IMediator>();
+                await mediator.Send(command);
+            }
         }
 
-        public async Task Execute(ICommand command)
+        internal static async Task<TResult> Execute<TResult>(ICommand<TResult> command)
         {
-            await _mediator.Send(command);
-        }
-
-        public async Task<TResult> Execute<TResult>(ICommand<TResult> command)
-        {
-            return await _mediator.Send(command);
+            using (var scope = PhrasesCompositionRoot.BeginLifetimeScope())
+            {
+                var mediator = scope.Resolve<IMediator>();
+                return await mediator.Send(command);
+            }
         }
     }
 }

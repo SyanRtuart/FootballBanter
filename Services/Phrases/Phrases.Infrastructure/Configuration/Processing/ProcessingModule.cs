@@ -30,15 +30,6 @@ namespace Phrases.Infrastructure.Configuration.Processing
                 .As<ICommandsScheduler>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<CommandExecutor>()
-                .As<ICommandExecutor>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<QueryExecutor>()
-                .As<IQueryExecutor>()
-                .InstancePerLifetimeScope();
-
-
             builder.RegisterGenericDecorator(
                 typeof(UnitOfWorkCommandHandlerDecorator<>),
                 typeof(ICommandHandler<>));

@@ -11,17 +11,9 @@ namespace Matches.Infrastructure.Configuration.Integration.Teams.SyncTeams
     [DisallowConcurrentExecution]
     public class SyncTeamsJob : IJob
     {
-        private readonly ICommandExecutor _commandExecutor;
-
-        public SyncTeamsJob(ICommandExecutor commandExecutor)
-        {
-            _commandExecutor = commandExecutor;
-        }
-
         public async Task Execute(IJobExecutionContext context)
         {
-            await _commandExecutor.Execute(new SyncTeamsCommand());
+            await CommandsExecutor.Execute(new SyncTeamsCommand());
         }
-
     }
 }
