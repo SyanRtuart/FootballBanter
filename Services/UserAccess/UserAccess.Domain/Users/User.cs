@@ -25,18 +25,7 @@ namespace UserAccess.Domain.Users
 
         private string _password;
 
-        private Scores _scores;
-
         private List<UserRole> _roles;
-
-        private byte[] _picture;
-
-        public void AddPicture(byte[] picture)
-        {
-            _picture = picture;
-
-            //TODO Add domain event
-        }
 
         internal static User CreateFromUserRegistration(UserRegistrationId userRegistrationId, string email, string firstName, string lastName, string login, string password)
         {
@@ -60,13 +49,12 @@ namespace UserAccess.Domain.Users
             AddDomainEvent(new UserCreatedDomainEvent(Id));
         }
 
-        public void EditGeneralAttributes(string firstName, string lastName, byte[] picture)
+        public void EditGeneralAttributes(string firstName, string lastName)
         {
             _firstName = firstName;
             _lastName = lastName;
-            _picture = picture;
 
-            AddDomainEvent(new UserGeneralAttributesEditedDomainEvent(firstName, lastName, picture));
+            AddDomainEvent(new UserGeneralAttributesEditedDomainEvent(firstName, lastName));
         }
 
         private User()

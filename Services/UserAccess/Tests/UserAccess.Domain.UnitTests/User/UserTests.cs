@@ -48,12 +48,11 @@ namespace UserAccess.Domain.UnitTests.User
                 LastName = "lastName",
             });
 
-            user.User.EditGeneralAttributes("newFirstname", "newLastname", new byte[1]);
+            user.User.EditGeneralAttributes("newFirstname", "newLastname");
 
             var userGeneralAttributesEditedDomainEvent = AssertPublishedDomainEvent<UserGeneralAttributesEditedDomainEvent>(user.User);
             Assert.That(userGeneralAttributesEditedDomainEvent.FirstName, Is.EqualTo("newFirstname"));
             Assert.That(userGeneralAttributesEditedDomainEvent.LastName, Is.EqualTo("newLastname"));
-            Assert.That(userGeneralAttributesEditedDomainEvent.Picture, Is.EqualTo(new byte[1]));
         }
     }
 }

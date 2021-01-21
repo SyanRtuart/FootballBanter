@@ -19,7 +19,7 @@ namespace UserAccess.Application.Users.Commands.EditUserGeneralAttributes
         {
             var user = await _userRepository.GetAsync(new UserId(request.UserId));
 
-            user.EditGeneralAttributes(request.FirstName, request.LastName, request.Picture);
+            user.EditGeneralAttributes(request.FirstName, request.LastName);
 
             await _userRepository.Commit();
 

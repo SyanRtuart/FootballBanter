@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserAccess.Application.Contracts;
-using UserAccess.Application.Users.Commands.AddPicture;
 using UserAccess.Application.Users.Commands.EditUserGeneralAttributes;
 using UserAccess.Application.Users.Queries.GetUserByEmail;
 
@@ -29,24 +28,6 @@ namespace UserAccess.API.Controllers
         public async Task<UserDto> Get(string email)
         {
             return await _userAccessModule.ExecuteQueryAsync(new GetUserByEmailQuery(email));
-        }
-
-        [HttpPost]
-        [Route("{id}/picture")]
-        public async Task<IActionResult> AddPicture(Guid id, [FromForm(Name = "image")] IFormFile file)
-        {
-            byte[] picture;
-
-            await using (var ms = new MemoryStream())
-            {
-                file.CopyTo(ms);
-                picture = ms.ToArray();
-
-            }
-
-            await _userAccessModule.ExecuteCommandAsync(new AddPictureCommand(id, picture));
-
-            return Ok();
         }
 
         [HttpPut("{userId}")]
