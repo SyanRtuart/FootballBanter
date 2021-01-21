@@ -18,6 +18,8 @@
   <ItemGroup>
     <Compile Include="Models\Phrase\CreatePhraseRequest.cs" />
     <Compile Include="Models\Phrase\DownvotePhraseRequest.cs" />
+    <Compile Include="Models\Phrase\Member\GetMemberRequest.cs" />
+    <Compile Include="Models\Phrase\Member\MemberData.cs" />
     <Compile Include="Models\Phrase\Phrase.cs" />
     <Compile Include="Models\Phrase\PhraseData.cs" />
     <Compile Include="Models\Phrase\UpvotePhraseRequest.cs" />

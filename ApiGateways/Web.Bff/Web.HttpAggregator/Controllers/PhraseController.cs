@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Web.HttpAggregator.Models.Phrase;
+using Web.HttpAggregator.Models.Phrase.Member;
 using Web.HttpAggregator.Services.Phrase;
 
 namespace Web.HttpAggregator.Controllers
@@ -61,6 +62,15 @@ namespace Web.HttpAggregator.Controllers
             await _phraseApiClient.DownvotePhrase(request);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("getMember/{memberId}")]
+        public async Task<MemberData> GetMember([FromRoute] Guid memberId)
+        {
+            var request = new GetMemberRequest(memberId);
+
+            return await _phraseApiClient.GetMember(request);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.HttpAggregator.Models.Phrase;
+using Web.HttpAggregator.Models.Phrase.Member;
 
 namespace Web.HttpAggregator.Services.Phrase
 {
@@ -14,5 +15,7 @@ namespace Web.HttpAggregator.Services.Phrase
         Task UpvotePhrase(UpvotePhraseRequest request);
 
         Task DownvotePhrase(DownvotePhraseRequest request);
+
+        Task<MemberData> GetMember(GetMemberRequest request);
     }
 }

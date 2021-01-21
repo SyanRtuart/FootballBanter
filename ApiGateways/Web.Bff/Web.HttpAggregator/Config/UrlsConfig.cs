@@ -42,6 +42,8 @@ namespace Web.HttpAggregator.Config
                 return QueryHelpers.AddQueryString("phrase", queryArguments);
             }
 
+            public static string GetMember(Guid memberId) => $"member/{memberId}";
+
             public static string UpvotePhrase(Guid phraseId)
             {
                 return $"phrase/{phraseId}/upvote";

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Web.HttpAggregator.Config;
 using Web.HttpAggregator.Models.Phrase;
+using Web.HttpAggregator.Models.Phrase.Member;
 
 namespace Web.HttpAggregator.Services.Phrase
 {
@@ -67,6 +68,17 @@ namespace Web.HttpAggregator.Services.Phrase
             var response = await _httpClient.PutAsync(url, content);
 
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<MemberData> GetMember(GetMemberRequest request)
+        {
+            var url = _urls.Phrase + UrlsConfig.PhraseOperations.GetMember(request.MemberId);
+
+            var response = await _httpClient.GetAsync(url);
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<MemberData>(content);
         }
     }
 }
