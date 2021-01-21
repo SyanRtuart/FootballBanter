@@ -231,7 +231,6 @@ namespace Base.EventBusRabbitMQ
                     else
                     {
                         _consumerChannel.BasicNack(eventArgs.DeliveryTag, false, false);
-
                     }
                 }
 
@@ -250,10 +249,9 @@ namespace Base.EventBusRabbitMQ
 
                 return await (Task<bool>)concreteType.GetMethod("Handle")?.Invoke(handlerSubscription.Handler, new object[] { integrationEvent });
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
-                throw;
+                return false;
             }
         }
 

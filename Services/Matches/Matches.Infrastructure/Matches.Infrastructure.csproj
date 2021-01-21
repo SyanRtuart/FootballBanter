@@ -17,6 +17,8 @@
     <Compile Remove="Migrations\20200628165142_Init.Designer.cs" />
     <Compile Remove="Migrations\20200628171011_Init.cs" />
     <Compile Remove="Migrations\20200628171011_Init.Designer.cs" />
+    <Compile Remove="Migrations\20210121133539_changed processed date to nullable on InboxMessage.cs" />
+    <Compile Remove="Migrations\20210121133539_changed processed date to nullable on InboxMessage.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

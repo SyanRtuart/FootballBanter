@@ -30,7 +30,7 @@ namespace UserAccess.Infrastructure.Migrations
                     b.Property<DateTime>("OccurredOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ProcessedDate")
+                    b.Property<DateTime?>("ProcessedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Type")
@@ -88,7 +88,6 @@ namespace UserAccess.Infrastructure.Migrations
             modelBuilder.Entity("UserAccess.Domain.UserRegistrations.UserRegistration", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("_confirmedDate")
@@ -131,7 +130,6 @@ namespace UserAccess.Infrastructure.Migrations
             modelBuilder.Entity("UserAccess.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("_email")

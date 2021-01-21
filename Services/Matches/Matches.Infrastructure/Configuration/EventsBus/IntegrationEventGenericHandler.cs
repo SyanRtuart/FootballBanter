@@ -15,8 +15,6 @@ namespace Matches.Infrastructure.Configuration.EventsBus
 {
     public class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> where T : IntegrationEvent
     {
-        private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
         public async Task<bool> Handle(T @event)
         {
             try
@@ -31,7 +29,7 @@ namespace Matches.Infrastructure.Configuration.EventsBus
                             ContractResolver = new AllPropertiesContractResolver()
                         });
 
-                        var sql = "INSERT INTO [Matches].[InboxMessages] (Id, OccurredOn, Type, Data) " +
+                        var sql = "INSERT INTO [Match].[InboxMessages] (Id, OccurredOn, Type, Data) " +
                                   "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
                         await connection.ExecuteScalarAsync(sql, new
@@ -48,7 +46,7 @@ namespace Matches.Infrastructure.Configuration.EventsBus
             }
             catch (Exception e)
             {
-                throw new ApplicationException($"Unable to process message {@event}");
+                throw new ApplicationException($"Unable to process message {@event}. Exception : {e.Message}");
             }
         }
 

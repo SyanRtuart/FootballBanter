@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Phrases.Infrastructure.Persistence;
+using UserAccess.Infrastructure.Persistence;
 
-namespace Phrases.Infrastructure.Migrations
+namespace UserAccess.Infrastructure.Migrations
 {
-    [DbContext(typeof(PhraseContext))]
-    partial class PhraseContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UserAccessContext))]
+    [Migration("20210121134409_ChangedInboxMessageProcessedDateToNullable")]
+    partial class ChangedInboxMessageProcessedDateToNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -38,7 +40,7 @@ namespace Phrases.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InboxMessages","Phrase");
+                    b.ToTable("InboxMessages","Users");
                 });
 
             modelBuilder.Entity("Base.Infrastructure.InternalCommands.InternalCommand", b =>
@@ -60,7 +62,7 @@ namespace Phrases.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InternalCommands","Phrase");
+                    b.ToTable("InternalCommands","Users");
                 });
 
             modelBuilder.Entity("Base.Infrastructure.Outbox.OutboxMessage", b =>
@@ -82,13 +84,17 @@ namespace Phrases.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutboxMessages","Phrase");
+                    b.ToTable("OutboxMessages","Users");
                 });
 
-            modelBuilder.Entity("Phrases.Domain.Members.Member", b =>
+            modelBuilder.Entity("UserAccess.Domain.UserRegistrations.UserRegistration", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("_confirmedDate")
+                        .HasColumnName("ConfirmedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("_email")
                         .HasColumnName("Email")
@@ -110,67 +116,86 @@ namespace Phrases.Infrastructure.Migrations
                         .HasColumnName("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("_password")
+                        .HasColumnName("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("_registerDate")
+                        .HasColumnName("RegisterDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserRegistrations","Users");
+                });
+
+            modelBuilder.Entity("UserAccess.Domain.Users.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("_email")
+                        .HasColumnName("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("_firstName")
+                        .HasColumnName("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("_isActive")
+                        .HasColumnName("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("_lastName")
+                        .HasColumnName("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("_login")
+                        .HasColumnName("Login")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("_name")
+                        .HasColumnName("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("_password")
+                        .HasColumnName("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("_picture")
                         .HasColumnName("Picture")
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members","Phrase");
+                    b.ToTable("Users","Users");
                 });
 
-            modelBuilder.Entity("Phrases.Domain.Phrase.Phrase", b =>
+            modelBuilder.Entity("UserAccess.Domain.UserRegistrations.UserRegistration", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("_createdByUserId")
-                        .HasColumnName("CreatedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("_dateCreated")
-                        .HasColumnName("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("_dateDeleted")
-                        .HasColumnName("DateDeleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("_deletedByUserId")
-                        .HasColumnName("DeletedByUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("_description")
-                        .IsRequired()
-                        .HasColumnName("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("_matchId")
-                        .HasColumnName("MatchId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("_positive")
-                        .HasColumnName("Positive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("_score")
-                        .HasColumnName("Score")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("_teamId")
-                        .HasColumnName("TeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Phrases","Phrase");
-                });
-
-            modelBuilder.Entity("Phrases.Domain.Members.Member", b =>
-                {
-                    b.OwnsOne("Phrases.Domain.Members.Scores", "_scores", b1 =>
+                    b.OwnsOne("UserAccess.Domain.UserRegistrations.UserRegistrationStatus", "_status", b1 =>
                         {
-                            b1.Property<Guid>("MemberId")
+                            b1.Property<Guid>("UserRegistrationId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Value")
+                                .HasColumnName("StatusCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserRegistrationId");
+
+                            b1.ToTable("UserRegistrations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserRegistrationId");
+                        });
+                });
+
+            modelBuilder.Entity("UserAccess.Domain.Users.User", b =>
+                {
+                    b.OwnsOne("UserAccess.Domain.Users.Scores", "_scores", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("Banter")
@@ -185,48 +210,29 @@ namespace Phrases.Infrastructure.Migrations
                                 .HasColumnType("int")
                                 .HasDefaultValue(0);
 
-                            b1.HasKey("MemberId");
+                            b1.HasKey("UserId");
 
-                            b1.ToTable("Members");
+                            b1.ToTable("Users");
 
                             b1.WithOwner()
-                                .HasForeignKey("MemberId");
+                                .HasForeignKey("UserId");
                         });
-                });
 
-            modelBuilder.Entity("Phrases.Domain.Phrase.Phrase", b =>
-                {
-                    b.OwnsMany("Phrases.Domain.Phrase.PhraseVoteHistory", "_phraseVoteHistory", b1 =>
+                    b.OwnsMany("UserAccess.Domain.Users.UserRole", "_roles", b1 =>
                         {
-                            b1.Property<Guid>("Id")
+                            b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<Guid>("PhraseId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<string>("Value")
+                                .HasColumnName("RoleCode")
+                                .HasColumnType("nvarchar(450)");
 
-                            b1.Property<Guid?>("UserId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.HasKey("UserId", "Value");
 
-                            b1.Property<int>("_score")
-                                .HasColumnName("Score")
-                                .HasColumnType("int");
-
-                            b1.Property<DateTime>("_utcDateDeleted")
-                                .HasColumnName("DateDeleted")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("_utcDateVoted")
-                                .HasColumnName("DateVoted")
-                                .HasColumnType("datetime2");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("PhraseId");
-
-                            b1.ToTable("PhraseVoteHistory","Phrase");
+                            b1.ToTable("UserRoles","Users");
 
                             b1.WithOwner()
-                                .HasForeignKey("PhraseId");
+                                .HasForeignKey("UserId");
                         });
                 });
 #pragma warning restore 612, 618
