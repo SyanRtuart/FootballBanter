@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 namespace Matches.API.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("[controller]")]
     public class TeamController : ControllerBase
     {
@@ -23,7 +22,6 @@ namespace Matches.API.Controllers
         {
             _matchModule = matchModule;
         }
-
 
         [HttpGet]
         public async Task<List<TeamDto>> GetAll()

@@ -12,9 +12,7 @@ using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using Matches.Domain.Team;
 using Matches.Infrastructure.Configuration;
-using Matches.Infrastructure.Configuration.Integration;
 using Matches.Infrastructure.Configuration.Match;
-using Matches.Infrastructure.Configuration.Quartz;
 using Matches.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +25,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Quartz;
 using Serilog;
 using Serilog.Formatting.Compact;
 
@@ -35,13 +32,17 @@ namespace Matches.API
 {
     public class Startup
     {
-        private static ILogger _logger;
-        private static ILogger _loggerForApi;
         public ILifetimeScope AutofacContainer { get; private set; }
 
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        private static ILogger _logger;
+        private static ILogger _loggerForApi;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -61,21 +62,8 @@ namespace Matches.API
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
-                {
-                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
-                    policyBuilder.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
-                });
-            });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
-            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
-            services.AddHttpContextAccessor();
-
-            services
-                .ConfigureAuthentication(Configuration)
+           services
+                .ConfigureAuthentication(Configuration, _hostingEnvironment)
                 .AddOptions()
                 .AddSwagger(Configuration)
                 .AddCustomMvc();
@@ -120,7 +108,7 @@ namespace Matches.API
             var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
 
-            var eventBus = new EventBusRabbitMQ(_logger, GetRabbitMQConnection(), "football-banter", "Matches", 5);
+            var eventBus = new EventBusRabbitMQ(_logger, GetRabbitMQConnection(), "football-banter", "Matches");
 
             MatchesStartup.Initialize(
                 Configuration["ConnectionString"],
@@ -184,30 +172,41 @@ namespace Matches.API
         }
 
         public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
             services.AddHttpContextAccessor();
 
-            services.AddAuthorization(options =>
+            if (hostEnvironment.IsDevelopment())
             {
-                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                services.AddMvc(opts =>
                 {
-                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
-                    policyBuilder.AddAuthenticationSchemes("Bearer");
+                    opts.Filters.Add(new AllowAnonymousFilter());
                 });
-            });
+            }
+            else
+            {
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                    {
+                        policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                        policyBuilder.AddAuthenticationSchemes("Bearer");
+                    });
+                });
 
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
-                {
-                    x.Authority = "http://useraccess.api";
-                    x.ApiName = "matchesApi";
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                });
+                services.AddAuthentication("Bearer")
+                    .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+                    {
+                        x.Authority = "http://useraccess.api";
+                        x.ApiName = "matchesApi";
+                        x.RequireHttpsMetadata = false;
+                        x.SaveToken = true;
+                    });
+
+            }
 
             return services;
         }

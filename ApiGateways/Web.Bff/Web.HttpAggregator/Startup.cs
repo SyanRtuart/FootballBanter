@@ -25,9 +25,12 @@ namespace Web.HttpAggregator
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -58,7 +61,7 @@ namespace Web.HttpAggregator
                 .AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
 
             services
-                .ConfigureAuthentication(Configuration)
+                .ConfigureAuthentication(Configuration, _hostingEnvironment)
                 .AddOptions()
                 .AddCustomMvc();
         }
@@ -102,17 +105,28 @@ namespace Web.HttpAggregator
         }
 
         public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
-
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+            if (hostEnvironment.IsDevelopment())
+            {
+                services.AddMvc(opts =>
                 {
-                    x.Authority = "http://useraccess.api";
-                    x.ApiName = "web.httpaggregator";
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
+                    opts.Filters.Add(new AllowAnonymousFilter());
                 });
+                services.AddScoped<IExecutionContextAccessor, MockExecutionContextAccessor>();
+            }
+            else
+            {
+                services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
+                services.AddAuthentication("Bearer")
+                    .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+                    {
+                        x.Authority = "http://useraccess.api";
+                        x.ApiName = "web.httpaggregator";
+                        x.RequireHttpsMetadata = false;
+                        x.SaveToken = true;
+                    });
+            }
 
             return services;
         }
@@ -120,7 +134,6 @@ namespace Web.HttpAggregator
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
 
 
             services.AddHttpClient<IMatchApiClient, MatchApiClient>();

@@ -21,6 +21,7 @@ namespace Web.HttpAggregator.Services.Phrase
         {
             _httpClient = httpClient;
             _urls = config.Value;
+            
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", executionContextAccessor.GetTokenAsync().Result);
         }
 

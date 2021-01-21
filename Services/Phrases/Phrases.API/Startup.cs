@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Base.Api.Configuration;
@@ -12,11 +10,12 @@ using Base.EventBusRabbitMQ;
 using Base.Infrastructure.Emails;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,9 +23,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Phrases.Infrastructure.Configuration;
 using Phrases.Infrastructure.Configuration.Phrases;
-using Phrases.Infrastructure.Configuration.Quartz;
 using Phrases.Infrastructure.Persistence;
-using Quartz;
 using Serilog;
 using Serilog.Formatting.Compact;
 
@@ -36,12 +33,15 @@ namespace Phrases.API
     {
         public ILifetimeScope AutofacContainer { get; private set; }
 
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
         private static ILogger _logger;
         private static ILogger _loggerForApi;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -53,8 +53,6 @@ namespace Phrases.API
 
             services.AddControllers();
 
-            //services.ConfigureIdentityServer(Configuration);
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
 
@@ -63,29 +61,20 @@ namespace Phrases.API
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
-                {
-                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
-                    policyBuilder.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
-                });
-            });
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
-            services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
-            services.AddHttpContextAccessor();
-
             services
-                .ConfigureAuthentication(Configuration)
+                .ConfigureAuthentication(Configuration, _hostingEnvironment)
                 .AddOptions()
-                .AddSwagger(Configuration);
+                .AddSwagger(Configuration)
+                .AddCustomMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
@@ -106,7 +95,7 @@ namespace Phrases.API
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-           
+
         }
 
         public void ConfigureContainer(ContainerBuilder containerBuilder)
@@ -121,7 +110,7 @@ namespace Phrases.API
             var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
 
-            var eventBus = new EventBusRabbitMQ(_logger, GetRabbitMQConnection(), "football-banter", "Phrases", 5);
+            var eventBus = new EventBusRabbitMQ(_logger, GetRabbitMQConnection(), "football-banter", "Phrases");
 
             PhrasesStartup.Initialize(
                 Configuration["ConnectionString"],
@@ -140,7 +129,6 @@ namespace Phrases.API
 
             return new DefaultRabbitMQPersistentConnection(eventBusConnectionDetails, _logger);
         }
-
 
         private void AddLogging(IServiceCollection services)
         {
@@ -168,32 +156,55 @@ namespace Phrases.API
 
     internal static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            services.AddMvc(config =>
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                    config.Filters.Add(new AuthorizeFilter(policy));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            return services;
+        }
 
         public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
             services.AddHttpContextAccessor();
 
-            services.AddAuthorization(options =>
+            if (hostEnvironment.IsDevelopment())
             {
-                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                services.AddMvc(opts =>
                 {
-                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
-                    policyBuilder.AddAuthenticationSchemes("Bearer");
+                    opts.Filters.Add(new AllowAnonymousFilter());
                 });
-            });
+            }
+            else
+            {
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                    {
+                        policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                        policyBuilder.AddAuthenticationSchemes("Bearer");
+                    });
+                });
 
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
-                {
-                    x.Authority = "http://useraccess.api";
-                    x.ApiName = "phrasesApi";
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                });
+                services.AddAuthentication("Bearer")
+                    .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+                    {
+                        x.Authority = "http://useraccess.api";
+                        x.ApiName = "phrasesApi";
+                        x.RequireHttpsMetadata = false;
+                        x.SaveToken = true;
+                    });
+            }
 
             return services;
         }
