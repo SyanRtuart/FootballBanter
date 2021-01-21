@@ -67,7 +67,7 @@ namespace UserAccess.Infrastructure.Configuration
             builder.RegisterModule(new DataAccessModule(connectionString, loggerFactory));
             builder.RegisterModule(new DomainModule());
             builder.RegisterModule(new ProcessingModule());
-            builder.RegisterModule(new EventsBusModule());
+            builder.RegisterModule(new EventsBusModule(eventsBus));
             builder.RegisterModule(new MediatorModule());
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new EmailModule(emailsConfiguration));

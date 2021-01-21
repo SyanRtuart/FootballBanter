@@ -13,14 +13,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace Matches.Infrastructure.Configuration.EventsBus
 {
-    internal class IntegrationEventGenericHandler<T> : IStartable, IIntegrationEventHandler<T> where T : IntegrationEvent
+    public class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> where T : IntegrationEvent
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-        public void Start()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task Handle(T @event)
         {
@@ -66,6 +61,6 @@ namespace Matches.Infrastructure.Configuration.EventsBus
             }
         }
 
-       
+
     }
 }

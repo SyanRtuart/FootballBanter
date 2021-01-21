@@ -9,6 +9,7 @@ using Base.Api.Configuration.Authorization;
 using Base.Api.Configuration.Validation;
 using Base.Application.BuildingBlocks;
 using Base.Domain.Exceptions;
+using Base.EventBusRabbitMQ;
 using Base.Infrastructure.Emails;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
@@ -26,6 +27,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Quartz;
+using RabbitMQ.Client;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
@@ -124,10 +126,14 @@ namespace UserAccess.API
 
         private void InitializeModule(ILifetimeScope autofacContainer)
         {
-            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"], Configuration["EmailsConfiguration:SendGridUser"], Configuration["EmailsConfiguration:SendGridKey"]);
+            var emailsConfiguration = new EmailsConfiguration(Configuration["EmailsConfiguration:FromEmail"],
+                Configuration["EmailsConfiguration:SendGridUser"],
+                Configuration["EmailsConfiguration:SendGridKey"]);
 
             var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
+
+            var eventBus = new EventBusRabbitMQ(_logger, GetRabbitMQConnection(), "football-banter", "UserAccess", 5);
 
             UserAccessStartup.Initialize(
                 Configuration["ConnectionString"],
@@ -136,8 +142,16 @@ namespace UserAccess.API
                 emailsConfiguration,
                 Configuration["Security:TextEncryptionKey"],
                 null,
-                null
+                eventBus
             );
+        }
+
+        private DefaultRabbitMQPersistentConnection GetRabbitMQConnection()
+        {
+            var eventBusConnectionDetails = new ConnectionDetails();
+            Configuration.GetSection("EventBusConnectionDetails").Bind(eventBusConnectionDetails);
+
+            return new DefaultRabbitMQPersistentConnection(eventBusConnectionDetails, _logger);
         }
 
         private void AddLogging(IServiceCollection services)

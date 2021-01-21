@@ -25,7 +25,6 @@ namespace Base.Infrastructure
             if (_connection == null || _connection.State != ConnectionState.Open)
             {
                 _connection = new SqlConnection(_connectionString);
-               // _connection = new SqliteConnection(_connectionString);
                 _connection.Open();
             }
 

@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.Api\Base.Api.csproj" />
+    <ProjectReference Include="..\..\Base\Base.EventBusRabbitMQ\Base.EventBusRabbitMQ.csproj" />
     <ProjectReference Include="..\Matches.Application\Matches.Application.csproj" />
     <ProjectReference Include="..\Matches.Infrastructure\Matches.Infrastructure.csproj" />
   </ItemGroup>
