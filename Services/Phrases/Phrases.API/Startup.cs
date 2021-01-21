@@ -8,6 +8,7 @@ using Base.Api.Configuration.Authorization;
 using Base.Api.Configuration.Validation;
 using Base.Application.BuildingBlocks;
 using Base.Domain.Exceptions;
+using Base.EventBusRabbitMQ;
 using Base.Infrastructure.Emails;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
@@ -120,6 +121,8 @@ namespace Phrases.API
             var httpContextAccessor = autofacContainer.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
 
+            var eventBus = new EventBusRabbitMQ(_logger, GetRabbitMQConnection(), "football-banter", "Phrases", 5);
+
             PhrasesStartup.Initialize(
                 Configuration["ConnectionString"],
                 executionContextAccessor,
@@ -127,9 +130,17 @@ namespace Phrases.API
                 emailsConfiguration,
                 Configuration["Security:TextEncryptionKey"],
                 null,
-                null
+                eventBus
             );
         }
+        private DefaultRabbitMQPersistentConnection GetRabbitMQConnection()
+        {
+            var eventBusConnectionDetails = new ConnectionDetails();
+            Configuration.GetSection("EventBusConnectionDetails").Bind(eventBusConnectionDetails);
+
+            return new DefaultRabbitMQPersistentConnection(eventBusConnectionDetails, _logger);
+        }
+
 
         private void AddLogging(IServiceCollection services)
         {

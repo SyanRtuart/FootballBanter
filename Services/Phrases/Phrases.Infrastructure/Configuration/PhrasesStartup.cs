@@ -28,8 +28,8 @@ namespace Phrases.Infrastructure.Configuration
             ILogger logger,
             EmailsConfiguration emailsConfiguration,
             string textEncryptionKey,
-            IEventsBus eventsBus,
             IEmailSender emailSender,
+            IEventsBus eventsBus,
             bool runQuartz = true)
         {
             var moduleLogger = logger.ForContext("Module", "Matches");
@@ -47,6 +47,8 @@ namespace Phrases.Infrastructure.Configuration
             {
                 QuartzStartup.Initialize(moduleLogger);
             }
+
+            EventsBusStartup.Initialize(moduleLogger);
         }
 
         private static void ConfigureCompositionRoot(
@@ -73,8 +75,6 @@ namespace Phrases.Infrastructure.Configuration
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
             builder.RegisterModule(new QuartzModule());
-
-            //TODO: Add Integration Events Events
 
             builder.RegisterInstance(executionContextAccessor);
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Specialized;
-using Autofac;
-using Autofac.Extras.Quartz;
+﻿using Autofac;
 using Base.Application.BuildingBlocks;
 using Base.Application.Emails;
 using Base.Infrastructure.Emails;
@@ -16,7 +14,6 @@ using UserAccess.Infrastructure.Configuration.Mediator;
 using UserAccess.Infrastructure.Configuration.Processing;
 using UserAccess.Infrastructure.Configuration.Processing.Outbox;
 using UserAccess.Infrastructure.Configuration.Quartz;
-using UserAccess.Infrastructure.Configuration.UserAccess;
 
 namespace UserAccess.Infrastructure.Configuration
 {
@@ -38,13 +35,12 @@ namespace UserAccess.Infrastructure.Configuration
 
             ConfigureCompositionRoot(connectionString, executionContextAccessor, moduleLogger, emailsConfiguration, eventsBus, emailSender, runQuartz);
 
-
             if (runQuartz)
             {
                 QuartzStartup.Initialize(moduleLogger);
             }
 
-            //ToDo Initialize event bus here
+            EventsBusStartup.Initialize(moduleLogger);
         }
 
         private static void ConfigureCompositionRoot(
@@ -72,10 +68,6 @@ namespace UserAccess.Infrastructure.Configuration
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new EmailModule(emailsConfiguration));
             builder.RegisterModule(new QuartzModule());
-
-        
-
-            //TODO: Add Integration Events Events
 
             builder.RegisterInstance(executionContextAccessor);
 
