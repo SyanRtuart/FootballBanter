@@ -22,7 +22,7 @@ namespace Matches.Infrastructure.Processing.InternalCommands
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
+            const string sqlInsert = "INSERT INTO [Match].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
                                      "(@Id, @EnqueueDate, @Type, @Data)";
 
             await connection.ExecuteAsync(sqlInsert, new
@@ -41,7 +41,7 @@ namespace Matches.Infrastructure.Processing.InternalCommands
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            const string sqlInsert = "INSERT INTO [users].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
+            const string sqlInsert = "INSERT INTO [Match].[InternalCommands] ([Id], [EnqueueDate] , [Type], [Data]) VALUES " +
                                      "(@Id, @EnqueueDate, @Type, @Data)";
 
             await connection.ExecuteAsync(sqlInsert, new
