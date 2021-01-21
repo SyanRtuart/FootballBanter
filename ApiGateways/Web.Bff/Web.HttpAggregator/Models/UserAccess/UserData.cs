@@ -12,8 +12,5 @@ namespace Web.HttpAggregator.Models.UserAccess
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Login { get; set; }
-        public int BanterScore { get; set; }
-        public int CommentScore { get; set; }
-        public byte[] Picture { get; set; }
     }
 }

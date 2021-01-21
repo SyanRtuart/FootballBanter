@@ -52,9 +52,8 @@ namespace Web.HttpAggregator.Controllers
         {
             var response = await _userAccessApiClient.GetUser(email);
 
-            var user = new User(response.FirstName, response.LastName, response.Email, response.Login,
-                response.BanterScore, response.CommentScore, response.Picture);
-
+            var user = new User(response.FirstName, response.LastName, response.Email, response.Login);
+                
             return user;
         }
 

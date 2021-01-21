@@ -5,6 +5,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using MediatR;
 using UserAccess.Application.Authentication.Authenticate;
+using UserAccess.Application.Contracts;
 using UserAccess.Application.Users.Queries;
 using UserAccess.Application.Users.Queries.GetUserPermissions;
 
@@ -12,17 +13,17 @@ namespace UserAccess.API.Configuration
 {
     public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {
-        private readonly IMediator _mediator;
+        private readonly IUserAccessModule _userAccessModule;
 
-        public ResourceOwnerPasswordValidator(IMediator mediator)
+        public ResourceOwnerPasswordValidator(IUserAccessModule userAccessModule)
         {
-            _mediator = mediator;
+            _userAccessModule = userAccessModule;
         }
 
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
             var authenticationResult =
-                await _mediator.Send(new AuthenticateCommand(context.UserName, context.Password));
+                await _userAccessModule.ExecuteCommandAsync(new AuthenticateCommand(context.UserName, context.Password));
             if (!authenticationResult.IsAuthenticated)
             {
                 context.Result = new GrantValidationResult(
@@ -31,7 +32,7 @@ namespace UserAccess.API.Configuration
                 return;
             }
 
-            var userPermissions = await _mediator.Send(new GetUserPermissionsQuery(authenticationResult.User.Id));
+            var userPermissions = await _userAccessModule.ExecuteQueryAsync(new GetUserPermissionsQuery(authenticationResult.User.Id));
 
             foreach (var permission in userPermissions)
                 authenticationResult.User.Claims.Add(new Claim(CustomClaimTypes.Permission, permission.Code));

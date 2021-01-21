@@ -28,10 +28,7 @@ namespace UserAccess.Application.Users.Queries.GetUser
                                   FirstName, 
                                   LastName, 
                                   Email, 
-                                  Login, 
-                                  BanterScore, 
-                                  CommentScore, 
-                                  Picture 
+                                  Login
                                 FROM 
                                   Users.Users 
                                 WHERE 
