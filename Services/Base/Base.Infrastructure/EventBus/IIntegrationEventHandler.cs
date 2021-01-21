@@ -4,7 +4,7 @@ namespace Base.Infrastructure.EventBus
 {
     public interface IIntegrationEventHandler<in TIntegrationEvent> : IIntegrationEventHandler
     {
-        Task Handle(TIntegrationEvent @event);
+        Task<bool> Handle(TIntegrationEvent @event);
     }
 
     public interface IIntegrationEventHandler

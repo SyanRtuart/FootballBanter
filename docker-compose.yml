@@ -31,7 +31,7 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     volumes:
-        - ./data/rabbitmq:/var/lib/rabbitmq/mnesia/rabbit@app-rabbitmq:cached
+        - .RabbitMq/data/rabbitmq:/var/lib/rabbitmq/mnesia/rabbit@app-rabbitmq:cached
     environment:
         RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
         RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}

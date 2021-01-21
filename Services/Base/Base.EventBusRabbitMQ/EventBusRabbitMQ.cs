@@ -220,11 +220,19 @@ namespace Base.EventBusRabbitMQ
 
                 foreach (var integrationEventHandler in integrationEventHandlers)
                 {
-                    var rs = integrationEventHandler.EventType;
-
                     var request = JsonConvert.DeserializeObject(message, integrationEventHandler.EventType) as IntegrationEvent;
 
-                    DoTheThing(request, eventName);
+                    var success = await TryProcessEvent(request, eventName, integrationEventHandler);
+
+                    if (success)
+                    {
+                        _consumerChannel.BasicAck(eventArgs.DeliveryTag, false);
+                    }
+                    else
+                    {
+                        _consumerChannel.BasicNack(eventArgs.DeliveryTag, false, false);
+
+                    }
                 }
 
             }
@@ -232,24 +240,21 @@ namespace Base.EventBusRabbitMQ
             {
                 _logger.Information(ex, "----- ERROR Processing message \"{Message}\"", message);
             }
-
-            //// Even on exception we take the message off the queue.
-            //// in a REAL WORLD app this should be handled with a Dead Letter Exchange (DLX). 
-            //// For more information see: https://www.rabbitmq.com/dlx.html
-            _consumerChannel.BasicAck(eventArgs.DeliveryTag, false);
         }
 
-        private async void DoTheThing<T>(T integrationEvent, string eventName) where T : IntegrationEvent
+        private async Task<bool> TryProcessEvent<T>(T integrationEvent, string eventName, HandlerSubscription handlerSubscription) where T : IntegrationEvent
         {
-            var integrationEventHandlers = _handlers.Where(x => x.EventName == eventName).ToList();
-
-            foreach (var integrationEventHandler in integrationEventHandlers)
+            try
             {
-                var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(integrationEventHandler.Handler.GetType().GetGenericArguments().First());
+                var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(handlerSubscription.Handler.GetType().GetGenericArguments().First());
 
-                await (Task)concreteType.GetMethod("Handle")?.Invoke(integrationEventHandler.Handler, new object[] { integrationEvent });
+                return await (Task<bool>)concreteType.GetMethod("Handle")?.Invoke(handlerSubscription.Handler, new object[] { integrationEvent });
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public void StartConsuming()

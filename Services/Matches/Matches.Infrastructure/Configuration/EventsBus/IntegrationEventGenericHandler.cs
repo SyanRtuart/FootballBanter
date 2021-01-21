@@ -17,29 +17,38 @@ namespace Matches.Infrastructure.Configuration.EventsBus
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-        public async Task Handle(T @event)
+        public async Task<bool> Handle(T @event)
         {
-            using (var scope = MatchesCompositionRoot.BeginLifetimeScope())
+            try
             {
-                using (var connection = scope.Resolve<ISqlConnectionFactory>().GetOpenConnection())
+                using (var scope = MatchesCompositionRoot.BeginLifetimeScope())
                 {
-                    string type = @event.GetType().FullName;
-                    var data = JsonConvert.SerializeObject(@event, new JsonSerializerSettings
+                    using (var connection = scope.Resolve<ISqlConnectionFactory>().GetOpenConnection())
                     {
-                        ContractResolver = new AllPropertiesContractResolver()
-                    });
+                        string type = @event.GetType().FullName;
+                        var data = JsonConvert.SerializeObject(@event, new JsonSerializerSettings
+                        {
+                            ContractResolver = new AllPropertiesContractResolver()
+                        });
 
-                    var sql = "INSERT INTO [Matches].[InboxMessages] (Id, OccurredOn, Type, Data) " +
-                              "VALUES (@Id, @OccurredOn, @Type, @Data)";
+                        var sql = "INSERT INTO [Matches].[InboxMessages] (Id, OccurredOn, Type, Data) " +
+                                  "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
-                    await connection.ExecuteScalarAsync(sql, new
-                    {
-                        @event.Id,
-                        @event.OccurredOn,
-                        type,
-                        data
-                    });
+                        await connection.ExecuteScalarAsync(sql, new
+                        {
+                            @event.Id,
+                            @event.OccurredOn,
+                            type,
+                            data
+                        });
+
+                        return true;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException($"Unable to process message {@event}");
             }
         }
 
