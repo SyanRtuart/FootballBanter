@@ -65,7 +65,7 @@ namespace Web.HttpAggregator.Controllers
         }
 
         [HttpGet]
-        [Route("getMember/{memberId}")]
+        [Route("Member/{memberId}")]
         public async Task<MemberData> GetMember([FromRoute] Guid memberId)
         {
             var request = new GetMemberRequest(memberId);
