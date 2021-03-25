@@ -48,7 +48,7 @@ namespace Phrases.Domain.Phrase
             AddDomainEvent(new PhraseCreatedDomainEvent(Id, matchId, teamId, createdByUserId, description, positive, _dateCreated));
         }
 
-        public static Phrase Create(MatchId matchId, TeamId teamId, UserId createdByUserId, string description, bool positive)
+        public static Phrase CreateNew(MatchId matchId, TeamId teamId, UserId createdByUserId, string description, bool positive)
         {
             var phrase = new Phrase(matchId, teamId, createdByUserId, description, positive);
 

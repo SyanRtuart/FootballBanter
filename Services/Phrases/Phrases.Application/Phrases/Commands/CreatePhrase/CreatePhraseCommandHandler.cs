@@ -20,7 +20,7 @@ namespace Phrases.Application.Phrases.Commands.CreatePhrase
 
         public async Task<Guid> Handle(CreatePhraseCommand request, CancellationToken cancellationToken)
         {
-            var phrase = Phrase.Create(new MatchId(request.MatchId),new TeamId(request.TeamId), new UserId(request.CreatedByUserId), 
+            var phrase = Phrase.CreateNew(new MatchId(request.MatchId),new TeamId(request.TeamId), new UserId(request.CreatedByUserId), 
                 request.Description, request.Positive);
 
             await _phraseRepository.AddAsync(phrase);

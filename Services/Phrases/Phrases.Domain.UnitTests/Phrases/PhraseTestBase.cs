@@ -28,7 +28,7 @@ namespace Phrases.Domain.UnitTests.Phrases
 
         protected PhraseTestData CreatePhraseTestData(PhraseTestDataOptions options)
         {
-            var phrase = Phrase.Phrase.Create(new MatchId(options.MatchId), new TeamId(options.TeamId), 
+            var phrase = Phrase.Phrase.CreateNew(new MatchId(options.MatchId), new TeamId(options.TeamId), 
                 new UserId(options.CreatedByUserId), options.Description, true);
 
             DomainEventsTestHelper.ClearAllDomainEvents(phrase);

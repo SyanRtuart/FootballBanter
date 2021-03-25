@@ -42,7 +42,7 @@ namespace Phrases.Domain.UnitTests.Phrases
             AssertBrokenRule<UserCannotUpvoteTwiceRule>(() =>
             {
                 // Act
-                var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
+                var phrase = Phrase.Phrase.CreateNew(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
                     userId, "description", true);
 
                 phrase.Upvote(userId);
@@ -80,7 +80,7 @@ namespace Phrases.Domain.UnitTests.Phrases
             AssertBrokenRule<UserCannotDownvoteTwiceRule>(() =>
             {
                 // Act
-                var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()), 
+                var phrase = Phrase.Phrase.CreateNew(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()), 
                     userId, "description", true);
 
                 phrase.Downvote(userId);

@@ -13,7 +13,7 @@ namespace Phrases.Domain.UnitTests.Phrases
         [Test]
         public void CreatePhrase_WhenAllConditionsAllow_IsSuccessful()
         {
-            var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
+            var phrase = Phrase.Phrase.CreateNew(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
                 new UserId(Guid.NewGuid()), "description", true);
 
 
@@ -24,7 +24,7 @@ namespace Phrases.Domain.UnitTests.Phrases
         [Test]
         public void DeletePhrase_WhenAllConditionsAllow_IsSuccessful()
         {
-            var phrase = Phrase.Phrase.Create(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
+            var phrase = Phrase.Phrase.CreateNew(new MatchId(Guid.NewGuid()), new TeamId(Guid.NewGuid()),
                 new UserId(Guid.NewGuid()), "description", true);
 
             var userId = new UserId(Guid.NewGuid());

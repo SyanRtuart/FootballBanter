@@ -31,7 +31,7 @@ namespace Phrases.Domain.Members
             // Required for EF.
         }
 
-        public static Member Create(Guid id, string email, string login, string password, string firstName, string lastName, string name)
+        public static Member CreateNew(Guid id, string email, string login, string password, string firstName, string lastName, string name)
         {
             return new Member(id, email, login, password, firstName, lastName, name);
         }

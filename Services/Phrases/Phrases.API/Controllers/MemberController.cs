@@ -26,5 +26,6 @@ namespace Phrases.API.Controllers
             return await _phrasesModule.ExecuteQueryAsync(new GetMemberQuery(memberId));
         }
         
+   
     }
 }

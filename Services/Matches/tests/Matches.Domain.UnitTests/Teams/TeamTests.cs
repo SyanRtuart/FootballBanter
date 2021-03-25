@@ -11,7 +11,7 @@ namespace Matches.Domain.UnitTests.Teams
         [Test]
         public void CreateNewTeam_IsSuccessful()
         {
-            var team = Team.Team.Create("name",
+            var team = Team.Team.CreateNew("name",
                 "description",
                 new byte[1],
                 "manager",
@@ -30,7 +30,7 @@ namespace Matches.Domain.UnitTests.Teams
         [Test]
         public void EditGeneralAttributes_IsSuccessful()
         {
-            var team = Team.Team.Create("name",
+            var team = Team.Team.CreateNew("name",
                 "description",
                 new byte[1],
                 "manager",

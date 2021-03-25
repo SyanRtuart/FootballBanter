@@ -54,7 +54,6 @@ namespace UserAccess.IntegrationTests.Users
 
             Assert.That(user.FirstName, Is.EqualTo(EditUserSampleData.NewFirstName));
             Assert.That(user.LastName, Is.EqualTo(EditUserSampleData.NewLastName));
-            Assert.That(user.Picture, Is.EqualTo(EditUserSampleData.NewPicture));
         }
     }
 }

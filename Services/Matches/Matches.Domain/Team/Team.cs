@@ -73,7 +73,7 @@ namespace Matches.Domain.Team
                 formedYear, facebook, instagram, stadium, externalId));
         }
 
-        public static Team Create(string name, string description, byte[] logo, string manager, string league,
+        public static Team CreateNew(string name, string description, byte[] logo, string manager, string league,
             string country, int formedYear, string facebook, string instagram, Stadium stadium, string externalId)
         {
             return new Team(name, description, logo, manager, league, country, formedYear, facebook, instagram, stadium,
