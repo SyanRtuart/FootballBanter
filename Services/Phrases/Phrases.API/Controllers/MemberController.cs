@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Phrases.Application.Contracts;
+using Phrases.Application.Members.Commands.EditMemberGeneralAttributes;
 using Phrases.Application.Members.Queries.GetMember;
 
 namespace Phrases.API.Controllers
@@ -25,7 +23,18 @@ namespace Phrases.API.Controllers
         {
             return await _phrasesModule.ExecuteQueryAsync(new GetMemberQuery(memberId));
         }
-        
-   
+
+        [HttpPost("{memberId}")]
+        public async Task<IActionResult> EditMemberGeneralAttributes([FromRoute] Guid memberId, 
+            [FromBody] EditMemberGeneralAttributesCommand command)
+        {
+            await _phrasesModule.ExecuteCommandAsync(new EditMemberGeneralAttributesCommand(
+                memberId,
+                command.FirstName,
+                command.LastName,
+                command.Picture));
+
+            return Ok();
+        }
     }
 }

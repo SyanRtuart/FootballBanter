@@ -17,5 +17,7 @@ namespace Web.HttpAggregator.Services.Phrase
         Task DownvotePhrase(DownvotePhraseRequest request);
 
         Task<MemberData> GetMember(GetMemberRequest request);
+
+        Task UpdateMemberGeneralAttributes(UpdateMemberGeneralAttributesRequest request);
     }
 }

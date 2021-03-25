@@ -17,7 +17,7 @@ namespace Phrases.Application.Members.Commands.CreateMember
 
         public async Task<Unit> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {
-            var member = Member.CreateNew(request.MemberId, request.Email, request.Login, request.Email, request.FirstName,
+            var member = Member.CreateNew(request.MemberId, request.Email, request.Login,  request.FirstName,
                 request.LastName, request.Name);
 
             await _memberRepository.AddAsync(member);

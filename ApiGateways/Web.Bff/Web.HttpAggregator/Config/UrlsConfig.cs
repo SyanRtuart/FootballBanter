@@ -43,6 +43,7 @@ namespace Web.HttpAggregator.Config
             }
 
             public static string GetMember(Guid memberId) => $"member/{memberId}";
+            public static string EditMemberGeneralAttributes(Guid memberId) => $"member/{memberId}";
 
             public static string UpvotePhrase(Guid phraseId)
             {

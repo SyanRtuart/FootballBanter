@@ -81,5 +81,16 @@ namespace Web.HttpAggregator.Services.Phrase
 
             return JsonConvert.DeserializeObject<MemberData>(content);
         }
+
+        public async Task UpdateMemberGeneralAttributes(UpdateMemberGeneralAttributesRequest request)
+        {
+            var url = _urls.Phrase + UrlsConfig.PhraseOperations.EditMemberGeneralAttributes(request.MemberId);
+
+            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

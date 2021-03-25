@@ -12,8 +12,6 @@ namespace Phrases.Domain.Members
 
         private string _login;
 
-        private string _password;
-
         private string _firstName;
 
         private string _lastName;
@@ -25,23 +23,12 @@ namespace Phrases.Domain.Members
         private Scores _scores;
 
         private byte[] _picture;
-
-        private Member()
-        {
-            // Required for EF.
-        }
-
-        public static Member CreateNew(Guid id, string email, string login, string password, string firstName, string lastName, string name)
-        {
-            return new Member(id, email, login, password, firstName, lastName, name);
-        }
-
-        private Member(Guid id, string email, string login, string password, string firstName, string lastName, string name)
+        
+        private Member(Guid id, string email, string login, string firstName, string lastName, string name)
         {
             Id = new MemberId(id);
             _email = email;
             _login = login;
-            _password = password;
             _firstName = firstName;
             _lastName = lastName;
             _name = name;
@@ -49,5 +36,24 @@ namespace Phrases.Domain.Members
 
             AddDomainEvent(new MemberCreatedDomainEvent(Id));
         }
+        private Member()
+        {
+            // Required for EF.
+        }
+
+        public static Member CreateNew(Guid id, string email, string login,  string firstName, string lastName, string name)
+        {
+            return new Member(id, email, login, firstName, lastName, name);
+        }
+
+        public void EditGeneralAttributes(string firstName, string lastName, byte[] picture)
+        {
+            _firstName = firstName;
+            _lastName = lastName;
+            _picture = picture;
+
+            AddDomainEvent(new MemberGeneralAttributesEditedDomainEvent(firstName, lastName, picture));
+        }
+        
     }
 }

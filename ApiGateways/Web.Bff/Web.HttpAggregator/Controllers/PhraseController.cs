@@ -72,5 +72,15 @@ namespace Web.HttpAggregator.Controllers
 
             return await _phraseApiClient.GetMember(request);
         }
+
+        [HttpPost]
+        [Route("member/updateGeneralAttributes")]
+        public async Task<IActionResult> EditMemberGeneralAttributes(UpdateMemberGeneralAttributesRequest request)
+        {
+            await _phraseApiClient.UpdateMemberGeneralAttributes(request);
+
+            return Ok();
+        }
+
     }
 }
