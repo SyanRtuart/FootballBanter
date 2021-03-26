@@ -75,9 +75,13 @@ namespace Web.HttpAggregator.Controllers
 
         [HttpPost]
         [Route("member/updateGeneralAttributes")]
-        public async Task<IActionResult> EditMemberGeneralAttributes(UpdateMemberGeneralAttributesRequest request)
+        public async Task<IActionResult> EditMemberGeneralAttributes([FromBody] UpdateMemberGeneralAttributesRequest request)
         {
-            await _phraseApiClient.UpdateMemberGeneralAttributes(request);
+            var pictureBlob = Convert.FromBase64String(request.Picture);
+
+            var apiRequest = new EditMemberGeneralAttributesRequest(request.MemberId, request.FirstName, request.LastName, pictureBlob);
+
+            await _phraseApiClient.UpdateMemberGeneralAttributes(apiRequest);
 
             return Ok();
         }

@@ -7,6 +7,6 @@ namespace Web.HttpAggregator.Models.Phrase.Member
         public Guid MemberId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public byte[] Picture { get; set; }
+        public string Picture { get; set; }
     }
 }

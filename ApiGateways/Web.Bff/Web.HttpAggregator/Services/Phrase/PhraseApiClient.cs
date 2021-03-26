@@ -82,7 +82,7 @@ namespace Web.HttpAggregator.Services.Phrase
             return JsonConvert.DeserializeObject<MemberData>(content);
         }
 
-        public async Task UpdateMemberGeneralAttributes(UpdateMemberGeneralAttributesRequest request)
+        public async Task UpdateMemberGeneralAttributes(EditMemberGeneralAttributesRequest request)
         {
             var url = _urls.Phrase + UrlsConfig.PhraseOperations.EditMemberGeneralAttributes(request.MemberId);
 

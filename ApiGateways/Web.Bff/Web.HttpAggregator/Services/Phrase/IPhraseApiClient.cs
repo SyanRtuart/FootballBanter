@@ -18,6 +18,6 @@ namespace Web.HttpAggregator.Services.Phrase
 
         Task<MemberData> GetMember(GetMemberRequest request);
 
-        Task UpdateMemberGeneralAttributes(UpdateMemberGeneralAttributesRequest request);
+        Task UpdateMemberGeneralAttributes(EditMemberGeneralAttributesRequest request);
     }
 }
