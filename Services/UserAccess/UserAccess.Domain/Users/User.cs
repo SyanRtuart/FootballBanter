@@ -4,6 +4,7 @@ using Base.Domain.SeedWork;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Domain.UserRegistrations.Events;
 using UserAccess.Domain.Users.Events;
+using UserAccess.Domain.Users.Rules;
 
 namespace UserAccess.Domain.Users
 {
@@ -55,6 +56,15 @@ namespace UserAccess.Domain.Users
             _lastName = lastName;
 
             AddDomainEvent(new UserGeneralAttributesEditedDomainEvent(firstName, lastName));
+        }
+
+        public void ChangePassword(string oldPassword, string newPassword)
+        {
+            CheckRule(new PasswordMustMatchRule(_password, oldPassword));
+
+            _password = PasswordManager.HashPassword(newPassword);
+
+            AddDomainEvent(new UserChangedPasswordDomainEvent(Id));
         }
 
         private User()

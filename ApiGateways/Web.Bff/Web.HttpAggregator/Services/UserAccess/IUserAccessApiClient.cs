@@ -16,5 +16,7 @@ namespace Web.HttpAggregator.Services.UserAccess
         Task<UserData> GetUser(string email);
 
         Task UploadPicture(UploadPictureRequest request);
+
+        Task ChangePasswordAsync(ChangePasswordRequest request);
     }
 }

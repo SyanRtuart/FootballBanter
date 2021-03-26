@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-namespace UserAccess.Application.Authentication
+namespace UserAccess.Domain.Users
 {
     public class PasswordManager
     {

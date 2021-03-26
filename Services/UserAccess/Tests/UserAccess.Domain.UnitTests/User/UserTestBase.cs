@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NSubstitute;
+﻿using NSubstitute;
 using UserAccess.Domain.UnitTests.SeedWork;
 using UserAccess.Domain.UserRegistrations;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Domain.UnitTests.User
 {
@@ -16,6 +12,7 @@ namespace UserAccess.Domain.UnitTests.User
             internal string FirstName { get; set; }
             internal string LastName { get; set; }
             internal byte[] Picture { get; set; }
+            internal string Password { get; set;}
         }
 
         protected class UserTestData
@@ -31,10 +28,11 @@ namespace UserAccess.Domain.UnitTests.User
         protected UserTestData CreateUserTestData(UserTestDataOptions options)
         {
             var usersCounter = Substitute.For<IUsersCounter>();
+            options.Password ??= "password123";
 
             var userRegistration =
                 UserRegistration.RegisterNewUser(
-                    "login", "password", "test@email",
+                    "login", PasswordManager.HashPassword(options.Password), "test@email",
                     options.FirstName, options.LastName, usersCounter);
 
             userRegistration.Confirm();

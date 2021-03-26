@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Base.Application.Emails;
-using MediatR;
-using UserAccess.Application.Authentication;
 using UserAccess.Application.Configuration.Commands;
 using UserAccess.Domain.UserRegistrations;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Application.UserRegistrations.Commands.RegisterNewUser
 {

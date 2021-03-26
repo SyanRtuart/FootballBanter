@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Web.HttpAggregator.Config;
 using Web.HttpAggregator.Exceptions;
+using Web.HttpAggregator.Models;
 using Web.HttpAggregator.Models.UserAccess;
 
 namespace Web.HttpAggregator.Services.UserAccess
@@ -92,6 +93,22 @@ namespace Web.HttpAggregator.Services.UserAccess
             var response = await _httpClient.PostAsync(url, formData);
 
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            var url = _urls.UserAccess + UrlsConfig.UserAccessOperations.ChangePassword(request.UserId);
+
+            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var apiException = JsonConvert.DeserializeObject<ApiExceptionResponse>(responseContent);
+                throw new BusinessRuleValidationException(apiException.Detail);
+            }
         }
     }
 }

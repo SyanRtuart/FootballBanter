@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
-using UserAccess.Domain.UnitTests.SeedWork;
 using UserAccess.Domain.UserRegistrations;
 using UserAccess.Domain.Users.Events;
+using UserAccess.Domain.Users.Rules;
 
 namespace UserAccess.Domain.UnitTests.User
 {
@@ -29,14 +24,6 @@ namespace UserAccess.Domain.UnitTests.User
 
             var userCreatedDomainEvent = AssertPublishedDomainEvent<UserCreatedDomainEvent>(user);
             Assert.That(userCreatedDomainEvent.UserId, Is.EqualTo(user.Id));
-
-
-            //user.EditGeneralAttributes("newFirstname", "newLastname", new byte[1]);
-
-            //var  userGeneralAttributesEditedDomainEvent = AssertPublishedDomainEvent<UserGeneralAttributesEditedDomainEvent>(user);
-            //Assert.That(newUserRegisteredDomainEvent.FirstName, Is.EqualTo("newFirstname"));
-            //Assert.That(newUserRegisteredDomainEvent.LastName, Is.EqualTo("newLastname"));
-            //Assert.That(newUserRegisteredDomainEvent.Picture, Is.EqualTo(new byte[1]));
         }
 
         [Test]
@@ -53,6 +40,41 @@ namespace UserAccess.Domain.UnitTests.User
             var userGeneralAttributesEditedDomainEvent = AssertPublishedDomainEvent<UserGeneralAttributesEditedDomainEvent>(user.User);
             Assert.That(userGeneralAttributesEditedDomainEvent.FirstName, Is.EqualTo("newFirstname"));
             Assert.That(userGeneralAttributesEditedDomainEvent.LastName, Is.EqualTo("newLastname"));
+        }
+
+        [Test]
+        public void ChangePassword_WhenPasswordMatches_IsSuccessful()
+        {
+            var user = CreateUserTestData(new UserTestDataOptions
+            {
+                FirstName = "firstName",
+                LastName = "lastName",
+                Password = "testPassword123"
+            });
+
+            user.User.ChangePassword("testPassword123", "newPassword123");
+
+            var userPasswordChangedDomainEvent = AssertPublishedDomainEvent<UserChangedPasswordDomainEvent>(user.User);
+            Assert.That(userPasswordChangedDomainEvent.UserId, Is.EqualTo(user.User.Id));
+        }
+
+        [Test]
+        public void ChangePassword_WhenPasswordsDoNotMatch_IsNotSuccessful()
+        {
+            // Arrange
+            var user = CreateUserTestData(new UserTestDataOptions
+            {
+                FirstName = "firstName",
+                LastName = "lastName",
+                Password = "testPassword123"
+            });
+
+            // Assert
+            AssertBrokenRule<PasswordMustMatchRule>(() =>
+            {
+                // Act
+                user.User.ChangePassword("notMatchingPassword", "newPassword123");
+            });
         }
     }
 }

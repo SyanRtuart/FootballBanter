@@ -77,5 +77,13 @@ namespace Web.HttpAggregator.Controllers
 
             return Ok();
         }
+
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+             await _userAccessApiClient.ChangePasswordAsync(request);
+
+             return Ok();
+        }
     }
 }

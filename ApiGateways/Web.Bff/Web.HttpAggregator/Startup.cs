@@ -107,7 +107,7 @@ namespace Web.HttpAggregator
         public static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
             IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
-            if (hostEnvironment.IsDevelopment())
+            if (!hostEnvironment.IsDevelopment())
             {
                 services.AddMvc(opts =>
                 {

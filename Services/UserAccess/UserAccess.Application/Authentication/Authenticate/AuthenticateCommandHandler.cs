@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Base.Application.Permissions;
 using Base.Infrastructure;
 using Dapper;
-using MediatR;
 using UserAccess.Application.Configuration.Commands;
+using UserAccess.Domain.Users;
 
 namespace UserAccess.Application.Authentication.Authenticate
 {

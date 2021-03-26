@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using UserAccess.Application.Authentication;
 using UserAccess.Application.UserRegistrations.Commands.ConfirmUserRegistration;
 using UserAccess.Application.UserRegistrations.Commands.RegisterNewUser;
+using UserAccess.Application.Users.Commands.ChangePassword;
 using UserAccess.Application.Users.Commands.CreateUser;
 using UserAccess.Application.Users.Commands.EditUserGeneralAttributes;
 using UserAccess.Application.Users.Queries.GetUser;
@@ -54,6 +56,17 @@ namespace UserAccess.IntegrationTests.Users
 
             Assert.That(user.FirstName, Is.EqualTo(EditUserSampleData.NewFirstName));
             Assert.That(user.LastName, Is.EqualTo(EditUserSampleData.NewLastName));
+        }
+
+        [Test]
+        public async Task ChangePassword_Test()
+        {
+            var userId = await CreateUserTestData();
+
+            await UserAccessModule.ExecuteCommandAsync(new ChangePasswordCommand(userId,
+                UserRegistrationSampleData.Password, "newPassword123"));
+
+
         }
     }
 }

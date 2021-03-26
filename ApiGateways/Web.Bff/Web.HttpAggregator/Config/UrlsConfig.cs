@@ -65,6 +65,8 @@ namespace Web.HttpAggregator.Config
             public static string GetUser(string email) => $"user/?email={email}";
 
             public static string UploadPicture(Guid userId) => $"user/{userId}/picture";
+
+            public static string ChangePassword(Guid userId) => $"user/{userId}/changePassword";
         }
     }
 }
