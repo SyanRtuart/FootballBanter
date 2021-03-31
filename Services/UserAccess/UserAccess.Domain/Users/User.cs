@@ -42,6 +42,8 @@ namespace UserAccess.Domain.Users
             _login = login;
             _password = password;
 
+            _isActive = true;
+
             _roles = new List<UserRole>
             {
                 UserRole.Member
