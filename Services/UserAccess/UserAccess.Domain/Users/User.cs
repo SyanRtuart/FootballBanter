@@ -41,6 +41,7 @@ namespace UserAccess.Domain.Users
             _lastName = lastName;
             _login = login;
             _password = password;
+            _name = $"{firstName}  {lastName}";
 
             _isActive = true;
 
