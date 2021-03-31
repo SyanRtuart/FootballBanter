@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Base\Base.EventBus\Base.EventBus.csproj" />
     <ProjectReference Include="..\..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Phrases\Phrases.IntegrationEvents\Phrases.IntegrationEvents.csproj" />
     <ProjectReference Include="..\UserAccess.Application\UserAccess.Application.csproj" />
     <ProjectReference Include="..\UserAccess.Domain\UserAccess.Domain.csproj" />
   </ItemGroup>

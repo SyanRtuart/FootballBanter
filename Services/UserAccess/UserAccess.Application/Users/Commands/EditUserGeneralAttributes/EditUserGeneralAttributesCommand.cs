@@ -1,21 +1,19 @@
 ﻿using System;
-using UserAccess.Application.Contracts;
+using UserAccess.Application.Configuration.Commands;
 
 namespace UserAccess.Application.Users.Commands.EditUserGeneralAttributes
 {
-    public class EditUserGeneralAttributesCommand : CommandBase
+    public class EditUserGeneralAttributesCommand : InternalCommandBase
     {
-        public EditUserGeneralAttributesCommand(Guid userId, string firstName, string lastName, byte[] picture)
+        public EditUserGeneralAttributesCommand(Guid id, Guid userId, string firstName, string lastName) : base(id)
         {
             UserId = userId;
             FirstName = firstName;
             LastName = lastName;
-            Picture = picture;
         }
 
         public Guid UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public byte[] Picture { get; set; }
     }
 }

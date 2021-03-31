@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Base.Infrastructure.EventBus;
+using Phrases.IntegrationEvents;
 using Serilog;
 using UserAccess.IntegrationEvents;
 
@@ -18,6 +19,7 @@ namespace UserAccess.Infrastructure.Configuration.EventsBus
             var eventBus = UserAccessCompositionRoot.BeginLifetimeScope().Resolve<IEventsBus>();
 
             SubscribeToIntegrationEvent<NewUserRegisteredIntegrationEvent>(eventBus, logger);
+            SubscribeToIntegrationEvent<MemberGeneralAttributesEditedIntegrationEvent>(eventBus, logger);
 
         }
 

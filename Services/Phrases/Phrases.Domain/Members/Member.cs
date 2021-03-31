@@ -52,7 +52,7 @@ namespace Phrases.Domain.Members
             _lastName = lastName;
             _picture = picture;
 
-            AddDomainEvent(new MemberGeneralAttributesEditedDomainEvent(firstName, lastName, picture));
+            AddDomainEvent(new MemberGeneralAttributesEditedDomainEvent(Id.Value, firstName, lastName, picture));
         }
         
     }

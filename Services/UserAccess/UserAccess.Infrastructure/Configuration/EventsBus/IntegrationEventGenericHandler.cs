@@ -28,7 +28,7 @@ namespace UserAccess.Infrastructure.Configuration.EventsBus
                             ContractResolver = new AllPropertiesContractResolver()
                         });
 
-                        var sql = "INSERT INTO [UserAccess].[InboxMessages] (Id, OccurredOn, Type, Data) " +
+                        var sql = "INSERT INTO [Users].[InboxMessages] (Id, OccurredOn, Type, Data) " +
                                   "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
                         await connection.ExecuteScalarAsync(sql, new

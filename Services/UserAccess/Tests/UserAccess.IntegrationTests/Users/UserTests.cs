@@ -49,8 +49,7 @@ namespace UserAccess.IntegrationTests.Users
             await UserAccessModule.ExecuteCommandAsync(new EditUserGeneralAttributesCommand(
                 userId,
                 EditUserSampleData.NewFirstName,
-                EditUserSampleData.NewLastName,
-                EditUserSampleData.NewPicture));
+                EditUserSampleData.NewLastName));
 
             var user = await UserAccessModule.ExecuteQueryAsync(new GetUserQuery(userId));
 

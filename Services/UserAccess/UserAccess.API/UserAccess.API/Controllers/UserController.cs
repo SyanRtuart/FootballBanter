@@ -25,19 +25,6 @@ namespace UserAccess.API.Controllers
         {
             return await _userAccessModule.ExecuteQueryAsync(new GetUserByEmailQuery(email));
         }
-        //TODO Make this a request instead of pulling command
-        [HttpPut("{userId}")]
-        public async Task<IActionResult> EditUserGeneralAttributes([FromRoute] Guid userId,
-            [FromBody] EditUserGeneralAttributesCommand request)
-        {
-            await _userAccessModule.ExecuteCommandAsync(new EditUserGeneralAttributesCommand(
-                userId,
-                request.FirstName,
-                request.LastName,
-                request.Picture));
-
-            return Ok();
-        }
 
         [HttpPost("{userid}/changePassword")]
         public async Task<IActionResult> ChangePassword([FromRoute] Guid userId,
